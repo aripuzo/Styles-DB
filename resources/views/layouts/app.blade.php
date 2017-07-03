@@ -71,7 +71,7 @@
                                 </ul>
                             </li>
                             <li class="menu-item">
-                                <a href="#" class="sf-with-ul">Portfolio<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
+                                <a href="#" class="sf-with-ul">Styles<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
                                 <ul class="sub-menu" style="display: none; float: none; width: 11.5em; visibility: hidden;">
                                     <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
                                         <a href="#" style="float: none; width: auto;">Fashion</a>
