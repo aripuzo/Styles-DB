@@ -1,0 +1,376 @@
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Fira Sans Light'), local('FiraSans-Light'), url(http://fonts.gstatic.com/s/firasans/v7/VTBnrK42EiOBncVyQXZ7j6-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Fira Sans Light'), local('FiraSans-Light'), url(http://fonts.gstatic.com/s/firasans/v7/VTBnrK42EiOBncVyQXZ7j5X5f-9o1vgP2EXwfjgl7AY.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Fira Sans Light'), local('FiraSans-Light'), url(http://fonts.gstatic.com/s/firasans/v7/VTBnrK42EiOBncVyQXZ7jxWV49_lSm1NYrwo-zkhivY.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Fira Sans Light'), local('FiraSans-Light'), url(http://fonts.gstatic.com/s/firasans/v7/VTBnrK42EiOBncVyQXZ7j6aRobkAwv3vxw3jMhVENGA.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Fira Sans Light'), local('FiraSans-Light'), url(http://fonts.gstatic.com/s/firasans/v7/VTBnrK42EiOBncVyQXZ7j_8zf_FOSsgRmwsS7Aa9k2w.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Fira Sans Light'), local('FiraSans-Light'), url(http://fonts.gstatic.com/s/firasans/v7/VTBnrK42EiOBncVyQXZ7jz0LW-43aMEzIO6XUTLjad8.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Fira Sans Light'), local('FiraSans-Light'), url(http://fonts.gstatic.com/s/firasans/v7/VTBnrK42EiOBncVyQXZ7j-gdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(http://fonts.gstatic.com/s/firasans/v7/g5Sf_134cAtTKkNnIjIkXxJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(http://fonts.gstatic.com/s/firasans/v7/T3abUOg4YgfjOby2l-QudhJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(http://fonts.gstatic.com/s/firasans/v7/yB7tFp5j00CzdUIRV-khUhJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(http://fonts.gstatic.com/s/firasans/v7/5jAMGMsBXS6xUYEytGcZdBJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(http://fonts.gstatic.com/s/firasans/v7/BzUSZ4bBt2kmpGGQUA6ZQBJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(http://fonts.gstatic.com/s/firasans/v7/MIPWVWI_mY_QERxcMVPEwBJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans Regular'), local('FiraSans-Regular'), url(http://fonts.gstatic.com/s/firasans/v7/EjsrzDkQUQCDwsBtLpcVQVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(http://fonts.gstatic.com/s/firasans/v7/DugPdSljmOTocZOR2CItOq-j2U0lmluP9RWlSytm3ho.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(http://fonts.gstatic.com/s/firasans/v7/DugPdSljmOTocZOR2CItOpX5f-9o1vgP2EXwfjgl7AY.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(http://fonts.gstatic.com/s/firasans/v7/DugPdSljmOTocZOR2CItOhWV49_lSm1NYrwo-zkhivY.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(http://fonts.gstatic.com/s/firasans/v7/DugPdSljmOTocZOR2CItOqaRobkAwv3vxw3jMhVENGA.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(http://fonts.gstatic.com/s/firasans/v7/DugPdSljmOTocZOR2CItOv8zf_FOSsgRmwsS7Aa9k2w.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(http://fonts.gstatic.com/s/firasans/v7/DugPdSljmOTocZOR2CItOj0LW-43aMEzIO6XUTLjad8.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(http://fonts.gstatic.com/s/firasans/v7/DugPdSljmOTocZOR2CItOugdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Fira Sans Light Italic'), local('FiraSans-LightItalic'), url(http://fonts.gstatic.com/s/firasans/v7/6s0YCA9oCTF6hM60YM-qTRgVThLs8Y7ETJzDCYFCSLE.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Fira Sans Light Italic'), local('FiraSans-LightItalic'), url(http://fonts.gstatic.com/s/firasans/v7/6s0YCA9oCTF6hM60YM-qTZiMaisvaUVUsYyVzOmndek.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Fira Sans Light Italic'), local('FiraSans-LightItalic'), url(http://fonts.gstatic.com/s/firasans/v7/6s0YCA9oCTF6hM60YM-qTbBAWGjcah5Ky0jbCgIwDB8.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Fira Sans Light Italic'), local('FiraSans-LightItalic'), url(http://fonts.gstatic.com/s/firasans/v7/6s0YCA9oCTF6hM60YM-qTf14vlcfyPYlAcQy2UfDRm4.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Fira Sans Light Italic'), local('FiraSans-LightItalic'), url(http://fonts.gstatic.com/s/firasans/v7/6s0YCA9oCTF6hM60YM-qTafJul7RR1X4poJgi27uS4w.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Fira Sans Light Italic'), local('FiraSans-LightItalic'), url(http://fonts.gstatic.com/s/firasans/v7/6s0YCA9oCTF6hM60YM-qTavyPXdneeGd26m9EmFSSWg.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Fira Sans Light Italic'), local('FiraSans-LightItalic'), url(http://fonts.gstatic.com/s/firasans/v7/6s0YCA9oCTF6hM60YM-qTUo2lTMeWA_kmIyWrkNCwPc.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Fira Sans Italic'), local('FiraSans-Italic'), url(http://fonts.gstatic.com/s/firasans/v7/QURAmFz4b80g324-oF-UjzTOQ_MqJVwkKsUn0wKzc2I.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Fira Sans Italic'), local('FiraSans-Italic'), url(http://fonts.gstatic.com/s/firasans/v7/QURAmFz4b80g324-oF-UjzUj_cnvWIuuBMVgbX098Mw.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Fira Sans Italic'), local('FiraSans-Italic'), url(http://fonts.gstatic.com/s/firasans/v7/QURAmFz4b80g324-oF-Uj0bcKLIaa1LC45dFaAfauRA.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Fira Sans Italic'), local('FiraSans-Italic'), url(http://fonts.gstatic.com/s/firasans/v7/QURAmFz4b80g324-oF-Uj2o_sUJ8uO4YLWRInS22T3Y.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Fira Sans Italic'), local('FiraSans-Italic'), url(http://fonts.gstatic.com/s/firasans/v7/QURAmFz4b80g324-oF-Uj76up8jxqWt8HVA3mDhkV_0.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Fira Sans Italic'), local('FiraSans-Italic'), url(http://fonts.gstatic.com/s/firasans/v7/QURAmFz4b80g324-oF-UjyYE0-AqJ3nfInTTiDXDjU4.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Fira Sans Italic'), local('FiraSans-Italic'), url(http://fonts.gstatic.com/s/firasans/v7/QURAmFz4b80g324-oF-Uj44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Hind Light'), local('Hind-Light'), url(http://fonts.gstatic.com/s/hind/v7/woSH4aW-1wuybBQItyfdsvY6323mHUZFJMgTvxaG2iE.woff2) format('woff2');
+  unicode-range: U+02BC, U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200B-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Hind Light'), local('Hind-Light'), url(http://fonts.gstatic.com/s/hind/v7/FdFTd030tby8r55hlt7EYfY6323mHUZFJMgTvxaG2iE.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Hind Light'), local('Hind-Light'), url(http://fonts.gstatic.com/s/hind/v7/0IXD51eZ8qgi73bhvRidlQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Hind Regular'), local('Hind-Regular'), url(http://fonts.gstatic.com/s/hind/v7/Vb88BBmXXgbpZxolKzz6dw.woff2) format('woff2');
+  unicode-range: U+02BC, U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200B-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Hind Regular'), local('Hind-Regular'), url(http://fonts.gstatic.com/s/hind/v7/eND698DA6CUFWomaRdrTiw.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Hind Regular'), local('Hind-Regular'), url(http://fonts.gstatic.com/s/hind/v7/xLdg5JI0N_C2fvyu9XVzXg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Hind Bold'), local('Hind-Bold'), url(http://fonts.gstatic.com/s/hind/v7/AFoPIhbuX_gBhSszntNC0_Y6323mHUZFJMgTvxaG2iE.woff2) format('woff2');
+  unicode-range: U+02BC, U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200B-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Hind Bold'), local('Hind-Bold'), url(http://fonts.gstatic.com/s/hind/v7/503ks6dbq2nVdfUL61JyAfY6323mHUZFJMgTvxaG2iE.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Hind';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Hind Bold'), local('Hind-Bold'), url(http://fonts.gstatic.com/s/hind/v7/PQuIEfcr_wdF_zOSNjqWKQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Teko';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Teko Regular'), local('Teko-Regular'), url(http://fonts.gstatic.com/s/teko/v6/ReWtp16HVyzdin1z_uvVFg.woff2) format('woff2');
+  unicode-range: U+02BC, U+0900-097F, U+1CD0-1CF6, U+1CF8-1CF9, U+200B-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Teko';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Teko Regular'), local('Teko-Regular'), url(http://fonts.gstatic.com/s/teko/v6/3qReukiqUnKCO2w_puz9wQ.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Teko';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Teko Regular'), local('Teko-Regular'), url(http://fonts.gstatic.com/s/teko/v6/VMJW7okK7q4rP_CIopIrIg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
