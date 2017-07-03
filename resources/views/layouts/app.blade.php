@@ -98,7 +98,27 @@
                             <li class="menu-item">
                                 <a href="#">Contact</a>
                             </li>
-                        </ul><select class="select-menu"><option value="#">Navigate to...</option><option value="#">&nbsp;Home</option><option value="#">––&nbsp;Homepage with Gallery</option><option value="#">––&nbsp;Homepage with Post List</option><option value="#" selected="selected">––&nbsp;Homepage with Slider &amp; Posts</option><option value="#">––&nbsp;Homepage with Slider Only</option><option value="#">&nbsp;Gallery</option><option value="#">––&nbsp;Default Gallery</option><option value="#">––&nbsp;Uncropped Gallery</option><option value="#">––&nbsp;Gallery with Thumbnails</option><option value="#">––&nbsp;Gallery with Content</option><option value="#">&nbsp;Portfolio</option><option value="#">––&nbsp;Fashion</option><option value="#">––&nbsp;Landscapes</option><option value="#">––&nbsp;Weddings</option><option value="#">&nbsp;About me</option><option value="#">&nbsp;Journal</option><option value="#">&nbsp;Contact</option></select>
+                        </ul>
+                        <select class="select-menu">
+                            <option value="#">Navigate to...</option>
+                            <option value="#">&nbsp;Home</option>
+                            <option value="#">––&nbsp;Homepage with Gallery</option>
+                            <option value="#">––&nbsp;Homepage with Post List</option>
+                            <option value="#" selected="selected">––&nbsp;Homepage with Slider &amp; Posts</option>
+                            <option value="#">––&nbsp;Homepage with Slider Only</option>
+                            <option value="#">&nbsp;Gallery</option>
+                            <option value="#">––&nbsp;Default Gallery</option>
+                            <option value="#">––&nbsp;Uncropped Gallery</option>
+                            <option value="#">––&nbsp;Gallery with Thumbnails</option>
+                            <option value="#">––&nbsp;Gallery with Content</option>
+                            <option value="#">&nbsp;Portfolio</option>
+                            <option value="#">––&nbsp;Fashion</option>
+                            <option value="#">––&nbsp;Landscapes</option>
+                            <option value="#">––&nbsp;Weddings</option>
+                            <option value="#">&nbsp;About me</option>
+                            <option value="#">&nbsp;Journal</option>
+                            <option value="#">&nbsp;Contact</option>
+                        </select>
                     </div>
                 </nav>
                 <div class="clearfix"></div>
@@ -132,9 +152,17 @@
                     </div><!-- close .social-icons-widget-pro -->
                 </div>
                 <div class="sidebar-divider"></div>
+            </div>
+            <div>
+                @if (Auth::check())
+                    <a href="{{ url('/home') }}">Home</a>
+                @else
+                    <a href="{{ url('/login') }}">Login</a> | <a href="{{ url('/register') }}">Register</a>
+                @endif
             </div>      
             <div class="clearfix"></div>
-        </div><div class="pro-spacer" style="display: block; width: 270px; height: 573px; float: none;"></div><!-- close #sidebar-padding -->
+        </div>
+        <div class="pro-spacer" style="display: block; width: 270px; height: 573px; float: none;"></div><!-- close #sidebar-padding -->
         <div class="clearfix"></div>
     </div><!-- close #sidebar -->
     <div class="show-hide-pro sidebar-show-hide"><i class="fa fa-bars"></i></div><!-- Show/Hide Sidebar Button -->

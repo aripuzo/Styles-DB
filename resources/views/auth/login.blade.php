@@ -11,6 +11,11 @@
 
 <body>
     <div class="login-page">
+        <h1 id="logo">
+            <a href="{{ url('/') }}" title="{{ config('app.name', 'Laravel') }}" rel="home">
+                <img src="images/logo.png" alt="{{ config('app.name', 'Laravel') }}" width="170" align="middle">
+            </a>
+        </h1>
         <div class="form">
             <form class="register-form" method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
