@@ -26,6 +26,14 @@
   box-sizing: border-box;
   font-size: 14px;
 }
+.form a {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  font-size: 14px;
+  text-decoration: none;
+  text-align: center;
+}
 .form button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;

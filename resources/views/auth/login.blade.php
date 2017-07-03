@@ -44,7 +44,7 @@
             </form>
 
             <div class="loginBtn loginBtn--facebook">
-                Login with Facebook
+                <a href="redirect">Login with Facebook</a>
             </div>
         </div>
     </div>

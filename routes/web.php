@@ -31,6 +31,9 @@ Route::get('/profile', function () {
     return view('user.profile');
 });
 
+Route::get('/redirect', 'SocialAuthController@redirect');
+Route::get('/callback', 'SocialAuthController@callback');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
