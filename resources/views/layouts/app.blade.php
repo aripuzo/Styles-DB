@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>  <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <html lang="{{ app()->getLocale() }}" class=" js flexbox canvas canvastext webgl touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths gr__progression-studios_com" lang="en" style="">
 <head>
     <meta charset="utf-8">
@@ -14,13 +18,14 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <link href='http://fonts.googleapis.com/css?family=Fira+Sans:300,400,700,300italic,400italic%7cHind:400,300,700%7cTeko' rel='stylesheet' type='text/css'>
     <link href="{{ asset('css/css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/settings.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/layer.css') }}">
-    <script src="{{ asset('js/froogaloop2.min.js.download') }}"></script>
-    <script src="{{ asset('js/jquery-1.11.3.min.js.download') }}"></script>    
-    <script src="{{ asset('js/jquery-migrate.min.js.download') }}"></script>
-    <script src="{{ asset('js/modernizr-2.6.2.min.js.download') }}"></script>
+    <script src="{{ asset('js/froogaloop2.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-1.11.3.min.js') }}"></script>    
+    <script src="{{ asset('js/jquery-migrate.min.js') }}"></script>
+    <script src="{{ asset('js/modernizr-2.6.2.min.js') }}"></script>
     <style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style>
 </head>
 <body class="home-galery-posts" data-gr-c-s-loaded="true">
@@ -151,26 +156,26 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/plugins.js.download') }}"></script>
-    <script src="{{ asset('js/script.js.download') }}"></script>
-    <script src="{{ asset('js/jquery-ui.min.js.download') }}"></script>
+    <script src="{{ asset('js/plugins.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
 
     <!-- RevSlider -->
     <script src="{{ asset('js/revolution-slider.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.themepunch.tools.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.themepunch.revolution.min.js.download') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.themepunch.tools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.themepunch.revolution.min.js') }}"></script>
 
     <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  
         (Load Extensions only on Local File Systems ! 
          The following part can be removed on Server for On Demand Loading) --> 
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.actions.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.carousel.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.kenburn.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.layeranimation.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.migration.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.navigation.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js.download') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js.download') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.actions.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.carousel.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.kenburn.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.layeranimation.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.migration.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.navigation.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
 </body>
 </html>
