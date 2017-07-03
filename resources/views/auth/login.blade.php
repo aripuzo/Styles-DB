@@ -19,16 +19,27 @@
         <div class="form">
             <form class="register-form" method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
-                <input type="text" placeholder="name"/>
+                <input type="text" placeholder="username" name="username"/>
                 <input type="password" placeholder="password"/>
                 <input type="text" placeholder="email address"/>
-                <button>create</button>
+                <button type="submit">create</button>
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>
             <form class="login-form" method="POST" action="{{ route('login') }}">
-                <input type="text" placeholder="username"/>
+                {{ csrf_field() }}
+                <input type="text" placeholder="username" name="username"/>
+                @if ($errors->has('username'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('username') }}</strong>
+                </span>
+                @endif
                 <input type="password" placeholder="password"/>
-                <button>login</button>
+                @if ($errors->has('password'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </span>
+                @endif
+                <button type="submit">login</button>
                 <p class="message">Not registered? <a href="#">Create an account</a></p>
             </form>
 

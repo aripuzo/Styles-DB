@@ -15,6 +15,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
@@ -35,7 +36,7 @@
             <header>
                 <h1 id="logo">
                     <a href="{{ url('/') }}" title="{{ config('app.name', 'Laravel') }}" rel="home">
-                        <img src="images/logo.png" alt="{{ config('app.name', 'Laravel') }}" width="170">
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Laravel') }}" width="170">
                     </a>
                 </h1>
                 <nav>

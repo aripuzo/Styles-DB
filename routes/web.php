@@ -27,6 +27,10 @@ Route::get('/style', function () {
     return view('style.single');
 });
 
+Route::get('/profile', function () {
+    return view('user.profile');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
