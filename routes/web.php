@@ -23,6 +23,10 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
+Route::get('/style', function () {
+    return view('style.single');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
