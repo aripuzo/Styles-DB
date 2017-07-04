@@ -4,20 +4,21 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCategoriesTable extends Migration
+class CreateItemStyleTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('categories', function (Blueprint $table) {
+    public function up(){
+        Schema::create('item_style', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->integer('style_id');
+            $table->integer('item_id');
             $table->timestamps();
+            $table->foreign('style_id')->references('id')->on('styles');
+            $table->foreign('item_id')->references('id')->on('items');
         });
     }
 
@@ -28,6 +29,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('item_style');
     }
 }

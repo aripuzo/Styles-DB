@@ -3371,3 +3371,125 @@ ul.ls-sc-tabs:after {
   line-height: 0;
   height: 0;
 }
+#search-box {
+	position: relative;
+	width: 100%;
+	margin: 0;
+	padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 6px;
+}
+
+#search-form {
+	height: 40px;
+	border: 1px solid #999;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #fff;
+	overflow: hidden;
+}
+
+#search-text {
+	font-size: 14px;
+	color: #ddd;
+	border-width: 0;
+	background: transparent;
+}
+
+#search-box input[type="text"]{
+	width: 90%;
+	padding: 11px 0 12px 1em;
+	color: #333;
+	outline: none;
+}
+
+#search-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 42px;
+	width: 42px;
+	font-size: 16px;
+	text-align: center;
+	line-height: 42px;
+	border-width: 0;
+	background-color:#f1f1f1;
+	-webkit-border-radius: 0px 5px 5px 0px;
+	-moz-border-radius: 0px 5px 5px 0px;
+	border-radius: 0px 5px 5px 0px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+.w3-padding {
+    padding: 8px 16px!important;
+}
+.w3-input {
+    padding: 8px;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    overflow: visible;
+}
+.w3-light-grey, .w3-hover-light-grey:hover, .w3-light-gray, .w3-hover-light-gray:hover {
+    color: #000!important;
+    background-color: #f1f1f1!important;
+}
+.w3-card, .w3-card-2 {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+.w3-show-block, .w3-show {
+    display: block!important;
+}
+.w3-dropdown-content {
+    cursor: auto;
+    color: #000;
+    background-color: #fff;
+    display: none;
+    position: absolute;
+    width: 160px;
+    margin: 0;
+    padding: 0;
+    z-index: 5;
+}
+.w3-bar-block .w3-bar-item {
+    width: 100%;
+    display: block;
+    padding: 8px 16px;
+    text-align: left;
+    border: none;
+    outline: none;
+    white-space: normal;
+    float: none;
+}
+.w3-btn, .w3-button {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.w3-btn, .w3-button {
+    border: none;
+    display: inline-block;
+    outline: 0;
+    padding: 8px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.filter-btn{
+	display: inline-block;
+    font-size: 105%;
+    letter-spacing: 0.5px;
+    border: none;
+    background-color: white;
+    margin: 0px 24px 6px 0px;
+}

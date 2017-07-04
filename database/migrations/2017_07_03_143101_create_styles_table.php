@@ -13,7 +13,12 @@ class CreateStylesTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('styles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +28,6 @@ class CreateStylesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('styles');
     }
 }

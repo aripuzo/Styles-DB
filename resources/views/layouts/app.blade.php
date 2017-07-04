@@ -42,51 +42,36 @@
                 <nav>
                     <div class="menu-main-navigation-container">
                         <ul id="menu-main-navigation" class="sf-menu sf-vertical sf-js-enabled">
+                            <li class="menu-item">
+                                <div id='search-box' class="sf-with-ul">
+                                    <form action='/search' id='search-form' method='get' target='_top'>
+                                        <input id='search-text' name='q' placeholder='Search' type='text'/>
+                                        <button id='search-button' type='submit'>                     
+                                            <span><i class="fa fa-search"></i></span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                            @if (Auth::check())
                             <li class="menu-item current-menu-item">
-                                <a href="#" class="sf-with-ul">Home<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
-                                <ul class="sub-menu" style="display: none; float: none; width: 17.9167em; visibility: hidden;">
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Homepage with Gallery</a>
-                                    </li>
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Homepage with Post List</a>
-                                    </li>
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Homepage with Slider &amp; Posts</a>
-                                    </li>
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Homepage with Slider Only</a>
-                                    </li>
-                                </ul>
+                                <a href="{{ url('/') }}">Recommended</a>
                             </li>
+                            @else
                             <li class="menu-item">
-                                <a href="#" class="sf-with-ul">Gallery<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
-                                <ul class="sub-menu" style="display: none; float: none; width: 14.6667em; visibility: hidden;">
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Default Gallery</a>
-                                    </li>
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Uncropped Gallery</a>
-                                    </li>
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Gallery with Thumbnails</a>
-                                    </li>
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Gallery with Content</a>
-                                    </li>
-                                </ul>
+                                <a href="{{ url('/') }}">Home</a>
                             </li>
+                            @endif
                             <li class="menu-item">
-                                <a href="#" class="sf-with-ul">Styles<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
+                                <a href="#" class="sf-with-ul">Catalogue<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
                                 <ul class="sub-menu" style="display: none; float: none; width: 11.5em; visibility: hidden;">
                                     <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Fashion</a>
+                                        <a href="#" style="float: none; width: auto;">Men</a>
                                     </li>
                                     <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Landscapes</a>
+                                        <a href="#" style="float: none; width: auto;">Women</a>
                                     </li>
                                     <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Weddings</a>
+                                        <a href="#" style="float: none; width: auto;">Kids</a>
                                     </li>
                                 </ul>
                             </li>
@@ -155,9 +140,7 @@
                 <div class="sidebar-divider"></div>
             </div>
             <div>
-                @if (Auth::check())
-                    <a href="{{ url('/home') }}">Home</a>
-                @else
+                @if (!Auth::check())
                     <a href="{{ url('/login') }}">Login</a> | <a href="{{ url('/register') }}">Register</a>
                 @endif
             </div>      

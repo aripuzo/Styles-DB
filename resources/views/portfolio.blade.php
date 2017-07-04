@@ -7,13 +7,35 @@
             <a href="#">All</a>
         </li>
         <li class="cat-item cat-item-8">
-            <a href="#">Fashion</a>
+            <a href="#">Men</a>
         </li>
         <li class="cat-item cat-item-9">
-            <a href="#">Landscapes</a>
+            <a href="#">Women</a>
         </li>
         <li class="cat-item cat-item-10">
-            <a href="#">Weddings</a>
+            <a href="#">Kids</a>
+        </li>
+        <li class="cat-item cat-item-15" style="float: right; margin-right: 80px;">
+            <button onclick="dropFunction('myDIV')" class="filter-btn">Style</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-2 w3-light-grey" id="myDIV">
+                <input class="w3-input w3-padding" type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction('myInput', 'myDIV')">
+                <a class="w3-bar-item w3-button" href="#about">Buba</a>
+                <a class="w3-bar-item w3-button" href="#base">Senatore</a>
+                <a class="w3-bar-item w3-button" href="#blog">Agbada</a>
+                <a class="w3-bar-item w3-button" href="#contact">Caftan</a>
+                <a class="w3-bar-item w3-button" href="#custom">Gown</a>
+            </div>
+        </li>
+        <li class="cat-item cat-item-15" style="float: right;">
+            <button onclick="dropFunction('myFabric')" class="filter-btn">Fabric</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-2 w3-light-grey" id="myFabric">
+                <input class="w3-input w3-padding" type="text" placeholder="Search.." id="fabricInput" onkeyup="filterFunction('fabricInput', 'myFabric')">
+                <a class="w3-bar-item w3-button" href="#about">Ankara</a>
+                <a class="w3-bar-item w3-button" href="#base">Lace</a>
+                <a class="w3-bar-item w3-button" href="#blog">English</a>
+                <a class="w3-bar-item w3-button" href="#contact">Atiku</a>
+                <a class="w3-bar-item w3-button" href="#custom">Cotton</a>
+            </div>
         </li>
     </ul>
     <div class="clearfix"></div>
@@ -29,6 +51,10 @@
                         </ul>
                         <div class="gallery-title-index">
                             Video Example
+                        </div>
+                        <div class="gallery-title-index">
+                            <span><i class="fa fa-heart-o"></i></span>
+                            <span><i class="fa fa-share-alt"></i></span>
                         </div>
                     </div></a>
                 </article>
@@ -164,4 +190,31 @@
     </div><!-- close #gallery-masonry -->
     <div class="clearfix"></div>
 </div><!-- close #gallery-index-pro -->
+<script>
+    // Dropdown
+    function dropFunction(id) {
+        var x = document.getElementById(id);
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+    // Filter
+    function filterFunction(filter_id, div) {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById(filter_id);
+        filter = input.value.toUpperCase();
+        div = document.getElementById(div);
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                a[i].style.display = "";
+            } else {
+                a[i].style.display = "none";
+            }
+        }
+    }
+</script>
 @endsection
