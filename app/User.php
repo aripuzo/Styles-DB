@@ -44,4 +44,19 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough('App\Item', 'App\Favorite');
     }
+
+    public function comments()
+    {
+        return $this->hasManyThrough('App\ItemComment', 'App\Comment');
+    }
+
+    public function downloads()
+    {
+        return $this->hasMany('App\ItemDownload');
+    }
+
+    public function bookmarks()
+    {
+        return $this->hasMany('App\ItemBookmark');
+    }
 }

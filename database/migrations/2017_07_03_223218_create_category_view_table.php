@@ -15,11 +15,11 @@ class CreateCategoryViewTable extends Migration
     {
         Schema::create('category_view', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('category_id');
+            $table->integer('category_id')->unsigned();
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('categories');
         });
-
+    }
     /**
      * Reverse the migrations.
      *

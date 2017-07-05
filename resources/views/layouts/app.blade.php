@@ -35,9 +35,28 @@
             <div class="tablet-show-hide"><i class="fa fa-bars"></i></div>
             <header>
                 <h1 id="logo">
+                    @if (Auth::check())
+                    <style type="text/css">
+                        .img-circular{
+                         width: 200px;
+                         height: 200px;
+                         background-image: url('http://strawberry-fest.org/wp-content/uploads/2012/01/Coca-Cola-logo.jpg');
+                         background-size: cover;
+                         display: block;
+                         border-top-left-radius: 100px;
+                         -webkit-border-top-left-radius: 100px;
+                         -moz-border-top-left-radius: 100px;
+                         border-bottom-right-radius: 100px;
+                         -webkit-border-bottom-right-radius: 100px;
+                         -moz-border-bottom-right-radius: 100px;
+                        }
+                    </style>
+                    <div class="img-circular"></div>
+                    @else
                     <a href="{{ url('/') }}" title="{{ config('app.name', 'Laravel') }}" rel="home">
                         <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Laravel') }}" width="170">
                     </a>
+                    @endif
                 </h1>
                 <nav>
                     <div class="menu-main-navigation-container">

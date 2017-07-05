@@ -15,8 +15,8 @@ class CreateFabricsTable extends Migration
     {
         Schema::create('fabrics', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('name');
-            $table->integer('slug');
+            $table->string('name');
+            $table->string('slug', 100)->unique();
             $table->timestamps();
         });
     }

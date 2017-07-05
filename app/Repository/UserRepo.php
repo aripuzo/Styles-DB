@@ -3,7 +3,7 @@
 /**
  * Description of UserRepository
  *
- * @author olaar
+ * @author ari
  */
 
 namespace App\Repository;
@@ -11,16 +11,17 @@ namespace App\Repository;
 use App\Address;
 use App\Repository\Contracts\UserRepository;
 use App\User;
+use App\Item;
 
 class UserRepo implements UserRepository { // all deletes should be soft delete
 //put your code here
 
     function updateUser($userId, $userData) { // example code .. define update here and put your codes
         $user = User::find($userId);
-        $user->fname = $userData['fname'];
-        $user->lname = $userData['lname'];
+        $user->name = $userData['name'];
         $user->email = $userData['email'];
         $user->phone = $userData['phone'];
+        $user->avatar = $userData['avatar'];
 
         $address = User::find($userId)->address;
         if ($address == null) {
@@ -41,12 +42,24 @@ class UserRepo implements UserRepository { // all deletes should be soft delete
         $user->save();
     }
 
+    function updatePassword($userId, $newPassword) { // example code .. define update here and put your codes
+        $user = User::find($userId);
+        $user->password = bcrypt($newPassword);
+        $user->save();
+    }
+
     function deleteUser($userId) { //define delete here and put your codes
     }
 
     function getUser($userId) {
+        return User::find($userId);
+    }
+
+    function getItemsWithRating($userId){
         $user = User::find($userId);
-        return $user;
+        //get downloaded books +2
+        //get liked books +1
+        //get commented books +5
     }
 
 }
