@@ -63,7 +63,8 @@
                         <ul id="menu-main-navigation" class="sf-menu sf-vertical sf-js-enabled">
                             <li class="menu-item">
                                 <div id='search-box' class="sf-with-ul">
-                                    <form action='/search' id='search-form' method='get' target='_top'>
+                                    <form action='{{ url("/search")}}' id='search-form' method='get' target='_top'>
+                                        {{ csrf_field() }}
                                         <input id='search-text' name='q' placeholder='Search' type='text'/>
                                         <button id='search-button' type='submit'>                     
                                             <span><i class="fa fa-search"></i></span>
@@ -73,7 +74,7 @@
                             </li>
                             @if (Auth::check())
                             <li class="menu-item current-menu-item">
-                                <a href="{{ url('/') }}">Recommended</a>
+                                <a href="{{ url('/home') }}">Recommended</a>
                             </li>
                             @else
                             <li class="menu-item">
@@ -81,10 +82,10 @@
                             </li>
                             @endif
                             <li class="menu-item">
-                                <a href="#" class="sf-with-ul">Catalogue<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
+                                <a href="{{url('/catalogue')}}" class="sf-with-ul">Catalogue<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
                                 <ul class="sub-menu" style="display: none; float: none; width: 11.5em; visibility: hidden;">
                                     <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Men</a>
+                                        <a href="{{ route('catalogue', 'men') }}" style="float: none; width: auto;">Men</a>
                                     </li>
                                     <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
                                         <a href="#" style="float: none; width: auto;">Women</a>
@@ -106,20 +107,11 @@
                         </ul>
                         <select class="select-menu">
                             <option value="#">Navigate to...</option>
-                            <option value="#">&nbsp;Home</option>
-                            <option value="#">––&nbsp;Homepage with Gallery</option>
-                            <option value="#">––&nbsp;Homepage with Post List</option>
-                            <option value="#" selected="selected">––&nbsp;Homepage with Slider &amp; Posts</option>
-                            <option value="#">––&nbsp;Homepage with Slider Only</option>
-                            <option value="#">&nbsp;Gallery</option>
-                            <option value="#">––&nbsp;Default Gallery</option>
-                            <option value="#">––&nbsp;Uncropped Gallery</option>
-                            <option value="#">––&nbsp;Gallery with Thumbnails</option>
-                            <option value="#">––&nbsp;Gallery with Content</option>
-                            <option value="#">&nbsp;Portfolio</option>
-                            <option value="#">––&nbsp;Fashion</option>
-                            <option value="#">––&nbsp;Landscapes</option>
-                            <option value="#">––&nbsp;Weddings</option>
+                            <option value="#" selected="selected">&nbsp;Home</option>
+                            <option value="#">&nbsp;Catalogue</option>
+                            <option value="#">––&nbsp;Men</option>
+                            <option value="#">––&nbsp;Women</option>
+                            <option value="#">––&nbsp;Kids</option>
                             <option value="#">&nbsp;About me</option>
                             <option value="#">&nbsp;Journal</option>
                             <option value="#">&nbsp;Contact</option>

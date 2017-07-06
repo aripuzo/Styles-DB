@@ -57,9 +57,6 @@ class UserRepo implements UserRepository { // all deletes should be soft delete
 
     function getItemsWithRating($userId){
         $user = User::find($userId);
-        //get downloaded books +2
-        //get liked books +1
-        //get commented books +5
     }
 
 }

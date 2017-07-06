@@ -1,6 +1,55 @@
 @extends('layouts.app')
 
 @section('content')
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+    });
+    jQuery.ajax({
+        url:'/group/create',
+        type: 'GET',
+        data: {
+            name: groupName,
+            colour: "red"
+        },
+        success: function( data ){
+
+            console.log(data);
+        },
+        error: function (xhr, b, c) {
+            console.log("xhr=" + xhr + " b=" + b + " c=" + c);
+        }
+    });
+    var showUser = $('#show-user');
+
+    $('#my-form').on('submit', function () {
+
+        var select_id = $('#my-select').val();
+
+        $.ajax({
+            method: "POST",
+            url: "ajax",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                "select_id": select_id
+            },
+            error: function (data) {
+                //something went wrong with the request
+                alert("Error");
+            },
+            success: function (data) {
+                inner = "";
+                data.forEach(function (el, i, array) {
+                    inner += "<div>" + el.name + "</div>";
+                });
+                showUser.html(inner);
+            }
+        });
+        event.preventDefault();
+    });
+</script>
 <div id="gallery-index-pro">
     <ul id="menu-sub-nav">
         <li class="cat-item cat-item-7 current-cat">
@@ -19,7 +68,7 @@
             <button onclick="dropFunction('myDIV')" class="filter-btn">Style</button>
             <div class="w3-dropdown-content w3-bar-block w3-card-2 w3-light-grey" id="myDIV">
                 <input class="w3-input w3-padding" type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction('myInput', 'myDIV')">
-                <a class="w3-bar-item w3-button" href="#about">Buba</a>
+                <a class="w3-bar-item w3-button" href="{{ route('style', 'buba') }}">Buba</a>
                 <a class="w3-bar-item w3-button" href="#base">Senatore</a>
                 <a class="w3-bar-item w3-button" href="#blog">Agbada</a>
                 <a class="w3-bar-item w3-button" href="#contact">Caftan</a>

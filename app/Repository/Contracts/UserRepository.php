@@ -1,17 +1,16 @@
 <?php
 
-
-/**
- * Description of UserRepository
- *
- * @author olaar
- */
-
 namespace App\Repository\Contracts;
 
 interface UserRepository {
   
-    function updateUser($userId, $userData); // example of how to use..
-    function getUser($userId);
+    function updateUser($userId, $userData);
+
+    function updatePassword($userId, $newPassword);
+
     function deleteUser($userId);
+
+    function getUser($userId);
+
+    function getItemsWithRating($userId);
 }

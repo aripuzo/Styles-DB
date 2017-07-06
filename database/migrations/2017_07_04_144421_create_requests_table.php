@@ -15,8 +15,8 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('item_id');
+            $table->integer('user_id')->unsigned();;
+            $table->integer('item_id')->unsigned();;
             $table->integer('status');
             $table->integer('fabric_option');
             $table->integer('measurement_option');

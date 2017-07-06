@@ -4,6 +4,7 @@ namespace App\Repository;
 
 
 use App\Repository\Contracts\ItemRepository;
+use Illuminate\Support\Facades\DB;
 use App\Item;
 use App\Style;
 use App\ItemStyle;
@@ -66,6 +67,11 @@ class ItemRepo implements ItemRepository
         $user->save();
     }
 
+    function deleteItem($itemId) { // example code .. define update here and put your codes
+        $item = Item::find($itemId);
+        $user->save();
+    }
+
     function favItem($userId, $itemId){
         $item = Item::find($itemId);
         $user = User::find($userId);
@@ -75,7 +81,9 @@ class ItemRepo implements ItemRepository
             $fav->item_id = $itemId;
             $fav->user_id = $userId;
             $fav->save();
+            return true;
         }
+        return false;
     }
 
     function bookmarkItem($userId, $itemId){
@@ -107,7 +115,53 @@ class ItemRepo implements ItemRepository
         return null;
     }
 
-    function getItems($page, $order, $limit){
+    function getItem($itemId){
+        return Item::find($itemId);
+    }
+
+    function getItems($filters, $page = 1, $order, $limit = 15){
+        $item = Item::query();
+        if (isset($filters['style']))
+            $item->whereHas('styles', function($query) use($filters) {
+                    $query->where('slug', $filters['style']);
+                });
+        if (isset($filters['category']))
+            $item->whereHas('categories', function($query) use($filters) {
+                    $query->where('slug', $filters['category']);
+                });
+        if (isset($filters['fabric']))
+            $item->whereHas('fabrics', function($query) use($filters) {
+                    $query->where('slug', $filters['fabric']);
+                });
+        if (isset($filters['color']))
+            $item->whereHas('colors', function($query) use($filters) {
+                    $query->where('slug', $filters['color']);
+                });
+        if (isset($order['orderBy']))
+            $item->orderBy($order['orderBy'], $order['orderDir']);
+
+        return $item->paginate($limit)->url($page);
         
+    }
+
+    function searchItems($term, $page, $order, $limit = 15){
+        $item = Item::query();
+        $item->where('name', 'like', '%' . $term . '%')
+                ->orWhereHas('categories', function($query) use($term) {
+                    $query->where('name', 'like', '%'.$term.'%');
+                })
+                ->orWhereHas('styles', function($query) use($term) {
+                    $query->where('name', 'like', '%'.$term.'%');
+                })
+                // ->orWhereHas('item_styles', function($query) use($term) {
+                //     $query->whereHas('styles', function($query)
+                //     {
+                //         $query->where( 'name', 'like', '%'.$term.'%' );
+                //     });
+                // })
+                ->orWhere('description', 'like', '%' . $term . '%');
+        if (isset($order['orderBy']))
+            $item->orderBy($order['orderBy'], $order['orderDir']);
+        return $item->paginate($limit)->url($page);
     }
 }

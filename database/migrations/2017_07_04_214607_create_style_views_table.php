@@ -15,7 +15,7 @@ class CreateStyleViewsTable extends Migration
     {
         Schema::create('style_view', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('style_id');
+            $table->integer('style_id')->unsigned();
             $table->timestamps();
             $table->foreign('style_id')->references('id')->on('styles');
         });

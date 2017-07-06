@@ -15,20 +15,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/portfolio', function () {
-    return view('portfolio');
-});
+Route::get('/catalogue/{category?}', ['as' => 'catalogue', 'uses' => 'ItemController@getItems']);
+
+Route::get('/style/{style?}', ['as' => 'style', 'uses' => 'ItemController@getItems']);
+
+Route::get('/fabric/{fabric?}', ['as' => 'fabric', 'uses' => 'ItemController@getItems']);
+
+Route::get('/search', 'ItemController@searchItems');
 
 Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/style', function () {
-    return view('style.single');
-});
-
-Route::get('/profile', function () {
-    return view('user.profile');
+Route::get('/portfolio', function () {
+    return view('portfolio');
 });
 
 Route::get('/redirect', 'SocialAuthController@redirect');

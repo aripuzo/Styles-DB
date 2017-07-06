@@ -9,8 +9,23 @@
 namespace App\Repository\Contracts;
 
 
-interface TransactionRepository
+interface ItemRepository
 {
-    function transact($user,$action,$amount,$description);
-    function getTransactions($userId);
+    function addItem($itemData);
+
+    function updateItem($itemId, $itemData);
+
+    function deleteItem($itemId);
+
+    function favItem($userId, $itemId);
+
+    function bookmarkItem($userId, $itemId);
+
+    function downloadItem($userId, $itemId);
+
+    function getItem($itemId);
+
+    function getItems($filters, $page, $order, $limit);
+
+    function searchItems($term, $page, $order, $limit);
 }
