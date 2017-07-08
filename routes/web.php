@@ -12,14 +12,23 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	if (Auth::check())
+    	return view('user.home');
+    else
+    	return view('welcome');
 });
 
-Route::get('/catalogue/{category?}', ['as' => 'catalogue', 'uses' => 'ItemController@getItems']);
+Route::get('/catalogue/{category?}', ['as' => 'catalogue', 'uses' => 'ItemController@getItemsByCategory']);
 
 Route::get('/style/{style?}', ['as' => 'style', 'uses' => 'ItemController@getItems']);
 
 Route::get('/fabric/{fabric?}', ['as' => 'fabric', 'uses' => 'ItemController@getItems']);
+
+Route::get('/item/{id}', ['as' => 'item', 'uses' => 'ItemController@getItem']);
+
+Route::get('/item/{id}/download', ['as' => 'download', 'uses' => 'ItemController@downloadItem']);
+
+Route::get('/item/like', 'ItemController@favItem');
 
 Route::get('/search', 'ItemController@searchItems');
 
@@ -27,8 +36,8 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/portfolio', function () {
-    return view('portfolio');
+Route::get('/single', function () {
+    return view('item.sigle');
 });
 
 Route::get('/redirect', 'SocialAuthController@redirect');
@@ -36,4 +45,12 @@ Route::get('/callback', 'SocialAuthController@callback');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/styles/build', function () {
+    return view('item.new');
+});
+
+Route::post('/styles/build', 'ItemController@createItem');
+
+Route::get('/home', 'UserController@index')->name('home');
+Route::get('/account', 'UserController@showProfile')->name('profile');
+Route::post('/account', 'UserController@updateUser');

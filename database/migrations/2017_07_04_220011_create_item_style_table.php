@@ -14,8 +14,8 @@ class CreateItemStyleTable extends Migration
     public function up(){
         Schema::create('item_style', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('style_id');
-            $table->integer('item_id');
+            $table->integer('style_id')->unsigned();
+            $table->integer('item_id')->unsigned();
             $table->timestamps();
             $table->foreign('style_id')->references('id')->on('styles');
             $table->foreign('item_id')->references('id')->on('items');

@@ -152,7 +152,7 @@
         <div id="infinite-nav-pro">
             <div class="nav-previous">
                 <a href="http://www.progression-studios.com/zyra/homepage-posts-page-2.html">
-                Load More News</a>
+                Load More</a>
             </div>
         </div>
     </div>

@@ -20,8 +20,8 @@
             <form class="register-form" method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
                 <input type="text" placeholder="username" name="username"/>
-                <input type="password" placeholder="password"/>
-                <input type="text" placeholder="email address"/>
+                <input type="password" placeholder="password" name="password" />
+                <input type="text" placeholder="email address" name="email" />
                 <button type="submit">create</button>
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>

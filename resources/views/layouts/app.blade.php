@@ -3,7 +3,7 @@
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]>  <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<html lang="{{ app()->getLocale() }}" class=" js flexbox canvas canvastext webgl touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths gr__progression-studios_com" lang="en" style="">
+<html lang="{{ app()->getLocale() }}" class="js" style="">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,22 +12,29 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title') - {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     <link href='http://fonts.googleapis.com/css?family=Fira+Sans:300,400,700,300italic,400italic%7cHind:400,300,700%7cTeko' rel='stylesheet' type='text/css'>
     <link href="{{ asset('css/css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/settings.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/layer.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/layers.css') }}">
+    @yield('styles')
     <script src="{{ asset('js/froogaloop2.min.js') }}"></script>
     <script src="{{ asset('js/jquery-1.11.3.min.js') }}"></script>    
     <script src="{{ asset('js/jquery-migrate.min.js') }}"></script>
     <script src="{{ asset('js/modernizr-2.6.2.min.js') }}"></script>
-    <style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style>
+    @yield('scripts')
+    <style id="fit-vids-style">
+        .fluid-width-video-wrapper{width:100%;position:relative;padding:0;}
+        .fluid-width-video-wrapper iframe,
+        .fluid-width-video-wrapper object,
+        .fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}
+    </style>
 </head>
 <body class="home-galery-posts" data-gr-c-s-loaded="true">
     <div id="sidebar" class="sidebar sidebar-visible-pro">
@@ -38,9 +45,9 @@
                     @if (Auth::check())
                     <style type="text/css">
                         .img-circular{
-                         width: 200px;
-                         height: 200px;
-                         background-image: url('http://strawberry-fest.org/wp-content/uploads/2012/01/Coca-Cola-logo.jpg');
+                         width: 100px;
+                         height: 100px;
+                         background-image: url('images/logo.png');
                          background-size: cover;
                          display: block;
                          border-top-left-radius: 100px;
@@ -74,7 +81,7 @@
                             </li>
                             @if (Auth::check())
                             <li class="menu-item current-menu-item">
-                                <a href="{{ url('/home') }}">Recommended</a>
+                                <a href="{{ url('/home') }}">Home</a>
                             </li>
                             @else
                             <li class="menu-item">
@@ -83,38 +90,37 @@
                             @endif
                             <li class="menu-item">
                                 <a href="{{url('/catalogue')}}" class="sf-with-ul">Catalogue<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
+                                @php
+                                $categories = App\Category::get();
+                                @endphp
                                 <ul class="sub-menu" style="display: none; float: none; width: 11.5em; visibility: hidden;">
+                                    @foreach($categories as $category)
                                     <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="{{ route('catalogue', 'men') }}" style="float: none; width: auto;">Men</a>
+                                        <a href="{{ route('catalogue', $category->slug) }}" style="float: none; width: auto;">{{ $category->name }}</a>
                                     </li>
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Women</a>
-                                    </li>
-                                    <li class="menu-item" style="white-space: normal; float: none; width: 100%;">
-                                        <a href="#" style="float: none; width: auto;">Kids</a>
-                                    </li>
+                                    @endforeach
                                 </ul>
                             </li>
                             <li class="menu-item">
-                                <a href="#">About me</a>
+                                <a href="{{url('/account')}}">Profile</a>
                             </li>
                             <li class="menu-item">
                                 <a href="#">Journal</a>
                             </li>
                             <li class="menu-item">
-                                <a href="#">Contact</a>
+                                <a href="{{url('/contact')}}">Contact</a>
                             </li>
                         </ul>
                         <select class="select-menu">
                             <option value="#">Navigate to...</option>
-                            <option value="#" selected="selected">&nbsp;Home</option>
-                            <option value="#">&nbsp;Catalogue</option>
-                            <option value="#">––&nbsp;Men</option>
-                            <option value="#">––&nbsp;Women</option>
-                            <option value="#">––&nbsp;Kids</option>
-                            <option value="#">&nbsp;About me</option>
+                            <option value="{{ url('/') }}" selected="selected">&nbsp;Home</option>
+                            <option value="{{ url('/catalogue') }}">&nbsp;Catalogue</option>
+                            @foreach($categories as $category)
+                                <option value="{{ route('catalogue', $category->slug) }}">––&nbsp;{{ $category->name }}</option>
+                            @endforeach
+                            <option value="{{url('/account')}}">&nbsp;About me</option>
                             <option value="#">&nbsp;Journal</option>
-                            <option value="#">&nbsp;Contact</option>
+                            <option value="{{url('/contact')}}">&nbsp;Contact</option>
                         </select>
                     </div>
                 </nav>
@@ -136,7 +142,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="http://pinterest.com/" target="_blank">
+                                <a href="http://pinterest.com/oversabi" target="_blank">
                                     <i class="fa fa-pinterest"></i>
                                 </a>
                             </li>
@@ -151,7 +157,9 @@
                 <div class="sidebar-divider"></div>
             </div>
             <div>
-                @if (!Auth::check())
+                @if (Auth::check())
+                    <a href="{{ url('/logout') }}">Logout</a>
+                @else
                     <a href="{{ url('/login') }}">Login</a> | <a href="{{ url('/register') }}">Register</a>
                 @endif
             </div>      
@@ -184,7 +192,7 @@
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
 
     <!-- RevSlider -->
-    <script src="{{ asset('js/revolution-slider.js.download') }}"></script>
+    <script src="{{ asset('js/revolution-slider.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.themepunch.tools.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.themepunch.revolution.min.js') }}"></script>
 

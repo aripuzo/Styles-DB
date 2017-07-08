@@ -13,7 +13,7 @@ class CreateColorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('color', function (Blueprint $table) {
+        Schema::create('colors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',100)->unique();
             $table->string('slug',100)->unique();

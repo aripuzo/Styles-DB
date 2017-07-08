@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Repository\Contracts\UserRepository;
-use App\Repository\Contracts\ItemCreditRepository;
+use App\Repository\Contracts\ItemRepository;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -20,7 +20,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        return view('home');
+        return view('user.home');
     }
 
     public function updateUser(Request $request) {

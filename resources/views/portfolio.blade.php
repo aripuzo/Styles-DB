@@ -1,10 +1,26 @@
 @extends('layouts.app')
 
+@section('title', isset($title) ? $title : 'Page Title')
+@section('description', isset($description) ? $description : 'Description')
+
 @section('content')
 <script type="text/javascript">
     $.ajaxSetup({
         headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
     });
+
+    function likeItem(el) {
+        var id = el.id,
+        //sw_name = $(el).attr('name');
+
+        alert(id);
+        $.get("{{ url('item/like') }}",{'id': id}, function(data) { 
+            if (data.response == "true") {
+                location.reload();
+                $(el).html(data.value);
+            }
+        });
+    }
     jQuery.ajax({
         url:'/group/create',
         type: 'GET',
@@ -22,13 +38,13 @@
     });
     var showUser = $('#show-user');
 
-    $('#my-form').on('submit', function () {
+    $('#my-form').on('click', function () {
 
         var select_id = $('#my-select').val();
 
         $.ajax({
             method: "POST",
-            url: "ajax",
+            url: "/ajax",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -50,64 +66,89 @@
         event.preventDefault();
     });
 </script>
+<style type="text/css">
+    .member > span {
+        zoom: 1; /* Trigger hasLayout */
+        width: 25%;
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+    }
+</style>
 <div id="gallery-index-pro">
     <ul id="menu-sub-nav">
-        <li class="cat-item cat-item-7 current-cat">
-            <a href="#">All</a>
+        @php
+            $categories = App\Category::get();
+            $i = 2;
+        @endphp
+        <li class="cat-item cat-item-1 {{isset($selected) && $selected == 0 ? 'current-cat' : ''}}">
+            <a href="{{url('/catalogue')}}">All</a>
         </li>
-        <li class="cat-item cat-item-8">
-            <a href="#">Men</a>
+        @foreach($categories as $category)
+            <li class="cat-item cat-item-{{ $i }} {{isset($selected) && $selected == $category->id ? 'current-cat' : ''}}">
+                <a href="{{ route('catalogue', $category->slug) }}">{{ $category->name }}</a>
+            </li>
+            @php
+                $i += 1;
+            @endphp
+        @endforeach
+        <li class="cat-item cat-item-15" style="float: right;">
+            <button onclick="dropFunction('mySort')" class="filter-btn" style="border-color: #e9e9e9;">Sort</button>
+            <div class="w3-dropdown-content w3-bar-block w3-card-2 w3-light-grey"  id="mySort">
+                <a class="w3-bar-item w3-button" href="#">Popular</a>
+                <a class="w3-bar-item w3-button" href="#">Latest</a>
+            </div>
         </li>
-        <li class="cat-item cat-item-9">
-            <a href="#">Women</a>
-        </li>
-        <li class="cat-item cat-item-10">
-            <a href="#">Kids</a>
-        </li>
-        <li class="cat-item cat-item-15" style="float: right; margin-right: 80px;">
+        <li class="cat-item cat-item-16" style="float: right; margin-right: 80px;">
             <button onclick="dropFunction('myDIV')" class="filter-btn">Style</button>
             <div class="w3-dropdown-content w3-bar-block w3-card-2 w3-light-grey" id="myDIV">
                 <input class="w3-input w3-padding" type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction('myInput', 'myDIV')">
-                <a class="w3-bar-item w3-button" href="{{ route('style', 'buba') }}">Buba</a>
-                <a class="w3-bar-item w3-button" href="#base">Senatore</a>
-                <a class="w3-bar-item w3-button" href="#blog">Agbada</a>
-                <a class="w3-bar-item w3-button" href="#contact">Caftan</a>
-                <a class="w3-bar-item w3-button" href="#custom">Gown</a>
+                @php
+                    $styles = App\Style::get();
+                @endphp
+                @foreach($styles as $style)
+                    <a class="w3-bar-item w3-button" href="{{ route('style', $style->slug) }}">{{ $style->name }}</a>
+                @endforeach
             </div>
         </li>
-        <li class="cat-item cat-item-15" style="float: right;">
+        <li class="cat-item cat-item-17" style="float: right;">
             <button onclick="dropFunction('myFabric')" class="filter-btn">Fabric</button>
             <div class="w3-dropdown-content w3-bar-block w3-card-2 w3-light-grey" id="myFabric">
                 <input class="w3-input w3-padding" type="text" placeholder="Search.." id="fabricInput" onkeyup="filterFunction('fabricInput', 'myFabric')">
-                <a class="w3-bar-item w3-button" href="#about">Ankara</a>
-                <a class="w3-bar-item w3-button" href="#base">Lace</a>
-                <a class="w3-bar-item w3-button" href="#blog">English</a>
-                <a class="w3-bar-item w3-button" href="#contact">Atiku</a>
-                <a class="w3-bar-item w3-button" href="#custom">Cotton</a>
+                @php
+                    $fabrics = App\Fabric::get();
+                @endphp
+                @foreach($fabrics as $fabric)
+                    <a class="w3-bar-item w3-button" href="{{ route('fabric', $fabric->slug) }}">{{ $fabric->name }}</a>
+                @endforeach
             </div>
         </li>
     </ul>
     <div class="clearfix"></div>
     <div id="gallery-masonry-loading">
         <div id="gallery-masonry" style="position: relative; height: 966.25px;">
+            @foreach($items as $item)
             <div class="gallery-item-pro gallery-column-3 opacity-pro" style="position: absolute; left: 0px; top: 0px;">
                 <article>
-                    <a class="gallery-container-pro" href="http://www.progression-studios.com/zyra/single-gallery-post.html">
-                    <div class="zoom-image-container-pro"><img alt="160252896_640" class="attachment-progression-gallery-index wp-post-image" height="360" src="images/160252896_640.jpg" width="640"></div>
+                    <a class="gallery-container-pro" href="{{ route('item', $item->id) }}">
+                    <div class="zoom-image-container-pro"><img alt="{{ $item->name }}" class="attachment-progression-gallery-index wp-post-image" height="360" src="{{ $item->images->first()->url }}" width="640"></div>
                     <div class="gallery-index-text">
                         <ul>
-                            <li>Landscapes<span>,</span></li>
+                            <li>{{ $item->itemCategories->first()->category->name }}<span>,</span></li>
                         </ul>
                         <div class="gallery-title-index">
-                            Video Example
+                            {{ $item->name}}
                         </div>
-                        <div class="gallery-title-index">
-                            <span><i class="fa fa-heart-o"></i></span>
-                            <span><i class="fa fa-share-alt"></i></span>
+                        <div class="member gallery-title-index" style="margin-top: 30px; font-size: 15px;">
+                            <button title="Like" onclick="likeItem(this)">{{ $item->getLikesLabel() }}<i class="fa fa-heart-o"></i> </button>
+                            <span title="download">{{ $item->getDownloadsLabel() }}<i class="fa fa-download"></i></span>
+                            <span title="Share"> <i class="fa fa-share"></i></span>
+                            <span title="Make"> Make</span>
                         </div>
                     </div></a>
                 </article>
             </div>
+            @endforeach
             <div class="gallery-item-pro gallery-column-3 opacity-pro" style="position: absolute; left: 357px; top: 0px;">
                 <article>
                     <a class="gallery-container-pro" href="http://www.progression-studios.com/zyra/single-gallery-post.html">

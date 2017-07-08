@@ -4,14 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ItemTag extends Model
+class Image extends Model
 {
-    protected $table = 'item_tag';
-
-    public function tag()
-    {
-        return $this->belongsTo('App\Tag');
-    }
+    protected $table = 'images';
 
     public function item(){
         return $this->belongsTo('App\Item');
