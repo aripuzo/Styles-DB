@@ -32,5 +32,8 @@ class RepositoryProvider extends ServiceProvider
         $this->app->bind(
                 'App\Repository\Contracts\ItemPropertyRepository', 'App\Repository\ItemPropertyRepo'
         );
+        $this->app->bind(
+                'App\Repository\Contracts\StatRepository', 'App\Repository\StatRepo'
+        );
     }
 }

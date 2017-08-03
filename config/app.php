@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Styles'),
+    'name' => env('APP_NAME', 'Shakara'),
 
     /*
     |--------------------------------------------------------------------------
@@ -179,6 +179,9 @@ return [
         App\Providers\RepositoryProvider::class,
 
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
+        JD\Cloudder\CloudderServiceProvider::class,
 
     ],
 
@@ -229,6 +232,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
+        'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
 
     ],
 

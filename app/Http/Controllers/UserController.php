@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Repository\Contracts\UserRepository;
 use App\Repository\Contracts\ItemRepository;
 use Illuminate\Http\Request;
+use SEO;
 
 class UserController extends Controller
 {
@@ -24,9 +25,17 @@ class UserController extends Controller
     }
 
     public function updateUser(Request $request) {
+        if($request->input('password') != null){
+            $this->validate($request, [
+                'old_password' => 'required|string|min:6',
+                'password' => 'required|string|min:6|confirmed'
+            ]);
+            $this->userRepo->updatePassword(auth()->id(), $request->input('password'));
+        }
         $user = $this->userRepo->updateUser(auth()->id(), $request->all());
         $viewData = [
-          'user' => $user
+          'user' => $user,
+          'title' => $user->getTitle(),
         ];
         return view('user.profile', $viewData);
     }
@@ -34,8 +43,23 @@ class UserController extends Controller
     public function showProfile() {
         $user = $this->userRepo->getUser(auth()->id());
         $viewData = [
-          'user' => $user
+          'user' => $user,
+          'title' => $user->getTitle(),
         ];
         return view('user.profile', $viewData);
+        //return $this->userRepo->getRecommendedTest(auth()->id(), 15);
+    }
+
+    public function getBookmarks() {
+        $user = $this->userRepo->getUser(auth()->id());
+        $items = array();
+        foreach($user->bookmarks as $bookmark){
+        	$items[] = $bookmark->item;
+        }
+	    $viewData = [
+	        'items' => $items,
+	        'title' => $user->getTitle(),
+	    ];
+        return view('user.bookmarks', $viewData);
     }
 }

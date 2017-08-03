@@ -234,8 +234,6 @@ body.blog #infinite-nav-pro a, #title-container-pro, #post-nav-progression {
 	margin-left:60px;
 }
 .container-blog {
-	position:relative;
-	margin:0px 60px 60px 60px;
 	padding:45px;
 	padding-bottom:25px;
 	-moz-box-shadow: 1px 1px 10px rgba(0,0,0, 0.04);
@@ -745,7 +743,7 @@ body .featured-video-progression p {margin-bottom:0px;}
 
 /* Comments */
 #reviews #comments {margin-top:0px;}
-#comments {margin-top:35px;}
+#comments {margin-top:35px; margin-right: 50px; margin-left: 50px;}
 body.single-attachment .comment-form-rating {display:none;}
 
 #comment-nav-above h1 {text-align:center; font-size:15px; margin-bottom:5px; opacity:0.6; letter-spacing:1px; }
@@ -1817,7 +1815,7 @@ body a.ls-sc-button.default:hover span { color:#ffffff; font-weight:700 ; }
 
 span.required {color:#da5454;}
 .wpcf7 {margin-top:15px;}
-.wpcf7 input, .wpcf7 textarea, #respond textarea, #respond input {
+.wpcf7 input, .wpcf7 textarea, .wpcf7 select, #respond textarea, #respond input {
 	margin-top:3px;
 	-webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px;
 	max-width:100%;
@@ -1838,7 +1836,7 @@ span.required {color:#da5454;}
 span.your-name input, span.your-email input {width:44.5%;}
 .wpcf7 input, #respond input, .wpcf7 textarea, #respond textarea {width:94%; }
 
-.wpcf7 input:focus, #respond input:focus, .wpcf7 textarea:focus, #respond textarea:focus {
+.wpcf7 input:focus, #respond input:focus, .wpcf7 textarea:focus, .wpcf7 select:focus, #respond textarea:focus {
 	border-color:#cccccc;
 	outline: none;
 	color:#666666;
@@ -3389,37 +3387,138 @@ ul.ls-sc-tabs:after {
 	background-color: #fff;
 	overflow: hidden;
 }
-
-#search-text {
-	font-size: 14px;
-	color: #ddd;
-	border-width: 0;
-	background: transparent;
+.search_bar {
+    background: #fff;
+    border: #b7b7b7 solid 1px;
+    border-radius: 3px;
+    box-shadow: 0 0 3px #ccc;
+    position: relative;
+    max-width: 420px;
 }
-
-#search-box input[type="text"]{
-	width: 90%;
-	padding: 11px 0 12px 1em;
-	color: #333;
-	outline: none;
+.search_bar.larger {
+    max-width: 100%;
+    margin-right: 40px;
 }
-
-#search-button {
-	position: absolute;
-	top: 0;
-	right: 0;
-	height: 42px;
-	width: 42px;
-	font-size: 16px;
-	text-align: center;
-	line-height: 42px;
-	border-width: 0;
-	background-color:#f1f1f1;
-	-webkit-border-radius: 0px 5px 5px 0px;
-	-moz-border-radius: 0px 5px 5px 0px;
-	border-radius: 0px 5px 5px 0px;
-	cursor: pointer;
-	margin-top: 10px;
+.search_bar .search_dropdown {
+    font-weight: 600;
+            min-width: 17px;
+            background: -webkit-linear-gradient(#f4f4f4, #e2e2e2);
+            background: linear-gradient(#f4f4f4, #e2e2e2);
+            border-right: 1px solid #ddd;
+            color: #555;
+            padding: 0 28px 0 13px;
+            border-radius: 2px 0 0 2px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10000;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            box-sizing: content-box;
+        }
+        .search_bar .search_dropdown:hover, .search_bar .search_dropdown.active {
+            background: -webkit-linear-gradient(#e7e7e7, #d5d5d5);
+            background: linear-gradient(#e7e7e7, #d5d5d5);
+            cursor: pointer;
+            border-right-color: #ccc;
+        }
+        .search_bar .search_dropdown > span {
+            position: absolute;
+            top: 40%;
+            margin-top: -8px;
+            white-space: nowrap;
+            font-size: 15px;
+        }
+        .search_bar .search_dropdown ul {
+            display: none;
+            position: absolute;
+            top: 105%;
+            left: -1px;
+            font-size: 14px;
+            width: 225px;
+            background: #fff;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 7px 0;
+            list-style: none;
+        }
+        .search_bar .search_dropdown li.selected {
+            background: #1C62A8;
+            color: #fff;
+        }
+        .search_bar .search_dropdown li {
+            list-style-type: none;
+            margin: 0;
+            padding: 5px 18px;
+            color: #1C62A8;
+            line-height: 1.2em;
+            position: relative;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        .search_bar.larger input[type=text] {
+            font-size: 16px;
+        }
+        .search_bar input[type=text] {
+            border: none;
+            box-shadow: none;
+            font-size: 14px;
+            width: 80%;
+            padding: .5em;
+            margin: 0;
+            overflow: hidden;
+            margin-top: 3px;
+        }
+.search_bar .search_dropdown select {
+            position: absolute;
+            top: 105%;
+            left: -1px;
+            font-size: 14px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 7px 0;
+            list-style: none;
+            margin-top: 3px;
+        }
+        .search_bar .search_dropdown option.selected {
+            background: #1C62A8;
+            color: #fff;
+        }
+        .search_bar .search_dropdown option {
+            list-style-type: none;
+            margin: 0;
+            padding: 5px 18px;
+            color: #1C62A8;
+            line-height: 1.2em;
+            position: relative;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+.search_bar button[type=submit] {
+    background: -webkit-linear-gradient(#237cd4, #1e6ab5);
+    background: linear-gradient(#237cd4, #1e6ab5);
+    color: #fff;
+    border: 1px solid #1C62A8;
+   	width: 10%;
+    min-width: 56px;
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 0 3px 3px 0;
+    margin: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .w3-padding {
     padding: 8px 16px!important;
@@ -3492,4 +3591,13 @@ ul.ls-sc-tabs:after {
     border: none;
     background-color: white;
     margin: 0px 24px 6px 0px;
+}
+#search-div{
+	margin-left: 20%; 
+	background-color: #ffffff;
+}
+@media only screen and (max-width: 767px){
+#search-div {
+    margin-left: 0;
+}
 }

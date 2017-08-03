@@ -11,12 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-	if (Auth::check())
-    	return view('user.home');
-    else
-    	return view('welcome');
-});
+Route::get('/', 'ItemController@index');
 
 Route::get('/catalogue/{category?}', ['as' => 'catalogue', 'uses' => 'ItemController@getItemsByCategory']);
 
@@ -24,11 +19,21 @@ Route::get('/style/{style?}', ['as' => 'style', 'uses' => 'ItemController@getIte
 
 Route::get('/fabric/{fabric?}', ['as' => 'fabric', 'uses' => 'ItemController@getItems']);
 
+Route::get('/item/like', 'ItemController@favItem');
+
+Route::get('/item/bookmark', 'ItemController@bookmarkItem');
+
+Route::get('/item/download', 'ItemController@downloadItem');
+
+Route::post('/item/comment', 'ItemController@makeCommentItem');
+
 Route::get('/item/{id}', ['as' => 'item', 'uses' => 'ItemController@getItem']);
 
-Route::get('/item/{id}/download', ['as' => 'download', 'uses' => 'ItemController@downloadItem']);
+Route::get('/item/{id}/make', ['as' => 'make_item', 'uses' => 'ItemController@makeItem']);
 
-Route::get('/item/like', 'ItemController@favItem');
+Route::post('/item/{id}/make', ['as' => 'make_item', 'uses' => 'RequestController@makeItem']);
+
+Route::get('search-suggestion', array('as'=>'search-suggestion','uses'=>'ItemController@searchSuggestion'));
 
 Route::get('/search', 'ItemController@searchItems');
 
@@ -38,6 +43,10 @@ Route::get('/contact', function () {
 
 Route::get('/single', function () {
     return view('item.sigle');
+});
+
+Route::get('/send', function () {
+    return view('send');
 });
 
 Route::get('/redirect', 'SocialAuthController@redirect');
@@ -51,6 +60,8 @@ Route::get('/styles/build', function () {
 
 Route::post('/styles/build', 'ItemController@createItem');
 
-Route::get('/home', 'UserController@index')->name('home');
+Route::get('/home', 'ItemController@index')->name('home');
 Route::get('/account', 'UserController@showProfile')->name('profile');
 Route::post('/account', 'UserController@updateUser');
+Route::get('/bookmarks', 'UserController@getBookmarks');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

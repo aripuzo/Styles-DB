@@ -6,10 +6,15 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
+        "artesaos/seotools": "^0.10.0",
         "doctrine/dbal": "^2.5",
+        "jrm2k6/cloudder": "0.4.*",
+        "laravel/dusk": "^1.1",
         "laravel/framework": "5.4.*",
         "laravel/socialite": "^3.0",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "sentry/sentry-laravel": "^0.7.0",
+        "guzzlehttp/guzzle": "~5.3|~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

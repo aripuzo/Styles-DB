@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Form With Labels On Top</title>
+        <title>New Style</title>
 
         <link rel="stylesheet" href="{{ asset('css/demo.css') }}">
         <link rel="stylesheet" href="{{ asset('css/form-labels-on-top.css') }}">
@@ -21,10 +21,10 @@
             <form class="form-labels-on-top" method="post" action="{{ url('/styles/build') }}">
                 {{ csrf_field() }}
                 <div class="form-title-row">
-                    <h1>Form Example</h1>
+                    <h1>New</h1>
                 </div>
 
-                <div class="form-row">
+                <!-- <div class="form-row">
                     <label>
                         <span>Name</span>
                         <input type="text" name="name">
@@ -36,7 +36,7 @@
                         <span>Description</span>
                         <input type="text" name="description">
                     </label>
-                </div>
+                </div> -->
 
                 <div class="form-row">
                     <label>
@@ -69,7 +69,7 @@
                 <div class="form-row">
                     <label>
                         <span>Additional Styles</span>
-                        <input type="text" name="add_style">
+                        <input type="text" name="add_styles">
                     </label>
                 </div>
 
@@ -90,7 +90,7 @@
                 <div class="form-row">
                     <label>
                         <span>Additional Fabrics</span>
-                        <input type="text" name="add_fabric">
+                        <input type="text" name="add_fabrics">
                     </label>
                 </div>
 
@@ -111,7 +111,7 @@
                 <div class="form-row">
                     <label>
                         <span>Additional Colors</span>
-                        <input type="text" name="add_color">
+                        <input type="text" name="add_colors">
                     </label>
                 </div>
 
@@ -132,14 +132,14 @@
                 <div class="form-row">
                     <label>
                         <span>Additional Tags</span>
-                        <input type="text" name="add_tag">
+                        <input type="text" name="add_tags">
                     </label>
                 </div>
 
                 <div class="form-row">
                     <label>
                         <span>Image</span>
-                        <input type="text" name="images[]">
+                        <input type="text" name="images[]" value="http://res.cloudinary.com/oversabi/image/upload/v1478518325/">
                     </label>
                 </div>
 
@@ -152,6 +152,23 @@
         </div>
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/multiple-select.js') }}"></script>
+        <!-- RevSlider -->
+    <script src="{{ asset('js/revolution-slider.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.themepunch.tools.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.themepunch.revolution.min.js') }}"></script>
+
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  
+        (Load Extensions only on Local File Systems ! 
+         The following part can be removed on Server for On Demand Loading) --> 
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.actions.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.carousel.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.kenburn.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.layeranimation.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.migration.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.navigation.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
         <script>
             $(function() {
                 $('#ms').change(function() {

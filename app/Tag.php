@@ -13,6 +13,6 @@ class Tag extends Model
 
     public function items()
     {
-        return $this->hasManyThrough('App\Items', 'App\ItemTag');
+        return $this->hasManyThrough('App\Item', 'App\ItemTag');
     }
 }

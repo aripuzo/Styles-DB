@@ -28,8 +28,8 @@ class ItemPropertyRepo implements ItemPropertyRepository{
 	function addStyle($styleData) { // example code .. define update here and put your codes
         $style = new Style;
         $style->name = $styleData['name'];
-        $style->slug = $itemData['slug'];
-        $style-save();
+        $style->slug = $styleData['slug'];
+        $style->save();
         return $style;
     }
 
@@ -56,7 +56,7 @@ class ItemPropertyRepo implements ItemPropertyRepository{
         $color = new Color;
         $color->name = $colorData['name'];
         $color->slug = $colorData['slug'];
-        $color-save();
+        $color->save();
         return $color;
     }
 
@@ -72,14 +72,14 @@ class ItemPropertyRepo implements ItemPropertyRepository{
     }
 
     function getColorByName($name) { // example code .. define update here and put your codes
-        return Color::where('name', $slug)->first();
+        return Color::where('name', $name)->first();
     }
 
     function addTag($tagData) { // example code .. define update here and put your codes
-        $tag = new Color;
+        $tag = new Tag;
         $tag->name = $tagData['name'];
         $tag->slug = $tagData['slug'];
-        $tag-save();
+        $tag->save();
         return $tag;
     }
 
@@ -95,14 +95,14 @@ class ItemPropertyRepo implements ItemPropertyRepository{
     }
 
     function getTagByName($name) { // example code .. define update here and put your codes
-        return Tag::where('name', $slug)->first();
+        return Tag::where('name', $name)->first();
     }
 
     function addFabric($fabricData) { // example code .. define update here and put your codes
         $fabric = new Fabric;
         $fabric->name = $fabricData['name'];
         $fabric->slug = $fabricData['slug'];
-        $fabric-save();
+        $fabric->save();
         return $fabric;
     }
 
@@ -118,7 +118,7 @@ class ItemPropertyRepo implements ItemPropertyRepository{
     }
 
     function getFabricByName($name) { // example code .. define update here and put your codes
-        return Fabric::where('name', $slug)->first();
+        return Fabric::where('name', $name)->first();
     }
 
     function getCategory($categoryId) { // example code .. define update here and put your codes

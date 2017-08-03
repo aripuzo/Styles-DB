@@ -8,11 +8,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="fb:app_id" content="174567093039185" />
+    <meta property="fb:admins" content="{YOUR_PROFILE_ID}"/>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>@yield('title') - {{ config('app.name', 'Laravel') }}</title>
+    {!! SEO::generate() !!}
 
     <!-- Styles -->
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
@@ -28,66 +29,51 @@
     <script src="{{ asset('js/jquery-1.11.3.min.js') }}"></script>    
     <script src="{{ asset('js/jquery-migrate.min.js') }}"></script>
     <script src="{{ asset('js/modernizr-2.6.2.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     @yield('scripts')
-    <style id="fit-vids-style">
-        .fluid-width-video-wrapper{width:100%;position:relative;padding:0;}
-        .fluid-width-video-wrapper iframe,
-        .fluid-width-video-wrapper object,
-        .fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}
+    <style>
+        
+        
     </style>
 </head>
 <body class="home-galery-posts" data-gr-c-s-loaded="true">
+    @yield('body')
     <div id="sidebar" class="sidebar sidebar-visible-pro">
         <div id="sidebar-padding" style="z-index: 1000; position: fixed; top: 0px; margin-left: 0px; width: 230px; left: 0px;" class="scroll-to-fixed-fixed">
             <div class="tablet-show-hide"><i class="fa fa-bars"></i></div>
             <header>
-                <h1 id="logo">
-                    @if (Auth::check())
-                    <style type="text/css">
-                        .img-circular{
-                         width: 100px;
-                         height: 100px;
-                         background-image: url('images/logo.png');
-                         background-size: cover;
-                         display: block;
-                         border-top-left-radius: 100px;
-                         -webkit-border-top-left-radius: 100px;
-                         -moz-border-top-left-radius: 100px;
-                         border-bottom-right-radius: 100px;
-                         -webkit-border-bottom-right-radius: 100px;
-                         -moz-border-bottom-right-radius: 100px;
-                        }
-                    </style>
+                @if (Auth::check())
+                <style type="text/css">
+                    .img-circular{
+                        width: 100px;
+                        height: 100px;
+                        background-image: url('{{ Auth::user()->getAvatar() }}');
+                        background-size: cover;
+                        display: block;
+                        border-top-left-radius: 100px;
+                        -webkit-border-top-left-radius: 100px;
+                        -moz-border-top-left-radius: 100px;
+                        border-bottom-right-radius: 100px;
+                        -webkit-border-bottom-right-radius: 100px;
+                        -moz-border-bottom-right-radius: 100px;
+                    }
+                </style>
+                <div align="center">
                     <div class="img-circular"></div>
-                    @else
+                </div>
+                @else
+                <h1 id="logo">
                     <a href="{{ url('/') }}" title="{{ config('app.name', 'Laravel') }}" rel="home">
                         <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Laravel') }}" width="170">
                     </a>
-                    @endif
                 </h1>
+                @endif
                 <nav>
                     <div class="menu-main-navigation-container">
                         <ul id="menu-main-navigation" class="sf-menu sf-vertical sf-js-enabled">
                             <li class="menu-item">
-                                <div id='search-box' class="sf-with-ul">
-                                    <form action='{{ url("/search")}}' id='search-form' method='get' target='_top'>
-                                        {{ csrf_field() }}
-                                        <input id='search-text' name='q' placeholder='Search' type='text'/>
-                                        <button id='search-button' type='submit'>                     
-                                            <span><i class="fa fa-search"></i></span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </li>
-                            @if (Auth::check())
-                            <li class="menu-item current-menu-item">
-                                <a href="{{ url('/home') }}">Home</a>
-                            </li>
-                            @else
-                            <li class="menu-item">
                                 <a href="{{ url('/') }}">Home</a>
                             </li>
-                            @endif
                             <li class="menu-item">
                                 <a href="{{url('/catalogue')}}" class="sf-with-ul">Catalogue<span class="sf-sub-indicator"><i class="fa fa-angle-down"></i></span></a>
                                 @php
@@ -101,15 +87,24 @@
                                     @endforeach
                                 </ul>
                             </li>
+                            @if (Auth::check())
                             <li class="menu-item">
-                                <a href="{{url('/account')}}">Profile</a>
+                                <a href="{{url('/bookmarks')}}">Bookmarks</a>
+                            </li>
+                            @endif
+                            <li class="menu-item">
+                                @if (Auth::check())
+                                    <a href="{{url('/account')}}">Profile</a>
+                                @else
+                                    <a href="#" class="disabled">Profile</a>
+                                @endif
                             </li>
                             <li class="menu-item">
-                                <a href="#">Journal</a>
+                                <a href="{{url('/send')}}">Send Style</a>
                             </li>
-                            <li class="menu-item">
+                            <!-- <li class="menu-item">
                                 <a href="{{url('/contact')}}">Contact</a>
-                            </li>
+                            </li> -->
                         </ul>
                         <select class="select-menu">
                             <option value="#">Navigate to...</option>
@@ -118,9 +113,8 @@
                             @foreach($categories as $category)
                                 <option value="{{ route('catalogue', $category->slug) }}">––&nbsp;{{ $category->name }}</option>
                             @endforeach
-                            <option value="{{url('/account')}}">&nbsp;About me</option>
-                            <option value="#">&nbsp;Journal</option>
-                            <option value="{{url('/contact')}}">&nbsp;Contact</option>
+                            <option value="{{url('/account')}}">&nbsp;Profile</option>
+                            <option value="{{url('/send')}}">&nbsp;Send Style</option>
                         </select>
                     </div>
                 </nav>
@@ -158,9 +152,9 @@
             </div>
             <div>
                 @if (Auth::check())
-                    <a href="{{ url('/logout') }}">Logout</a>
+                    <a href="{{ route('logout') }}">Logout</a>
                 @else
-                    <a href="{{ url('/login') }}">Login</a> | <a href="{{ url('/register') }}">Register</a>
+                    <a href="{{ url('/login') }}">Login or Register</a>
                 @endif
             </div>      
             <div class="clearfix"></div>
@@ -172,6 +166,34 @@
     <div class="show-hide-pro"><i class="fa fa-bars"></i></div><!-- Show/Hide Sidebar Button -->
     <div id="toggle-cover-pro"></div><!-- black screen covering on sidebar extend -->
 
+    <style type="text/css">
+        
+    </style>
+    
+    <div id="search-div">
+        <div id='search-box' class="sf-with-ul" style="margin-right: 20px; margin-left: 20px">
+            <form class="search_bar larger" action='{{ url("/search")}}' id='search-form' method='get' target='_top'>
+                {{ csrf_field() }}
+                <div class="search_dropdown" style="width: 19px;">
+                    <!-- <span>All</span>
+                    <ul>
+                        <li class="selected">All</li>
+                        <li>Books</li>
+                        <li>Articles</li>
+                    </ul> -->
+                    <select name="cat">
+                        <option selected value="0">All</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <input id='search-text' name='q' type="text" placeholder="Search for anything" style="width: 84.1193%; margin-left: 65px;">
+                <button type="submit" value="Search">Search</button>
+            </form>
+        </div>
+    </div>
+
     @yield('content')
 
     <div class="clearfix"></div>
@@ -181,7 +203,7 @@
             <div class="clearfix"></div>
         </div>
         <div id="copyright">
-            2017 All Rights Reserved. Developed and Maitained by <a href="http://oversabi.com.ng">Oversabi Stitches</a>.
+            &copy; <script>document.write(new Date().getFullYear())</script>, All Rights Reserved.
             <div class="clearfix"></div>
         </div><!-- close #copyright -->
     </footer>
@@ -189,24 +211,17 @@
     <!-- Scripts -->
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/typeahead.min.js') }}"></script>
 
-    <!-- RevSlider -->
-    <script src="{{ asset('js/revolution-slider.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.themepunch.tools.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.themepunch.revolution.min.js') }}"></script>
-
-    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  
-        (Load Extensions only on Local File Systems ! 
-         The following part can be removed on Server for On Demand Loading) --> 
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.actions.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.carousel.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.kenburn.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.layeranimation.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.migration.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.navigation.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/revolution.extension.parallax.min.js') }}"></script>
+    <script type="text/javascript">
+        var url = "{{ route('search-suggestion') }}";
+        jQuery('#search-text').typeahead({
+            source:  function (query, process) {
+            return jQuery.get(url, { query: query }, function (data) {
+                    return process(data);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

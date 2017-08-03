@@ -23,9 +23,17 @@ interface ItemRepository
 
     function downloadItem($userId, $itemId);
 
+    function rateItem($userId, $itemId);
+
+    function commentOnItem($userId, $itemId, $text, $commentId);
+
     function getItem($itemId);
 
-    function getItems($filters, $page, $order, $limit);
+    function getItems($filters, $order, $limit);
 
-    function searchItems($term, $page, $order, $limit);
+    function searchItems($term, $order, $limit);
+
+    function getSimilarItems($itemId, $limit);
+
+    function getRecommendedItems($userId, $order, $limit);
 }
