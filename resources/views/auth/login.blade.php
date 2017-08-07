@@ -5,11 +5,24 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Login or Register - {{ config('app.name', 'Laravel') }}</title>
     <link rel="stylesheet" href="{{ asset('css/login-style.css') }}">
 </head>
 
-<body>
+<style type="text/css">
+	body {
+	  	background: 
+		    /* top, transparent red, faked with gradient */ 
+		    linear-gradient(
+		      rgba(0, 0, 0, 0.45), 
+		      rgba(0, 0, 0, 0.45)
+	    ),
+	    /* bottom, image */
+	    url(images/login-bg.jpg) center;
+	}
+</style>
+
+<body class="overlay">
     <div class="login-page">
         <div id="logo" align="middle">
             <a href="{{ url('/') }}" title="{{ config('app.name', 'Laravel') }}" rel="home">

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use App\User;
 use App\Item;
 use App\Style;
+use App\Designer;
 use App\ItemStyle;
 use App\Fabric;
 use App\ItemFabric;
@@ -45,13 +46,17 @@ class ItemRepo implements ItemRepository
         if(isset($itemData['name']))
             $item->name = $itemData['name'];
         if(isset($itemData['designer'])){
-            //$item->name = $itemData['designer'];
             $designer = $this->itemPropertyRepo->getDesignerByName($s);
             if(!isset($designer)){
                 $designerData = ['name' => $s];
                 $designer = $this->itemPropertyRepo->addDesigner($designerData);
             }
-            $this->itemPropertyRepo->addItemDesigner($item->id, $designer->id);
+            $item->designer_id = $designer->id;
+        }
+        if(isset($itemData['user_id'])){
+            $user = User::find($itemData['user_id']);
+            if(isset($user))
+                $item->user_id = $user->id;
         }
         $item->save();
 

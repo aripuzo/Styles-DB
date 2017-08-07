@@ -8,7 +8,9 @@ use App\Repository\Contracts\UserRepository;
 use App\Repository\Contracts\ItemRepository;
 use App\Repository\Contracts\ItemPropertyRepository;
 use App\Repository\Contracts\StatRepository;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
+use Excel;
 use SEO;
 //!TAMuno__123
 
@@ -70,18 +72,49 @@ class ItemController extends Controller{
         return view('item.new', $viewData);
     }
 
+    public function createItemExcel(Request $request) {
+    	$this->validate($request, [
+            'file' => 'required',
+        ]);
+        try {
+        	Excel::load(Input::file('file'), function ($reader) {
+            	
+                foreach ($reader->toArray() as $row) {
+                	$data[] = array(
+                		'categories' => [$row['category1'], $row['category2']],
+                		'styles' => [$row['style1'], $row['style2']],
+                		'fabrics' => [$row['fabric1'], $row['fabric2']],
+                		'colors' => explode(',' , $row['colors']),
+                		'tags' => explode(',' , $row['tags']),
+                	);
+                	var_dump($data);
+                	//$item = $this->itemRepo->addItem($data);
+                }
+                
+            });
+            //\Session::flash('success', 'Users uploaded successfully.');
+        } catch (\Exception $e) {
+            //\Session::flash('error', $e->getMessage());
+        }
+    }
+
     public function createItemUser(Request $request) {
         $this->validate($request, [
             'categories' => 'required',
             'styles' => 'required',
             'images' => 'required',
+            'username' => 'string|max:255|unique:users',
+            'email' => 'string|email|max:255|unique:users',
         ]);
+        if($request->has('email')){
+        	$user = $this->userRepo->insert($request->all());
+        }
+        elseif(Auth::check()){
+        	$user = $this->userRepo->getUser(auth()->id());
+        }
+        $request->merge(['user_id' => $user->id]);
         $item = $this->itemRepo->addItem($request->all());
-        $viewData = [
-          'item' => $item,
-          'title' => 'New',
-        ];
-        return view('item.new', $viewData);
+        return back()->with('message','You have successfully upload style.');
     }
 
     public function uploadFile(Request $request){

@@ -182,6 +182,7 @@ return [
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         JD\Cloudder\CloudderServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -235,6 +236,7 @@ return [
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

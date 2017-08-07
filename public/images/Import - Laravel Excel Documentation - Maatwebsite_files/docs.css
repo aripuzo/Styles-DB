@@ -1,0 +1,334 @@
+body {
+font-family: "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+a {
+    color: #5FB37B;
+}
+
+.masthead {
+background: #5FB37B;
+color: #FFF;
+text-align: center;
+position: relative;
+padding: 30px 15px;
+text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.pageheader {
+text-align: left;
+padding-bottom: 9px;
+}
+
+.masthead img {
+height: 233px;
+}
+
+.lead {
+margin-bottom: 20px;
+font-size: 16px;
+font-weight: 200;
+line-height: 1.4;
+}
+
+.masthead .lead {
+margin: 0 auto 30px;
+font-size: 20px;
+color: #FFF;
+}
+
+.version {
+margin-top: -15px;
+margin-bottom: 30px;
+color: #F7FDFA;
+}
+
+.btn-outline {
+color: #5FB37B;
+background-color: rgba(0, 0, 0, 0);
+border-color: #5FB37B;
+}
+
+.btn-outline:hover, .btn-outline:active, .btn-outline:focus {
+color: #FFF;
+background-color: #5FB37B;
+}
+
+.btn-outline-inverse {
+border: 2px solid #FFF;
+color: #FFF;
+}
+
+.btn-outline-inverse:active, .btn-outline-inverse:focus, .btn-outline-inverse:hover {
+    background: white;
+    color: #5FB37B;
+    text-shadow: none;
+}
+
+.docs-nav {
+margin-bottom: 0;
+background-color: #FFF;
+border-bottom: 0;
+}
+
+.docs-nav img {
+height: 25px;
+margin-right: 9px;
+margin-top: -5px;
+}
+
+.navbar-toggle .icon-bar {
+display: block;
+width: 22px;
+height: 2px;
+border-radius: 1px;
+background: #42885A;
+}
+
+.docs-nav .navbar-header .navbar-toggle {
+border-color: #FFF;
+}
+
+.docs-nav .navbar-brand, .docs-nav .navbar-nav>li>a {
+color: #42885A;
+font-weight: 500;
+}
+
+.docs-nav .navbar-brand, .docs-nav .navbar-nav>li>a {
+color: #42885A;
+}
+
+.navbar-nav>li.active>a, .nav>li>a:hover, .nav>li>a:focus {
+background-color: #EEE;
+}
+
+.docs-featurette {
+padding-top: 40px;
+font-size: 16px;
+line-height: 1.5;
+color: #555;
+text-align: center;
+background-color: #FFF;
+}
+
+.docs-featurette-title {
+font-size: 30px;
+font-weight: 400;
+color: #333;
+margin-bottom: 5px;
+}
+
+.feature-icon {
+    color: #5FB37B;
+}
+
+.half-rule {
+width: 100px;
+margin: 40px auto;
+}
+
+.docs-featurette h3 {
+font-weight: 400;
+color: #333;
+margin-bottom: 5px;
+}
+
+.docs-featurette+.docs-footer {
+margin-top: 0;
+border-top: 0;
+}
+
+.docs-footer {
+padding-top: 40px;
+padding-bottom: 40px;
+margin-top: 76px;
+color: #777;
+text-align: center;
+border-top: 1px solid #E5E5E5;
+}
+
+.docs-social {
+margin-bottom: 20px;
+text-align: center;
+}
+
+.docs-social-buttons {
+display: inline-block;
+margin-bottom: 0;
+padding-left: 0;
+list-style: none;
+}
+
+.docs-social-buttons li {
+display: inline-block;
+line-height: 1;
+padding: 5px 8px;
+width: 150px;
+}
+
+.github-btn {
+border: 0;
+overflow: hidden;
+}
+
+.docs-social-buttons .twitter-follow-button {
+width: 225px!important;
+}
+
+.docs-social-buttons .twitter-share-button {
+width: 98px!important;
+}
+
+.docs-footer-links {
+margin-top: 20px;
+padding-left: 0;
+color: #999;
+}
+
+.docs-footer-links li {
+display: inline;
+padding: 0 2px;
+}
+
+.docs-footer-links li:first-child {
+padding-left: 0;
+}
+/**
+ * Pretty printing styles
+ */
+.pln { color:#fffefe!important; }
+pre .str { color:#5FB37B; }
+pre .kwd { color:#ffffff; }
+pre .com { color:#888888; }
+pre .typ { color:#FC6; }
+pre .lit { color:#F99157; }
+pre .pun,
+pre .opn,
+pre .clo { color:#ffffff; }
+pre .tag { color:#F2777A; }
+pre .atn { color:#F99157; }
+pre .atv { color:#bcd42a; }
+pre .dec,
+pre .var { color:#F2777A; }
+pre .fun { color:#ff0000; }
+pre .func { color:#6CC;}
+
+pre.prettyprint {
+background: #3F3F49;
+border: 0!important;
+border-radius: 6px;
+padding: 20px!important;
+display: block;
+overflow: hidden;
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+font-family: monospace;
+}
+
+pre.prettyprint span {
+font-size: 13px!important;
+}
+
+.prettyprint {
+display: block;
+font-family:Monaco,Consolas,"Lucida Console",monospace;
+background-color:#393939;
+font-size: 8px;
+border:0;
+color:#e9e4e5;
+line-height:1.9em;
+-webkit-border-radius:5px;
+-moz-border-radius:5px;
+border-radius:5px;
+-moz-background-clip:padding-box;
+-webkit-background-clip:padding-box;
+background-clip:padding-box;
+padding: 20px!important;
+white-space: pre;
+overflow: hidden;
+margin-top: 20px;
+margin-bottom: 20px;
+}
+
+.prettyprint .pln {
+color:#e9e4e5;
+}
+
+.prettyprint .com {
+color:#888;
+}
+
+.prettyprint .pun,.prettyprint .opn,.prettyprint .clo {
+color:#fff;
+}
+
+.prettyprint .fun {
+color:red;
+}
+
+.prettyprint code {
+font-family:Monaco,Consolas,"Lucida Console",monospace;
+font-size: 11px;
+}
+
+.prettyprint .str,.prettyprint .atv {
+color:#5FB37B;
+}
+
+.prettyprint .call {
+color:#C9C;
+}
+
+.prettyprint .typ {
+color:#FC6;
+}
+
+.docs-content h1 {
+padding-bottom: 9px;
+margin: 40px 0 20px;
+border-bottom: 1px solid #EEE;
+}
+
+.docs-content h3 {
+margin-top: 30px;
+}
+
+.docs-content p, .docs-content ul {
+    line-height: 29px;
+    font-size: 15px;
+}
+
+.docs-section {
+margin-bottom: 60px;
+}
+
+.docs-sidebar {
+    margin-top: 48px;
+}
+
+.docs-sidebar .nav>li>a {
+display: block;
+font-size: 14px;
+font-weight: 500;
+color: #949494;
+padding: 9px 31px;
+}
+
+code {
+padding: 2px 4px;
+font-size: 90%;
+color: #469761;
+background-color: #EAF6EE;
+white-space: nowrap;
+border-radius: 3px;
+}
+
+blockquote {
+padding: 17px 21px;
+margin: 0 0 20px;
+font-size: 17.5px;
+border-left: 5px solid #43915D;
+background-color: #5FB37B;
+color: #FFF;
+}

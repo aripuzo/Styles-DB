@@ -18,10 +18,7 @@ use App\ItemBookmark;
 use App\Comment;
 use App\Utils\Recommendation;
 
-class UserRepo implements UserRepository { // all deletes should be soft delete
-//put your code here
-    //user = 2,3,4,5;
-    //item = 20 - 30
+class UserRepo implements UserRepository {
 
     private $reviews = array(
         '2' => array(
@@ -76,7 +73,19 @@ class UserRepo implements UserRepository { // all deletes should be soft delete
         }
     }
 
-    function updateUser($userId, $userData) { // example code .. define update here and put your codes
+    function insertUser($userData) {
+        $user = User::where('email', $userData['email'])->first();
+        if(isset($user))
+            return $user;
+        return User::create([
+            'username' => $userData['username'],
+            'email' => $userData['email'],
+            'password' => bcrypt($userData['password']),
+            'sex' => $userData['sex'],
+        ]);
+    }
+
+    function updateUser($userId, $userData) {
         $user = User::find($userId);
         $user->name = $userData['name'];
         //$user->email = $userData['email'];

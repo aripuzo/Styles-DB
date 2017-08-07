@@ -28,14 +28,16 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+    private $userRepo;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserRepository $userRepo)
     {
+        $this->userRepo = $userRepo;
         $this->middleware('guest');
     }
 
@@ -48,7 +50,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'sex' => 'required|in:male,female'
@@ -63,11 +65,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'sex' => $data['sex'],
-        ]);
+        // return User::create([
+        //     'username' => $data['username'],
+        //     'email' => $data['email'],
+        //     'password' => bcrypt($data['password']),
+        //     'sex' => $data['sex'],
+        // ]);
+        return $this->userRepo->insertUser($data);
     }
 }

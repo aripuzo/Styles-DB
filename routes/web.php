@@ -41,10 +41,6 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/single', function () {
-    return view('item.sigle');
-});
-
 Route::get('/send', function () {
     return view('send');
 });
@@ -57,8 +53,12 @@ Auth::routes();
 Route::get('/styles/build', function () {
     return view('item.new');
 });
+Route::get('/styles/excel_build', function () {
+    return view('item.new_excel');
+});
 
 Route::post('/styles/build', 'ItemController@createItem');
+Route::post('/styles/excel_build', 'ItemController@createItemExcel');
 
 Route::get('/home', 'ItemController@index')->name('home');
 Route::get('/account', 'UserController@showProfile')->name('profile');
