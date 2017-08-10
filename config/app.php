@@ -183,6 +183,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         JD\Cloudder\CloudderServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        jeremykenedy\LaravelRoles\RolesServiceProvider::class,
 
     ],
 

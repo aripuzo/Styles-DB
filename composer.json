@@ -15,7 +15,9 @@
         "laravel/tinker": "~1.0",
         "sentry/sentry-laravel": "^0.7.0",
         "guzzlehttp/guzzle": "~5.3|~6.0",
-        "maatwebsite/excel": "~2.1.0"
+        "maatwebsite/excel": "~2.1.0",
+        "google/recaptcha": "^1.1",
+        "jeremykenedy/laravel-roles": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

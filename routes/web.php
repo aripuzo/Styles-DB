@@ -19,19 +19,19 @@ Route::get('/style/{style?}', ['as' => 'style', 'uses' => 'ItemController@getIte
 
 Route::get('/fabric/{fabric?}', ['as' => 'fabric', 'uses' => 'ItemController@getItems']);
 
-Route::get('/item/like', 'ItemController@favItem');
+Route::get('/item/like', 'ItemController@favItem')->middleware('auth');
 
-Route::get('/item/bookmark', 'ItemController@bookmarkItem');
+Route::get('/item/bookmark', 'ItemController@bookmarkItem')->middleware('auth');
 
-Route::get('/item/download', 'ItemController@downloadItem');
+Route::get('/item/download', 'ItemController@downloadItem')->middleware('auth');
 
-Route::post('/item/comment', 'ItemController@makeCommentItem');
+Route::post('/item/comment', 'ItemController@makeCommentItem')->middleware('auth');
 
 Route::get('/item/{id}', ['as' => 'item', 'uses' => 'ItemController@getItem']);
 
-Route::get('/item/{id}/make', ['as' => 'make_item', 'uses' => 'ItemController@makeItem']);
+Route::get('/item/{id}/make', ['as' => 'make_item', 'uses' => 'ItemController@makeItem'])->middleware('auth');
 
-Route::post('/item/{id}/make', ['as' => 'make_item', 'uses' => 'RequestController@makeItem']);
+Route::post('/item/{id}/make', ['as' => 'make_item', 'uses' => 'RequestController@makeItem'])->middleware('auth');
 
 Route::get('search-suggestion', array('as'=>'search-suggestion','uses'=>'ItemController@searchSuggestion'));
 
@@ -45,8 +45,8 @@ Route::get('/send', function () {
     return view('send');
 });
 
-Route::get('/redirect', 'SocialAuthController@redirect');
-Route::get('/callback', 'SocialAuthController@callback');
+Route::get('/redirect/{provider}', 'SocialAuthController@redirect');
+Route::get('/callback/{provider}', 'SocialAuthController@callback');
 
 Auth::routes();
 

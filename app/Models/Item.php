@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,64 +11,64 @@ class Item extends Model
     use SoftDeletes;
 
     public function styles(){
-        return $this->belongsToMany('App\Style', 'item_style')->withTimestamps();
+        return $this->belongsToMany('App\Models\Style', 'item_style')->withTimestamps();
     }
 
     public function categories(){
-        return $this->belongsToMany('App\Category', 'item_category')->withTimestamps();
+        return $this->belongsToMany('App\Models\Category', 'item_category')->withTimestamps();
     }
 
     public function fabrics(){
-        return $this->belongsToMany('App\Fabric', 'item_fabric');
+        return $this->belongsToMany('App\Models\Fabric', 'item_fabric');
     }
 
     public function tags(){
-        return $this->belongsToMany('App\Tag', 'item_tag');
+        return $this->belongsToMany('App\Models\Tag', 'item_tag');
     }
 
     public function bookmarks()
     {
-        return $this->hasMany('App\ItemBookmark');
+        return $this->hasMany('App\Models\Bookmark');
     }
 
     public function comments()
     {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\Models\Comment');
     }
 
     public function colors()
     {
-        return $this->belongsToMany('App\Color', 'item_color');
+        return $this->belongsToMany('App\Models\Color', 'item_color');
     }
 
     public function images()
     {
-        return $this->hasMany('App\Image');
+        return $this->hasMany('App\Models\Image');
     }
 
     public function ratings()
     {
-        return $this->hasMany('App\Rating');
+        return $this->hasMany('App\Models\Rating');
     }
 
     public function downloads()
     {
-        return $this->hasMany('App\ItemDownload');
+        return $this->hasMany('App\Models\Download');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function designer()
     {
-        return $this->belongsTo('App\Designer');
+        return $this->belongsTo('App\Models\Designer');
     }
 
     public function favorites()
     {
-        return $this->hasMany('App\Favorite');
+        return $this->hasMany('App\Models\Favorite');
     }
 
     public function getName(){
@@ -90,13 +90,15 @@ class Item extends Model
         if(isset($this->styles) && $this->styles->count() > 0 )
             $i = 0;
             foreach($this->styles as $style){
-                if($i > 0)
-                    if($i == $this->styles->count() - 1)
-                        $name .= 'and ';
-                    else
-                        $name .= ', ';
-                $name .= $style->name.' ';
-                $i++;
+                if($style != 'Sample'){
+                    if($i > 0)
+                        if($i == $this->styles->count() - 1)
+                            $name .= 'and ';
+                        else
+                            $name .= ', ';
+                    $name .= $style->name.' ';
+                    $i++;
+                }
             }
         return $name;
     }
@@ -194,6 +196,13 @@ class Item extends Model
         $dt = Carbon::parse($this->created_at);
         //return $this->created_at;
         return  $dt->toFormattedDateString();
+    }
+
+    public function getDesigner(){
+        if(isset($this->designer))
+            return $this->designer;
+        else
+            return null;
     }
 
 }

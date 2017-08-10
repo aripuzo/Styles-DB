@@ -13,11 +13,13 @@ class CreateItemViewsCountTable extends Migration
      */
     public function up()
     {
-        Schema::create('item_views', function (Blueprint $table) {
+        Schema::create('item_view', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('item_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
             $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -28,6 +30,6 @@ class CreateItemViewsCountTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_views');
+        Schema::dropIfExists('item_view');
     }
 }

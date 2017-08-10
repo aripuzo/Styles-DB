@@ -4,7 +4,7 @@ namespace App\Repository;
 use App\Repository\Contracts\StatRepository;
 use Illuminate\Support\Facades\DB;
 
-class StatRepo  implements StatRepository{ // all deletes should be soft delete
+class StatRepo  implements StatRepository{
     function categoryViewed($categoryId, $user_id = null){
         DB::table('category_view')->insert(
 		    ['category_id' => $categoryId, 'user_id' => $user_id]
@@ -18,7 +18,7 @@ class StatRepo  implements StatRepository{ // all deletes should be soft delete
     }
 
     function itemViewed($itemId, $user_id = null){
-        DB::table('style_view')->insert(
+        DB::table('item_view')->insert(
 		     ['item_id' => $itemId, 'user_id' => $user_id]
 		 );
     }

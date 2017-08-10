@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,11 +8,11 @@ class Color extends Model
 {
     public function item_colors()
     {
-        return $this->hasMany('App\ItemColor');
+        return $this->hasMany('App\Models\ItemColor');
     }
 
     public function items()
     {
-        return $this->hasManyThrough('App\Item', 'App\ItemColor');
+        return $this->hasManyThrough('App\Models\Item', 'App\Models\ItemColor');
     }
 }

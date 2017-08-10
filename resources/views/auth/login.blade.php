@@ -70,7 +70,10 @@
             </form>
 
             <div class="loginBtn loginBtn--facebook">
-                <a href="redirect">Login with Facebook</a>
+                <a href="redirect/facebook">Login with Facebook</a>
+            </div>
+            <div class="loginBtn loginBtn--twitter">
+                <a href="redirect/twitter">Login with Twitter</a>
             </div>
             <a href="{{ route('password.request') }}" style="margin-top: 25px; color: #242124; font-size: 12px;">
                 Forgot Your Password?

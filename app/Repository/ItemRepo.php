@@ -6,28 +6,21 @@ namespace App\Repository;
 use App\Repository\Contracts\ItemRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-use App\User;
-use App\Item;
-use App\Style;
-use App\Designer;
-use App\ItemStyle;
-use App\Fabric;
-use App\ItemFabric;
-use App\Color;
-use App\ItemColor;
-use App\Image;
-use App\ItemImage;
-use App\Category;
-use App\ItemCategory;
-use App\Tag;
-use App\ItemTag;
-use App\Favorite;
-use App\Rating;
-use App\Comment;
-use App\ItemComment;
-use App\ItemDownload;
-use App\ItemBookmark;
-use App\Utils\Recommendation;
+use App\Models\User;
+use App\Models\Item;
+use App\Models\Style;
+use App\Models\Designer;
+use App\Models\Fabric;
+use App\Models\Color;
+use App\Models\Image;
+use App\Models\Category;
+use App\Models\Tag;
+use App\Models\Favorite;
+use App\Models\Rating;
+use App\Models\Comment;
+use App\Models\Download;
+use App\Models\Bookmark;
+use App\Service\Recommendation;
 use App\Repository\ItemPropertyRepo;
 use App\Repository\StatRepo;
 
@@ -65,11 +58,25 @@ class ItemRepo implements ItemRepository
             $this->itemPropertyRepo->addImage($item->id, $s);
         }
 
-        $categories = $itemData['categories'];
-        foreach ($categories as $s) {
-            $category = $this->itemPropertyRepo->getCategory($s);
-            if(isset($category)){
-                $this->itemPropertyRepo->addItemCategory($item->id, $s);
+        if(isset($itemData['categories'])){
+            $categories = $itemData['categories'];
+            foreach ($categories as $s) {
+                $category = $this->itemPropertyRepo->getCategory($s);
+                if(isset($category)){
+                    $this->itemPropertyRepo->addItemCategory($item->id, $s);
+                }
+            }
+        }
+
+        if(isset($itemData['add_categories'])){
+            $add_categories = explode(',' , $itemData['add_categories']);
+            foreach ($add_categories as $s) {
+                $category = $this->itemPropertyRepo->getCategoryByName($s);
+                if(!isset($category)){
+                    $categoryData = ['name' => $s, 'slug' => $this->slugify($s)];
+                    $category = $this->itemPropertyRepo->addcategory($categoryData);
+                }
+                $this->itemPropertyRepo->addItemCategory($item->id, $category->id);
             }
         }
 
@@ -156,7 +163,7 @@ class ItemRepo implements ItemRepository
                     $colorData = ['name' => $s, 'slug' => $this->slugify($s)];
                     $color = $this->itemPropertyRepo->addColor($colorData);
                 }
-                $this->itemPropertyRepo->addItemFabric($item->id, $fabric->id);
+                $this->itemPropertyRepo->addItemColor($item->id, $color->id);
             }
         }
     }
@@ -175,7 +182,7 @@ class ItemRepo implements ItemRepository
 
     function deleteItem($itemId) { // example code .. define update here and put your codes
         $item = Item::find($itemId);
-        $user->delete();
+        $item->delete();
     }
 
     function favItem($userId, $itemId){
@@ -203,10 +210,10 @@ class ItemRepo implements ItemRepository
     function bookmarkItem($userId, $itemId){
         $item = Item::find($itemId);
         $user = User::find($userId);
-        $bookmarkItem = ItemBookmark::where([['user_id', $userId], ['item_id', $itemId]])->get();
+        $bookmarkItem = Bookmark::where([['user_id', $userId], ['item_id', $itemId]])->get();
         if(isset($item) && isset($user)){
             if(!isset($bookmarkItem) || $bookmarkItem->count() == 0){
-                $bookmark = new ItemBookmark;
+                $bookmark = new Bookmark;
                 $bookmark->item_id = $itemId;
                 $bookmark->user_id = $userId;
                 $bookmark->save();
@@ -226,12 +233,14 @@ class ItemRepo implements ItemRepository
         $item = Item::find($itemId);
         // if(isset($userId))
         //     $user = User::find($userId);
-        $download = ItemDownload::where([['item_id', $itemId], ['user_id', $userId]])->first();
+        $download = Download::where([['item_id', $itemId], ['user_id', $userId]])->first();
         if(isset($item)){
             if(!isset($download)){
-                $download = new ItemDownload;
+                $download = new Download;
                 $download->count = 0;
                 $download->item_id = $itemId;
+                if(isset($userId))
+                    $download->user_id = $userId;
             }
             $download->count += 1;
             $download->save();
@@ -247,10 +256,10 @@ class ItemRepo implements ItemRepository
         $favs = Favorite::where([['user_id', $userId], ['item_id', $itemId]])->get();
         if(isset($favs) && $favs->count())
             $rating += 1;
-        $books = ItemBookmark::where([['user_id', $userId], ['item_id', $itemId]])->get();
+        $books = Bookmark::where([['user_id', $userId], ['item_id', $itemId]])->get();
         if(isset($books) && $books->count())
             $rating += 1;
-        $downloads = ItemDownload::where([['user_id', $userId], ['item_id', $itemId]])->get();
+        $downloads = Download::where([['user_id', $userId], ['item_id', $itemId]])->get();
         if(isset($downloads) && $downloads->count())
             $rating += 2;
         $comments = Comment::where([['user_id', $userId], ['item_id', $itemId]])->get();

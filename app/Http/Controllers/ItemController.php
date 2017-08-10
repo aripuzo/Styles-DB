@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Excel;
 use SEO;
 //!TAMuno__123
+//6Sy'eejZH5r4P}{E
 
 
 class ItemController extends Controller{
@@ -76,26 +77,36 @@ class ItemController extends Controller{
     	$this->validate($request, [
             'file' => 'required',
         ]);
-        try {
+        //try {
         	Excel::load(Input::file('file'), function ($reader) {
-            	
+            	//http://res.cloudinary.com/oversabi/image/upload/v1501209513/IMG-20170613-WA0000_vvwgrs.jpg
                 foreach ($reader->toArray() as $row) {
-                	$data[] = array(
-                		'categories' => [$row['category1'], $row['category2']],
-                		'styles' => [$row['style1'], $row['style2']],
-                		'fabrics' => [$row['fabric1'], $row['fabric2']],
-                		'colors' => explode(',' , $row['colors']),
-                		'tags' => explode(',' , $row['tags']),
-                	);
-                	var_dump($data);
-                	//$item = $this->itemRepo->addItem($data);
+                    if(isset($row['images'])){
+                        $images = array();
+                        $imgs = explode(',' , $row['images']);
+                        foreach ($imgs as $img) {
+                            $images[] = 'http://res.cloudinary.com/oversabi/image/upload/v1501209513/'.$img .'jpg';
+                        }
+                    	$data = array(
+                    		'add_categories' => $row['categories'],
+                    		'add_styles' => $row['styles'],
+                    		'add_fabrics' => $row['fabrics'],
+                    		'add_colors' => $row['colors'],
+                    		'add_tags' => $row['tags'],
+                            'images' => $images,
+                            'designer' => $row['designer'],
+                    	);
+                    	$this->itemRepo->addItem($data);
+                    }
+                    //var_dump($data);
                 }
                 
             });
+            return back()->with('message','You have successfully uploaded styles.');
             //\Session::flash('success', 'Users uploaded successfully.');
-        } catch (\Exception $e) {
-            //\Session::flash('error', $e->getMessage());
-        }
+        // } catch (\Exception $e) {
+        //     var_dump($e->getMessage());
+        // }
     }
 
     public function createItemUser(Request $request) {
@@ -108,26 +119,30 @@ class ItemController extends Controller{
         ]);
         if($request->has('email')){
         	$user = $this->userRepo->insert($request->all());
+        	Auth::login($user);
         }
         elseif(Auth::check()){
         	$user = $this->userRepo->getUser(auth()->id());
         }
+        else
+            return back();
         $request->merge(['user_id' => $user->id]);
         $item = $this->itemRepo->addItem($request->all());
         return back()->with('message','You have successfully upload style.');
     }
 
-    public function uploadFile(Request $request){
+    private function uploadFile(Request $request){
         if($request->hasFile('image_file')){  
             \Cloudder::upload($request->file('image_file'));
             $c=\Cloudder::getResult();             
             if($c){
-               return back()
-                    ->with('success','You have successfully upload images.')
-                    ->with('image',$c['url']);
+               return $c['url'];
             }
             
         }
+        // return back()
+        //     ->with('success','You have successfully upload images.')
+        //     ->with('image',$c['url']);
         // array:15 [▼
         //   "public_id" => "sample"
         //   "version" => 1499596361
@@ -209,10 +224,10 @@ class ItemController extends Controller{
 
     public function searchSuggestion(Request $request){
         $query = $request->get('query',''); 
-        $query  = 'ank_ara';    
-        //$posts = $this->statRepo->searchSuggestion($query);//Post::where('name','LIKE','%'.$query.'%')->get();        
-        //return response()->json($posts);
-        return response()->json($this->isValid($query));
+        //$query  = 'ank_ara';    
+        $posts = $this->statRepo->searchSuggestion($query);     
+        return response()->json($posts);
+        //return response()->json($this->isValid($query));
 
     }
 

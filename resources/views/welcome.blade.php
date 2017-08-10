@@ -2,6 +2,9 @@
 
 @section('content')
 <div id="gallery-index-pro">
+	@if(session('click') == null)
+		@include('signup_prompt')
+	@endif
     <ul id="menu-sub-nav">
         <li class="cat-item cat-item-1 {{(isset($order) && $order == 'latest') || !isset($order) ? 'current-cat' : ''}}">
             <a href="{{request()->fullUrlWithQuery(['sort'=>'latest'])}}">Latest</a>

@@ -20,6 +20,8 @@ class RegisterController extends Controller
     |
     */
 
+    use ActivationTrait;
+    use CaptchaTrait;
     use RegistersUsers;
 
     /**
@@ -49,8 +51,13 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $data['captcha'] = $this->captchaCheck();
+
+        if (!config('settings.reCaptchStatus')) {
+            $data['captcha'] = true;
+        }
         return Validator::make($data, [
-            'username' => 'required|string|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users|regex:/[^a-zA-Z0-9_.\-]$/',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'sex' => 'required|in:male,female'
@@ -65,12 +72,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // return User::create([
-        //     'username' => $data['username'],
-        //     'email' => $data['email'],
-        //     'password' => bcrypt($data['password']),
-        //     'sex' => $data['sex'],
-        // ]);
+        $ipAddress = new CaptureIpTrait;
         return $this->userRepo->insertUser($data);
+        $this->initiateEmailActivation($user);
+        return $user;
     }
 }

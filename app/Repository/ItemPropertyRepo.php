@@ -3,29 +3,25 @@
 
 namespace App\Repository;
 
-use App\Item;
-use App\Style;
-use App\ItemStyle;
-use App\Fabric;
-use App\ItemFabric;
-use App\Color;
-use App\ItemColor;
-use App\Image;
-use App\ItemImage;
-use App\Category;
-use App\ItemCategory;
-use App\Tag;
-use App\ItemTag;
-use App\Favorite;
-use App\Comment;
-use App\ItemComment;
-use App\ItemDownload;
-use App\ItemBookmark;
+use App\Models\Item;
+use App\Models\Style;
+use App\Models\Item\ItemStyle;
+use App\Models\Fabric;
+use App\Models\Item\ItemFabric;
+use App\Models\Color;
+use App\Models\Item\ItemColor;
+use App\Models\Image;
+use App\Models\Item\ItemImage;
+use App\Models\Category;
+use App\Models\Item\ItemCategory;
+use App\Models\Tag;
+use App\Models\Item\ItemTag;
+use App\Models\Designer;
 
 use App\Repository\Contracts\ItemPropertyRepository;
 
 class ItemPropertyRepo implements ItemPropertyRepository{
-	function addStyle($styleData) { // example code .. define update here and put your codes
+	function addStyle($styleData) {
         $style = new Style;
         $style->name = $styleData['name'];
         $style->slug = $styleData['slug'];
@@ -40,19 +36,19 @@ class ItemPropertyRepo implements ItemPropertyRepository{
 	    $itemStyle->save();
     }
 
-    function getStyle($styleId) { // example code .. define update here and put your codes
+    function getStyle($styleId) {
         return Style::find($styleId);
     }
 
-    function getStyleBySlug($slug) { // example code .. define update here and put your codes
+    function getStyleBySlug($slug) {
         return Style::where('slug', $slug)->first();
     }
 
-    function getStyleByName($name) { // example code .. define update here and put your codes
+    function getStyleByName($name) {
         return Style::where('name', $name)->first();
     }
 
-    function addColor($colorData) { // example code .. define update here and put your codes
+    function addColor($colorData) {
         $color = new Color;
         $color->name = $colorData['name'];
         $color->slug = $colorData['slug'];
@@ -67,11 +63,11 @@ class ItemPropertyRepo implements ItemPropertyRepository{
 	    $itemColor->save();
     }
 
-    function getColor($colorId) { // example code .. define update here and put your codes
+    function getColor($colorId) {
         return Color::find($colorId);
     }
 
-    function getColorByName($name) { // example code .. define update here and put your codes
+    function getColorByName($name) {
         return Color::where('name', $name)->first();
     }
 
@@ -125,6 +121,14 @@ class ItemPropertyRepo implements ItemPropertyRepository{
         return Category::find($categoryId);
     }
 
+    function addCategory($categoryData) { // example code .. define update here and put your codes
+        $category = new Category;
+        $category->name = $categoryData['name'];
+        $category->slug = $categoryData['slug'];
+        $category->save();
+        return $category;
+    }
+
     function addItemCategory($itemId, $categoryId) { 
     	$itemCategory = new ItemCategory;
 	    $itemCategory->item_id = $itemId;
@@ -136,10 +140,26 @@ class ItemPropertyRepo implements ItemPropertyRepository{
         return Category::where('slug', $slug)->first();
     }
 
+    function getCategoryByName($name) { // example code .. define update here and put your codes
+        return Category::where('name', $name)->first();
+    }
+
     function addImage($itemId, $url) { 
     	$image = new Image;
 	    $image->item_id = $itemId;
 	    $image->url = $url;
 	    $image->save();
+    }
+
+    function getDesignerByName($name) { // example code .. define update here and put your codes
+        return Designer::where('name', $name)->first();
+    }
+
+    function addDesigner($designerData) { // example code .. define update here and put your codes
+        $designer = new Designer;
+        $designer->name = $designerData['name'];
+        $designer->slug = $designerData['slug'];
+        $designer->save();
+        return $designer;
     }
 }

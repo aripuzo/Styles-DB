@@ -1,3 +1,4 @@
+@if(isset($related) && $related->count() > 0)
 <div id="related-portfolio-pro">
     <h2>Related Styles</h2>
     @forelse($related as $item)
@@ -23,3 +24,4 @@
     @endforelse
     <div class="clearfix"></div>
 </div><!-- #related-portfolio-pro -->
+@endif

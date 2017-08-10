@@ -210,6 +210,9 @@
                         <div class="gallery-title-index">
                             {{ $item->getName()}}
                         </div>
+                        <div class="gallery-title-text">
+                            {{ $item->getDesigner()}}
+                        </div>
                         <div class="button-section">
                             <span id="{{ $item->id }}" title="Like" onclick="likeItem(this);">{{ $item->getLikesLabel() }} <i class="fa fa-heart{{ isset($liked) ? '' : '-o' }}"></i> </span>
                             <span id="{{ $item->id }}" title="bookmark" onclick="bookmarkItem(this);">{{ $item->getBookmarksLabel() }} <i class="fa fa-bookmark{{ isset($booked) ? '' : '-o' }}"></i></span>
