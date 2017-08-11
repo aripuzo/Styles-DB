@@ -3,13 +3,19 @@
 namespace App\Service;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use App\Repository\UserRepo;
 use App\Traits\ActivationTrait;
 use App\Traits\CaptureIpTrait;
 
-class SocialAccountService
-{
-    public function createOrGetUser(Provider $provider)
-    {
+class SocialAccountService{
+
+    private $userRepo;
+
+    public function __construct(UserRepository $userRepo){
+        $this->userRepo = new UserRepo;
+    }
+
+    public function createOrGetUser(Provider $provider){
         $providerUser = $provider->user();
         $providerName = class_basename($provider); 
         $account = SocialAccount::whereProvider($providerName)
@@ -29,8 +35,9 @@ class SocialAccountService
 
             if (!$user) {
                 $ipAddress  = new CaptureIpTrait;
+                $role       = Role::where('slug', '=', 'user')->first();
 
-                $user = User::create([
+                $data = [
                     'email' => $providerUser->getEmail(),
                     'name' => $providerUser->getName(),
                     'username' => $providerUser->getUsername(),
@@ -38,7 +45,9 @@ class SocialAccountService
                     'token' => str_random(64),
                     'verified' => true,
                     'signup_sm_ip_address' => $ipAddress->getClientIp(),
-                ]);
+                ];
+
+                $user $this->userRepo->insertUser($data, $role);
             }
 
             $account->user()->associate($user);

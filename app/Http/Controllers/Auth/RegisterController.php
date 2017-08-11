@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
+use App\Traits\ActivationTrait;
+use App\Traits\CaptchaTrait;
+use App\Traits\CaptureIpTrait;
+use App\Repository\Contracts\UserRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -56,11 +59,14 @@ class RegisterController extends Controller
         if (!config('settings.reCaptchStatus')) {
             $data['captcha'] = true;
         }
+
         return Validator::make($data, [
             'username' => 'required|string|max:255|unique:users|regex:/[^a-zA-Z0-9_.\-]$/',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'sex' => 'required|in:male,female'
+            'sex' => 'required|in:male,female',
+            'g-recaptcha-response' => '',
+            'captcha' => 'required|min:1'
         ]);
     }
 
@@ -70,10 +76,13 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data)
-    {
+    protected function create(array $data){
         $ipAddress = new CaptureIpTrait;
-        return $this->userRepo->insertUser($data);
+        $data['signup_ip_address'] = $ipAddress->getClientIp();
+        $data['verified'] = !config('settings.verification');
+        $data['token'] = str_random(64);
+        $role = Role::where('slug', '=', 'unverified')->first();
+        return $this->userRepo->insertUser($data, $role);
         $this->initiateEmailActivation($user);
         return $user;
     }

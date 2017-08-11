@@ -73,16 +73,27 @@ class UserRepo implements UserRepository {
         }
     }
 
-    function insertUser($userData) {
-        $user = User::where('email', $userData['email'])->first();
+    function checkUsername($username){
+
+    }
+
+    static function insertUser($userData, $role = null) {
+        $user = User::where('email', $userData['email'])->orWhere('username', $userData['username'])->first();
         if(isset($user))
             return $user;
-        return User::create([
+        $user = User::create([
             'username' => $userData['username'],
             'email' => $userData['email'],
             'password' => bcrypt($userData['password']),
             'sex' => $userData['sex'],
+            'token' => $userData['token'],
+            'signup_ip_address' => $userData['signup_ip_address'],
+            'verified' => $userData['verified'],
         ]);
+
+        if(isset($role))
+            $user->attachRole($role);
+        return $user;
     }
 
     function updateUser($userId, $userData) {
@@ -90,7 +101,6 @@ class UserRepo implements UserRepository {
         $user->name = $userData['name'];
         //$user->email = $userData['email'];
         $user->phone = $userData['phone'];
-        //$user->avatar = $userData['avatar'];
 
         $user->save();
         return $user;

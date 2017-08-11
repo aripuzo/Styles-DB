@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ItemDownload extends Model
+class Download extends Model
 {
     protected $table = 'downloads';
 

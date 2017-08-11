@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Designer extends Model
 {
-	protected $table = 'designer';
+	protected $table = 'designers';
 
     public function items(){
         return $this->hasMany('App\Models\Item');

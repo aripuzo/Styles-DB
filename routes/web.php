@@ -13,42 +13,48 @@
 
 Route::get('/', 'ItemController@index');
 
-Route::get('/catalogue/{category?}', ['as' => 'catalogue', 'uses' => 'ItemController@getItemsByCategory']);
-
-Route::get('/style/{style?}', ['as' => 'style', 'uses' => 'ItemController@getItems']);
-
-Route::get('/fabric/{fabric?}', ['as' => 'fabric', 'uses' => 'ItemController@getItems']);
-
-Route::get('/item/like', 'ItemController@favItem')->middleware('auth');
-
-Route::get('/item/bookmark', 'ItemController@bookmarkItem')->middleware('auth');
-
-Route::get('/item/download', 'ItemController@downloadItem')->middleware('auth');
-
-Route::post('/item/comment', 'ItemController@makeCommentItem')->middleware('auth');
-
-Route::get('/item/{id}', ['as' => 'item', 'uses' => 'ItemController@getItem']);
-
-Route::get('/item/{id}/make', ['as' => 'make_item', 'uses' => 'ItemController@makeItem'])->middleware('auth');
-
-Route::post('/item/{id}/make', ['as' => 'make_item', 'uses' => 'RequestController@makeItem'])->middleware('auth');
-
-Route::get('search-suggestion', array('as'=>'search-suggestion','uses'=>'ItemController@searchSuggestion'));
-
-Route::get('/search', 'ItemController@searchItems');
-
-Route::get('/contact', function () {
-    return view('contact');
-});
-
-Route::get('/send', function () {
-    return view('send');
-});
-
-Route::get('/redirect/{provider}', 'SocialAuthController@redirect');
-Route::get('/callback/{provider}', 'SocialAuthController@callback');
-
 Auth::routes();
+
+Route::group(['middleware' => 'web'], function() {
+	Route::get('/contact', function () {
+	    return view('contact');
+	});
+	Route::get('/send', function () {
+	    return view('send');
+	});
+	Route::get('/activate/{token}', ['as' => 'authenticated.activate', 'uses' => 'Auth\ActivateController@activate']);
+	Route::get('/activation', ['as' => 'authenticated.activation-resend', 'uses' => 'Auth\ActivateController@resend']);
+	Route::get('/exceeded', ['as' => 'exceeded', 'uses' => 'Auth\ActivateController@exceeded']);
+	Route::get('/redirect/{provider}', 'SocialAuthController@redirect');
+	Route::get('/callback/{provider}', 'SocialAuthController@callback');
+
+	Route::get('/catalogue/{category?}', ['as' => 'catalogue', 'uses' => 'ItemController@getItemsByCategory']);
+	Route::get('/style/{style?}', ['as' => 'style', 'uses' => 'ItemController@getItems']);
+	Route::get('/fabric/{fabric?}', ['as' => 'fabric', 'uses' => 'ItemController@getItems']);
+
+	Route::get('/item/{id}', ['as' => 'item', 'uses' => 'ItemController@getItem']);
+	Route::get('search-suggestion', array('as'=>'search-suggestion','uses'=>'ItemController@searchSuggestion'));
+	Route::get('/search', 'ItemController@searchItems');
+});
+
+Route::group(['middleware' => ['auth']], function() {
+	Route::get('/item/like', 'ItemController@favItem');
+	Route::get('/item/bookmark', 'ItemController@bookmarkItem');
+	Route::get('/item/download', 'ItemController@downloadItem');
+	Route::post('/item/comment', 'ItemController@makeCommentItem');
+
+	Route::get('/item/{id}/make', ['as' => 'make_item', 'uses' => 'ItemController@makeItem']);
+	Route::post('/item/{id}/make', ['as' => 'make_item', 'uses' => 'RequestController@makeItem']);
+
+	Route::get('/home', 'ItemController@index')->name('home');
+	Route::get('/bookmarks', 'UserController@getBookmarks');
+	Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+});
+
+Route::group(['middleware'=> ['auth', 'currentUser']], function () {
+	Route::get('/account', 'UserController@showProfile')->name('profile');
+	Route::post('/account', 'UserController@updateUser');
+});
 
 Route::get('/styles/build', function () {
     return view('item.new');
@@ -60,8 +66,3 @@ Route::get('/styles/excel_build', function () {
 Route::post('/styles/build', 'ItemController@createItem');
 Route::post('/styles/excel_build', 'ItemController@createItemExcel');
 
-Route::get('/home', 'ItemController@index')->name('home');
-Route::get('/account', 'UserController@showProfile')->name('profile');
-Route::post('/account', 'UserController@updateUser');
-Route::get('/bookmarks', 'UserController@getBookmarks');
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

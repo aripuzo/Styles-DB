@@ -48,6 +48,11 @@
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                 </select>
+                @if(config('settings.reCaptchStatus'))
+                    <div class="form-group">
+                        <div class="g-recaptcha" data-sitekey="{{ env('RE_CAP_SITE') }}"></div>
+                    </div>
+                @endif
                 <button type="submit">create</button>
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>
@@ -82,5 +87,6 @@
     </div>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src="{{ asset('js/index.js') }}"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </body>
 </html>
