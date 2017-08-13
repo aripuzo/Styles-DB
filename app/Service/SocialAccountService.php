@@ -7,6 +7,8 @@ use App\Repository\UserRepo;
 use App\Traits\ActivationTrait;
 use App\Traits\CaptureIpTrait;
 
+use jeremykenedy\LaravelRoles\Models\Role;
+
 class SocialAccountService{
 
     private $userRepo;

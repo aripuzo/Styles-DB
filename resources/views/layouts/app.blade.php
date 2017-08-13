@@ -62,22 +62,16 @@
             <header>
                 @if (Auth::check())
                 <style type="text/css">
-                    .img-circular{
-                        width: 100px;
-                        height: 100px;
-                        background-image: url('{{ Auth::user()->getAvatar() }}');
-                        background-size: cover;
-                        display: block;
-                        border-top-left-radius: 100px;
-                        -webkit-border-top-left-radius: 100px;
-                        -moz-border-top-left-radius: 100px;
-                        border-bottom-right-radius: 100px;
-                        -webkit-border-bottom-right-radius: 100px;
-                        -moz-border-bottom-right-radius: 100px;
+                    .avatar {
+                        border-radius: 50%;
+                        -moz-border-radius: 50%;
+                        -webkit-border-radius: 50%;
                     }
+
                 </style>
                 <div align="center">
-                    <div class="img-circular"></div>
+                    <!-- <div class="img-circular"></div> -->
+                    <img src="{{ Auth::user()->getAvatar() }}" alt="{{ Auth::user()->getName() }}" class="avatar">
                 </div>
                 @else
                 <h1 id="logo">
@@ -206,7 +200,7 @@
                         @endforeach
                     </select>
                 </div>
-                <input id='search-text' name='q' type="text" placeholder="Search for anything" style="width: 84.1193%; margin-left: 65px;">
+                <input id='search-text' name='q' type="text" placeholder="Search for anything" style="width: 84.1193%; margin-left: 75px;">
                 <button type="submit" value="Search">Search</button>
             </form>
         </div>

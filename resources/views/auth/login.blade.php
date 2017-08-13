@@ -58,18 +58,17 @@
             </form>
             <form class="login-form" method="POST" action="{{ route('login') }}">
                 {{ csrf_field() }}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <input type="text" placeholder="username" name="username" required>
-                @if ($errors->has('username'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('username') }}</strong>
-                </span>
-                @endif
                 <input type="password" placeholder="password" name="password" required>
-                @if ($errors->has('password'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-                @endif
                 <button type="submit">login</button>
                 <p class="message">Not registered? <a href="#">Create an account</a></p>
             </form>

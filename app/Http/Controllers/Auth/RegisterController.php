@@ -9,6 +9,7 @@ use App\Traits\CaptureIpTrait;
 use App\Repository\Contracts\UserRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use jeremykenedy\LaravelRoles\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -60,14 +61,28 @@ class RegisterController extends Controller
             $data['captcha'] = true;
         }
 
-        return Validator::make($data, [
-            'username' => 'required|string|max:255|unique:users|regex:/[^a-zA-Z0-9_.\-]$/',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'sex' => 'required|in:male,female',
-            'g-recaptcha-response' => '',
-            'captcha' => 'required|min:1'
-        ]);
+        return Validator::make($data, 
+            [
+                'username' => 'required|string|max:255|unique:users|regex:/^[a-zA-Z0-9_.\-]+$/',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6',
+                'sex' => 'required|in:male,female',
+                'g-recaptcha-response' => '',
+                'captcha' => 'required|min:1'
+            ],
+            [
+                'username.regex' => trans('auth.userNameRegex'),
+                'username.unique' => trans('auth.userNameTaken'),
+                'username.required' => trans('auth.userNameRequired'),
+                'name.required' => trans('auth.nameRequired'),
+                'email.required' => trans('auth.emailRequired'),
+                'email.email' => trans('auth.emailInvalid'),
+                'password.required' => trans('auth.passwordRequired'),
+                'password.min' => trans('auth.PasswordMin'),
+                'g-recaptcha-response.required' => trans('auth.captchaRequire'),
+                'captcha.min' => trans('auth.CaptchaWrong')
+            ]
+        );
     }
 
     /**
