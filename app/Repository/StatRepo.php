@@ -23,6 +23,12 @@ class StatRepo  implements StatRepository{
 		 );
     }
 
+    function designerViewed($designerId, $user_id = null){
+        DB::table('designer_view')->insert(
+             ['designer_id' => $itemId, 'user_id' => $user_id]
+         );
+    }
+
     function fabricViewed($fabricId, $user_id = null){
         DB::table('fabric_view')->insert(
 		     ['fabric_id' => $fabricId, 'user_id' => $user_id]

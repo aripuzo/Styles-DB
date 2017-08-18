@@ -19,8 +19,8 @@ Route::group(['middleware' => 'web'], function() {
 	Route::get('/contact', function () {
 	    return view('contact');
 	});
-	Route::get('/send', function () {
-	    return view('send');
+	Route::get('/submit', function () {
+	    return view('item.submit');
 	});
 	Route::get('/activate/{token}', ['as' => 'authenticated.activate', 'uses' => 'Auth\ActivateController@activate']);
 	Route::get('/activation', ['as' => 'authenticated.activation-resend', 'uses' => 'Auth\ActivateController@resend']);
@@ -33,8 +33,10 @@ Route::group(['middleware' => 'web'], function() {
 	Route::get('/fabric/{fabric?}', ['as' => 'fabric', 'uses' => 'ItemController@getItems']);
 
 	Route::get('/item/{id}', ['as' => 'item', 'uses' => 'ItemController@getItem']);
-	Route::get('search-suggestion', array('as'=>'search-suggestion','uses'=>'ItemController@searchSuggestion'));
+	Route::post('search-suggestion', array('as'=>'search-suggestion','uses'=>'ItemController@searchSuggestion'));
 	Route::get('/search', 'ItemController@searchItems');
+	Route::post('/designer-suggestion', 'DesignerController@getSuggestion');
+	Route::get('/designer-suggestion', 'DesignerController@getSuggestion');
 });
 
 Route::group(['middleware' => ['auth']], function() {
@@ -49,11 +51,14 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/home', 'ItemController@index')->name('home');
 	Route::get('/bookmarks', 'UserController@getBookmarks');
 	Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
+	Route::get('/account', 'UserController@showProfile')->name('profile');
+	Route::post('/account/upload', 'UserController@postUpload');
+	Route::post('/account', 'UserController@updateUser');
 });
 
 Route::group(['middleware'=> ['auth', 'currentUser']], function () {
-	Route::get('/account', 'UserController@showProfile')->name('profile');
-	Route::post('/account', 'UserController@updateUser');
+	
 });
 
 Route::get('/styles/build', function () {

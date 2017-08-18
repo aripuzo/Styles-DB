@@ -40,9 +40,9 @@ return [
         'redirect' => env('FACEBOOK_REDIRECT_URL'),
     ],
     'twitter' => [
-        'client_id' => 'jvVgZoMJFDGF0nuSRFzrE4jO3',
-        'client_secret' => 'onPJd84dU1ZrHgsGmWCFBI4iv5octmWDLQooJ1TZix1T34ttjf',
-        'redirect' => 'http://localhost:8000/callback/twitter',
+        'client_id' => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'redirect' => env('TWITTER_REDIRECT_URL'),
     ],
 
 ];

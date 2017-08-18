@@ -117,12 +117,6 @@
 	svg:not(:root), symbol, image, marker, pattern, foreignObject {
 	    overflow: hidden;
 	}
-	html|* > svg {
-	    transform-origin: 50% 50% 0px;
-	}
-	* {
-	    transform-origin: 0px 0px 0px;
-	}
 </style>
 <div class="s-hero hero-container">
     <div class="-container g-row jc-sp-between ai-center">

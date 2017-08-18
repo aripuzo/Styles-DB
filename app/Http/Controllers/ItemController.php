@@ -83,9 +83,11 @@ class ItemController extends Controller{
                 foreach ($reader->toArray() as $row) {
                     if(isset($row['images'])){
                         $images = array();
+                        $image_ids = array();
                         $imgs = explode(',' , $row['images']);
                         foreach ($imgs as $img) {
-                            $images[] = 'http://res.cloudinary.com/oversabi/image/upload/v1501209513/'.$img .'jpg';
+                            $images[] = 'http://res.cloudinary.com/oversabi/image/upload/v1501209513/'.$img .'.jpg';
+                            $image_ids[] = $img;
                         }
                     	$data = array(
                     		'add_categories' => $row['categories'],
@@ -94,6 +96,7 @@ class ItemController extends Controller{
                     		'add_colors' => $row['colors'],
                     		'add_tags' => $row['tags'],
                             'images' => $images,
+                            'image_ids' => $image_ids,
                             'designer' => $row['designer'],
                     	);
                     	$this->itemRepo->addItem($data);
@@ -225,7 +228,12 @@ class ItemController extends Controller{
     public function searchSuggestion(Request $request){
         $query = $request->get('query',''); 
         //$query  = 'ank_ara';    
-        $posts = $this->statRepo->searchSuggestion($query);     
+        $posts = $this->statRepo->searchSuggestion($query);
+        $value = '<ul id="search-list">';
+        foreach($posts as $ar) {
+            $value .= '<li onClick="selectSearch(\''. $ar .'\');">' . $ar . '</li>';
+        }
+        $value .= '</ul>'; 
         return response()->json($posts);
         //return response()->json($this->isValid($query));
 

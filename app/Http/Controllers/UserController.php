@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Repository\Contracts\UserRepository;
 use App\Repository\Contracts\ItemRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 use SEO;
 
 class UserController extends Controller
@@ -38,6 +40,46 @@ class UserController extends Controller
           'title' => $user->getTitle(),
         ];
         return view('user.profile', $viewData);
+    }
+
+    public function postUpload()
+    {
+        $form_data = Input::all();
+
+        $validator = Validator::make($form_data, [
+                    'img' => 'required|mimes:png,gif,jpeg,jpg,bmp'
+                ], 
+                [
+                    'img.mimes' => 'Uploaded file is not in image format',
+                    'img.required' => 'Image is required'
+                ]);
+
+        if ($validator->fails()) {
+
+            return Response::json([
+                'status' => 'error',
+                'message' => $validator->messages()->first(),
+            ], 200);
+
+        }
+
+        $photo = $form_data['img'];
+
+        $image = $this->userRepo->updatePhoto(auth()->id(), $photo);
+
+        if( !$image) {
+            return Response::json([
+                'status' => 'error',
+                'message' => 'Server error while uploading',
+            ], 200);
+        }
+
+        return Response::json([
+            'status'    => 'success',
+            'url'       => env('URL') . 'uploads/' . $this->userRepo->getUser($userId)->avatar,//$filename_ext,
+            'width'     => $image->width(),
+            'height'    => $image->height()
+        ], 200);
     }
 
     public function showProfile() {

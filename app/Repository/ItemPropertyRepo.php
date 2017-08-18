@@ -5,18 +5,13 @@ namespace App\Repository;
 
 use App\Models\Item;
 use App\Models\Style;
-use App\Models\Item\ItemStyle;
 use App\Models\Fabric;
-use App\Models\Item\ItemFabric;
 use App\Models\Color;
-use App\Models\Item\ItemColor;
 use App\Models\Image;
-use App\Models\Item\ItemImage;
 use App\Models\Category;
-use App\Models\Item\ItemCategory;
 use App\Models\Tag;
-use App\Models\Item\ItemTag;
 use App\Models\Designer;
+use Illuminate\Support\Facades\DB;
 
 use App\Repository\Contracts\ItemPropertyRepository;
 
@@ -30,10 +25,13 @@ class ItemPropertyRepo implements ItemPropertyRepository{
     }
 
     function addItemStyle($itemId, $styleId) { 
-    	$itemStyle = new ItemStyle;
-	    $itemStyle->item_id = $itemId;
-	    $itemStyle->style_id = $styleId;
-	    $itemStyle->save();
+    	// $itemStyle = new ItemStyle;
+	    // $itemStyle->item_id = $itemId;
+	    // $itemStyle->style_id = $styleId;
+	    // $itemStyle->save();
+        DB::table('item_style')->insert(
+            ['style_id' => $styleId, 'item_id' => $itemId]
+        );
     }
 
     function getStyle($styleId) {
@@ -57,10 +55,9 @@ class ItemPropertyRepo implements ItemPropertyRepository{
     }
 
     function addItemColor($itemId, $colorId) { 
-    	$itemColor = new ItemColor;
-	    $itemColor->item_id = $itemId;
-	    $itemColor->color_id = $colorId;
-	    $itemColor->save();
+    	DB::table('item_color')->insert(
+            ['color_id' => $colorId, 'item_id' => $itemId]
+        );
     }
 
     function getColor($colorId) {
@@ -80,10 +77,9 @@ class ItemPropertyRepo implements ItemPropertyRepository{
     }
 
     function addItemTag($itemId, $tagId) { 
-    	$itemTag = new ItemTag;
-	    $itemTag->item_id = $itemId;
-	    $itemTag->tag_id = $tagId;
-	    $itemTag->save();
+    	DB::table('item_tag')->insert(
+            ['tag_id' => $tagId, 'item_id' => $itemId]
+        );
     }
 
     function getTag($tagId) { // example code .. define update here and put your codes
@@ -103,10 +99,9 @@ class ItemPropertyRepo implements ItemPropertyRepository{
     }
 
     function addItemFabric($itemId, $fabricId) { 
-    	$itemFabric = new ItemFabric;
-	    $itemFabric->item_id = $itemId;
-	    $itemFabric->fabric_id = $fabricId;
-	    $itemFabric->save();
+    	DB::table('item_fabric')->insert(
+            ['fabric_id' => $fabricId, 'item_id' => $itemId]
+        );
     }
 
     function getFabric($fabricId) { // example code .. define update here and put your codes
@@ -130,10 +125,9 @@ class ItemPropertyRepo implements ItemPropertyRepository{
     }
 
     function addItemCategory($itemId, $categoryId) { 
-    	$itemCategory = new ItemCategory;
-	    $itemCategory->item_id = $itemId;
-	    $itemCategory->category_id = $categoryId;
-	    $itemCategory->save();
+    	DB::table('item_category')->insert(
+            ['category_id' => $categoryId, 'item_id' => $itemId]
+        );
     }
 
     function getCategoryBySlug($slug) { // example code .. define update here and put your codes
@@ -144,10 +138,12 @@ class ItemPropertyRepo implements ItemPropertyRepository{
         return Category::where('name', $name)->first();
     }
 
-    function addImage($itemId, $url) { 
+    function addImage($itemId, $url, $imageId = null) { 
     	$image = new Image;
 	    $image->item_id = $itemId;
 	    $image->url = $url;
+        if(!empty($imageId))
+            $image->image_id = $imageId;
 	    $image->save();
     }
 

@@ -54,8 +54,15 @@ class ItemRepo implements ItemRepository
         $item->save();
 
         $images = $itemData['images'];
+        if(isset($itemData['image_ids']))
+            $image_ids = $itemData['image_ids'];
+        $i = 0;
         foreach ($images as $s) {
-            $this->itemPropertyRepo->addImage($item->id, $s);
+            if(isset($image_ids) && isset($image_ids[$i]))
+                $this->itemPropertyRepo->addImage($item->id, $s, $image_ids[$i]);
+            else
+                $this->itemPropertyRepo->addImage($item->id, $s);
+            $i++;
         }
 
         if(isset($itemData['categories'])){

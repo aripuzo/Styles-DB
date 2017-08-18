@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="{{asset('css/croppic.css')}}"/>
+@endsection
+
 @section('content')
 <style type="text/css">
     .ls-sc-grid_12 {
@@ -74,8 +78,23 @@
             </div>          
         </div>
         <div class="ls-sc-grid_6 about-me-element">
-            <img src="{{ $user->getAvatar() }}" style="max-width: 100%; height: auto;">
+            <div id="cropContainerEyecandy"></div>
+            <!-- <img src="{{ $user->getAvatar() }}" style="max-width: 100%; height: auto;"> -->
         </div>
     </div>
 </div><!-- close #about-me-feature-main -->
+<script src="{{asset('js/croppic.min.js')}}"></script>
+<script>
+    var eyeCandy = $('#cropContainerEyecandy');
+    var croppedOptions = {
+        uploadUrl: 'upload',
+        cropUrl: 'crop',
+        loadPicture:'{{ $user->getAvatar() }}',
+        cropData:{
+            'width' : eyeCandy.width(),
+            'height': eyeCandy.height()
+        }
+    };
+    var cropperBox = new Croppic('cropContainerEyecandy', croppedOptions);
+</script>
 @endsection

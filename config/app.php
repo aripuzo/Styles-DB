@@ -184,6 +184,7 @@ return [
         JD\Cloudder\CloudderServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -238,6 +239,7 @@ return [
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 

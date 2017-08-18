@@ -19,7 +19,7 @@
             </div>
             <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
                 {{ csrf_field() }}
-                <input type="hidden" name="token" value="{{ $token }}">
+                <!-- <input type="hidden" name="token" value="{{ $token }}"> -->
                 <input type="email" placeholder="E-Mail Address" name="email" value="{{ $email or old('email') }}" required autofocus/>
                 @if ($errors->has('email'))
                 <span class="help-block">

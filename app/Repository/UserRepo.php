@@ -16,6 +16,8 @@ use App\Models\Download;
 use App\Models\Bookmark;
 use App\Models\Comment;
 use App\Service\Recommendation;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\File;
 
 class UserRepo implements UserRepository {
 
@@ -109,6 +111,53 @@ class UserRepo implements UserRepository {
         $user = User::find($userId);
         $user->password = bcrypt($newPassword);
         $user->save();
+    }
+
+    function uploadPhoto($userId, $photo){
+        $original_name = $photo->getClientOriginalName();
+        $original_name_without_ext = substr($original_name, 0, strlen($original_name) - 4);
+
+        $filename = $this->sanitize($original_name_without_ext);
+        $allowed_filename = $this->createUniqueFilename( $filename );
+
+        $filename_ext = $allowed_filename .'.jpg';
+
+        $user = User::find($userId);
+        $user->avatar = $filename_ext;
+        $user->save();
+
+        $manager = new ImageManager();
+        return $manager->make( $photo )->encode('jpg')->save(env('UPLOAD_PATH') . $filename_ext );
+    }
+
+    private function sanitize($string, $force_lowercase = true, $anal = false){
+        $strip = array("~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
+            "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",
+            "â€”", "â€“", ",", "<", ".", ">", "/", "?");
+        $clean = trim(str_replace($strip, "", strip_tags($string)));
+        $clean = preg_replace('/\s+/', "-", $clean);
+        $clean = ($anal) ? preg_replace("/[^a-zA-Z0-9]/", "", $clean) : $clean ;
+
+        return ($force_lowercase) ?
+            (function_exists('mb_strtolower')) ?
+                mb_strtolower($clean, 'UTF-8') :
+                strtolower($clean) :
+            $clean;
+    }
+
+
+    private function createUniqueFilename( $filename ){
+        $upload_path = env('UPLOAD_PATH');
+        $full_image_path = $upload_path . $filename . '.jpg';
+
+        if ( File::exists( $full_image_path ) )
+        {
+            // Generate token for image
+            $image_token = substr(sha1(mt_rand()), 0, 5);
+            return $filename . '-' . $image_token;
+        }
+
+        return $filename;
     }
 
     function deleteUser($userId) { //define delete here and put your codes

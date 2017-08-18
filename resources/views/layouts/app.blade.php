@@ -43,16 +43,18 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/settings.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/layers.css') }}">
     @yield('styles')
+    <style>
+        #search-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
+        #search-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid; z-index:10;}
+        #search-list li:hover{background:#ece3d2;cursor: pointer;}
+        #search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
+    </style>
     <script src="{{ asset('js/froogaloop2.min.js') }}"></script>
     <script src="{{ asset('js/jquery-1.11.3.min.js') }}"></script>    
     <script src="{{ asset('js/jquery-migrate.min.js') }}"></script>
     <script src="{{ asset('js/modernizr-2.6.2.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     @yield('scripts')
-    <style>
-        
-        
-    </style>
 </head>
 <body class="home-galery-posts" data-gr-c-s-loaded="true">
     @yield('body')
@@ -70,13 +72,12 @@
 
                 </style>
                 <div align="center">
-                    <!-- <div class="img-circular"></div> -->
                     <img src="{{ Auth::user()->getAvatar() }}" alt="{{ Auth::user()->getName() }}" class="avatar">
                 </div>
                 @else
                 <h1 id="logo">
                     <a href="{{ url('/') }}" title="{{ config('app.name', 'Laravel') }}" rel="home">
-                        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Laravel') }}" width="170">
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Laravel') }}" width="170"/>
                     </a>
                 </h1>
                 @endif
@@ -112,7 +113,7 @@
                                 @endif
                             </li>
                             <li class="menu-item">
-                                <a href="{{url('/send')}}">Send Style</a>
+                                <a href="{{url('/submit')}}">Submit Style</a>
                             </li>
                             <!-- <li class="menu-item">
                                 <a href="{{url('/contact')}}">Contact</a>
@@ -138,22 +139,22 @@
                     <div class="social-icons-widget-pro">
                         <ul class="social-ico">
                             <li>
-                                <a href="http://facebook.com/oversabistitches" target="_blank">
+                                <a href="https://www.facebook.com/shakaradotng" target="_blank">
                                     <i class="fa fa-facebook"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="http://twitter.com/oversabi_s" target="_blank">
+                                <a href="https://twitter.com/shakaradotng" target="_blank">
                                     <i class="fa fa-twitter"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="http://pinterest.com/oversabi" target="_blank">
-                                    <i class="fa fa-pinterest"></i>
+                                <a href="https://www.instagram.com/shakaradotng" target="_blank">
+                                    <i class="fa fa-instagram"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="mailto:support@oversabi.com.ng" target="_blank">
+                                <a href="mailto:support@shakara.ng" target="_blank">
                                     <i class="fa fa-envelope"></i>
                                 </a>
                             </li>
@@ -187,12 +188,6 @@
             <form class="search_bar larger" action='{{ url("/search")}}' id='search-form' method='get' target='_top'>
                 {{ csrf_field() }}
                 <div class="search_dropdown" style="width: 19px;">
-                    <!-- <span>All</span>
-                    <ul>
-                        <li class="selected">All</li>
-                        <li>Books</li>
-                        <li>Articles</li>
-                    </ul> -->
                     <select name="cat">
                         <option selected value="0">All</option>
                         @foreach($categories as $category)
@@ -200,7 +195,8 @@
                         @endforeach
                     </select>
                 </div>
-                <input id='search-text' name='q' type="text" placeholder="Search for anything" style="width: 84.1193%; margin-left: 75px;">
+                <input id='search-box' name='q' type="text" placeholder="Search for anything" style="width: 84.1193%; margin-left: 75px;">
+                <div id="search-suggesstion-box"></div>
                 <button type="submit" value="Search">Search</button>
             </form>
         </div>
@@ -226,14 +222,41 @@
     <script src="{{ asset('js/typeahead.min.js') }}"></script>
 
     <script type="text/javascript">
-        var url = "{{ route('search-suggestion') }}";
-        jQuery('#search-text').typeahead({
-            source:  function (query, process) {
-            return jQuery.get(url, { query: query }, function (data) {
-                    return process(data);
+        $(document).ready(function(){
+            $("#search-box").keyup(function(){
+                $.ajax({
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('search-suggestion') }}",
+                data:'query='+$(this).val(),
+                beforeSend: function(){
+                    $("#search-box").css("background","#FFF url(images/LoaderIcon.gif) no-repeat 165px");
+                },
+                success: function(data){
+                    $("#search-suggesstion-box").show();
+                    $("#search-suggesstion-box").html(data.value);
+                    $("#search-box").css("background","#FFF");
+                }
                 });
-            }
+            });
         });
+
+        function selectSearch(val) {
+            $("#search-box").val(val);
+            $("#search-suggesstion-box").hide();
+        }
+    </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-104789000-1', 'auto');
+      ga('send', 'pageview');
+
     </script>
 </body>
 </html>

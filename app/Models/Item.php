@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Cloudder;
 
 class Item extends Model
 {
@@ -174,8 +175,10 @@ class Item extends Model
     }
 
     public function getImage(){
+        // if(isset($this->images->first()->image_id))
+        //     return Cloudder::show($this->images->first()->image_id);
         if(isset($this->images->first()->url))
-        return $this->images->first()->url;
+            return $this->images->first()->url;
     }
 
     public function getUserName(){
