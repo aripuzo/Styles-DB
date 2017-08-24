@@ -86,8 +86,8 @@ class UserController extends Controller
         $user = $this->userRepo->getUser(auth()->id());
         $viewData = [
           'user' => $user,
-          'title' => $user->getTitle(),
         ];
+        SEO::setTitle($user->getTitle());
         return view('user.profile', $viewData);
         //return $this->userRepo->getRecommendedTest(auth()->id(), 15);
     }
@@ -100,8 +100,8 @@ class UserController extends Controller
         }
 	    $viewData = [
 	        'items' => $items,
-	        'title' => $user->getTitle(),
 	    ];
+        SEO::setTitle($user->getTitle(). ' Bookmarks');
         return view('user.bookmarks', $viewData);
     }
 }

@@ -167,6 +167,10 @@ class UserRepo implements UserRepository {
         return User::find($userId);
     }
 
+    function getUserByEmail($email) {
+        return User::whereEmail($email)->first();
+    }
+
     function getItemsWithRating($userId){
         $user = User::find($userId);
         $itemsRated = array();

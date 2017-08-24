@@ -195,7 +195,7 @@
                         @endforeach
                     </select>
                 </div>
-                <input id='search-box' name='q' type="text" placeholder="Search for anything" style="width: 84.1193%; margin-left: 75px;">
+                <input id='search-box' name='q' type="text" placeholder="Search for any style, fabric or design" style="width: 84.1193%; margin-left: 75px;">
                 <div id="search-suggesstion-box"></div>
                 <button type="submit" value="Search">Search</button>
             </form>
@@ -219,7 +219,6 @@
     <!-- Scripts -->
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-    <script src="{{ asset('js/typeahead.min.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function(){

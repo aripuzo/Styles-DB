@@ -70,7 +70,10 @@
                         <div class="g-recaptcha" data-sitekey="{{ env('RE_CAP_SITE') }}"></div>
                     </div>
                 @endif
-                <button type="submit">create</button>
+                <p class="message">By clicking registering register you agree to our <a href="{{ url('/terms') }}">terms</a></p>
+                <div class="form-group">
+                    <button type="submit">register</button>
+                </div>
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>
             <form class="login-form" method="POST" action="{{ route('login') }}">

@@ -11,13 +11,19 @@
 |
 */
 
-Route::get('/', 'ItemController@index');
+Route::get('/', 'ItemController@index')->name('welcome');
 
 Auth::routes();
 
 Route::group(['middleware' => 'web'], function() {
 	Route::get('/contact', function () {
 	    return view('contact');
+	});
+	Route::get('/privacy', function () {
+	    return view('privacy');
+	});
+	Route::get('/terms', function () {
+	    return view('terms');
 	});
 	Route::get('/submit', function () {
 	    return view('item.submit');
@@ -32,6 +38,10 @@ Route::group(['middleware' => 'web'], function() {
 	Route::get('/style/{style?}', ['as' => 'style', 'uses' => 'ItemController@getItems']);
 	Route::get('/fabric/{fabric?}', ['as' => 'fabric', 'uses' => 'ItemController@getItems']);
 
+	Route::get('/item/like', 'ItemController@favItem');
+	Route::get('/item/bookmark', 'ItemController@bookmarkItem');
+	Route::get('/item/download', 'ItemController@downloadItem');
+	Route::post('/item/comment', 'ItemController@makeCommentItem');
 	Route::get('/item/{id}', ['as' => 'item', 'uses' => 'ItemController@getItem']);
 	Route::post('search-suggestion', array('as'=>'search-suggestion','uses'=>'ItemController@searchSuggestion'));
 	Route::get('/search', 'ItemController@searchItems');
@@ -40,10 +50,6 @@ Route::group(['middleware' => 'web'], function() {
 });
 
 Route::group(['middleware' => ['auth']], function() {
-	Route::get('/item/like', 'ItemController@favItem');
-	Route::get('/item/bookmark', 'ItemController@bookmarkItem');
-	Route::get('/item/download', 'ItemController@downloadItem');
-	Route::post('/item/comment', 'ItemController@makeCommentItem');
 
 	Route::get('/item/{id}/make', ['as' => 'make_item', 'uses' => 'ItemController@makeItem']);
 	Route::post('/item/{id}/make', ['as' => 'make_item', 'uses' => 'RequestController@makeItem']);

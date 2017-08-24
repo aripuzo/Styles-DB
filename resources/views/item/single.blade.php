@@ -240,9 +240,9 @@
     
                     <li><a href="https://twitter.com/share?text={{ $item->getURLName() }}&amp;url={{ $item->getURL() }}" title="Twitter" class="twitter-share" target="_blank"><i class="fa fa-twitter"></i></a></li>
         
-                    <li><a href="javascript:void((function()%7Bvar%20e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','//assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)%7D)());" title="Share on Pinterest" class="pinterest-share"><i class="fa fa-pinterest-p"></i></a></li>
+                    <li><a href="javascript:void((function()%7Bvar%20e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','//assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)%7D)());" title="Share on Pinterest" class="pinterest-share"><i class="fa fa-pinterest"></i></a></li>
 
-                    <li><a href="#" title="Share on Whatsapp" class="google-share" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
+                    <li><a href="whatsapp://send" data-text="{ $item->getURLName() }}" data-href="" title="Share on Whatsapp" class="whatsapp-share" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
         
                     <li><a href="mailto:?subject={{ $item->getURLName() }}&amp;body={{ $item->getURL() }}" title="Share on E-mail" class="mail-share"><i class="fa fa-envelope"></i></a></li>
                 </ul>
