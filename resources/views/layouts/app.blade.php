@@ -47,10 +47,10 @@
         #search-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
         #search-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid; z-index:10;}
         #search-list li:hover{background:#ece3d2;cursor: pointer;}
-        #search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
+        /*#search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}*/
     </style>
     <script src="{{ asset('js/froogaloop2.min.js') }}"></script>
-    <script src="{{ asset('js/jquery-1.11.3.min.js') }}"></script>    
+    <script src="{{ asset('js/jquery-1.11.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery-migrate.min.js') }}"></script>
     <script src="{{ asset('js/modernizr-2.6.2.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
@@ -133,8 +133,8 @@
                 </nav>
                 <div class="clearfix"></div>
             </header>
-            
-            <div id="navigation-sidebar-pro">   
+
+            <div id="navigation-sidebar-pro">
                 <div id="pyre_social_media-widget-feat-2" class="sidebar-item widget pyre_social_media-feat">
                     <div class="social-icons-widget-pro">
                         <ul class="social-ico">
@@ -169,7 +169,7 @@
                 @else
                     <a href="{{ url('/login') }}">Login or Register</a>
                 @endif
-            </div>      
+            </div>
             <div class="clearfix"></div>
         </div>
         <div class="pro-spacer" style="display: block; width: 270px; height: 573px; float: none;"></div><!-- close #sidebar-padding -->
@@ -180,13 +180,12 @@
     <div id="toggle-cover-pro"></div><!-- black screen covering on sidebar extend -->
 
     <style type="text/css">
-        
+
     </style>
-    
+
     <div id="search-div">
         <div id='search-box' class="sf-with-ul" style="margin-right: 20px; margin-left: 20px">
             <form class="search_bar larger" action='{{ url("/search")}}' id='search-form' method='get' target='_top'>
-                {{ csrf_field() }}
                 <div class="search_dropdown" style="width: 19px;">
                     <select name="cat">
                         <option selected value="0">All</option>

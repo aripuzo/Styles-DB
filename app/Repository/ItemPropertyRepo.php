@@ -12,6 +12,9 @@ use App\Models\Tag;
 use App\Repository\Contracts\ItemPropertyRepository;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Repo class for database operations of all Item properties
+ */
 class ItemPropertyRepo implements ItemPropertyRepository {
 	function addStyle($styleData) {
 		$style = new Style;
@@ -66,7 +69,6 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 	}
 
 	function addTag($tagData) {
-		// example code .. define update here and put your codes
 		$tag = new Tag;
 		$tag->name = $tagData['name'];
 		$tag->slug = $tagData['slug'];
@@ -81,17 +83,14 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 	}
 
 	function getTag($tagId) {
-		// example code .. define update here and put your codes
 		return Tag::find($tagId);
 	}
 
 	function getTagByName($name) {
-		// example code .. define update here and put your codes
 		return Tag::where('name', $name)->first();
 	}
 
 	function addFabric($fabricData) {
-		// example code .. define update here and put your codes
 		$fabric = new Fabric;
 		$fabric->name = $fabricData['name'];
 		$fabric->slug = $fabricData['slug'];
@@ -106,22 +105,18 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 	}
 
 	function getFabric($fabricId) {
-		// example code .. define update here and put your codes
 		return Fabric::find($fabricId);
 	}
 
 	function getFabricByName($name) {
-		// example code .. define update here and put your codes
 		return Fabric::where('name', $name)->first();
 	}
 
 	function getCategory($categoryId) {
-		// example code .. define update here and put your codes
 		return Category::find($categoryId);
 	}
 
 	function addCategory($categoryData) {
-		// example code .. define update here and put your codes
 		$category = new Category;
 		$category->name = $categoryData['name'];
 		$category->slug = $categoryData['slug'];
@@ -136,13 +131,15 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 	}
 
 	function getCategoryBySlug($slug) {
-		// example code .. define update here and put your codes
 		return Category::where('slug', $slug)->first();
 	}
 
 	function getCategoryByName($name) {
-		// example code .. define update here and put your codes
 		return Category::where('name', $name)->first();
+	}
+
+	function getImageByUrl($url) {
+		return Image::where('url', $url)->first();
 	}
 
 	function addImage($itemId, $url, $imageId = null) {
@@ -157,16 +154,48 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 	}
 
 	function getDesignerByName($name) {
-		// example code .. define update here and put your codes
 		return Designer::where('name', $name)->first();
 	}
 
 	function addDesigner($designerData) {
-		// example code .. define update here and put your codes
 		$designer = new Designer;
 		$designer->name = $designerData['name'];
 		$designer->slug = $designerData['slug'];
 		$designer->save();
 		return $designer;
+	}
+
+	static function getStyles($categoryId = null) {
+		if (!isset($categoryId) || $categoryId == 0) {
+			return Style::whereNull('parent_id')->get();
+		} else {
+			$styles = Style::whereNull('parent_id')->get();
+			$selected = [];
+			foreach ($styles as $key => $style) {
+				if ($style->hasCategoryItems($categoryId)) {
+					$selected[] = $styles->pull($key);
+				}
+			}
+			return $selected;
+		}
+	}
+
+	static function getFabrics($categoryId = null) {
+		if (!isset($categoryId) || $categoryId == 0) {
+			return Fabric::get();
+		} else {
+			$fabrics = Fabric::get();
+			$selected = [];
+			foreach ($fabrics as $key => $fabric) {
+				if ($fabric->hasCategoryItems($categoryId)) {
+					$selected[] = $fabrics->pull($key);
+				}
+			}
+			return $selected;
+		}
+	}
+
+	static function getCategories() {
+		return Category::get();
 	}
 }

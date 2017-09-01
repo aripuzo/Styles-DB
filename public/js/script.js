@@ -169,7 +169,7 @@ jQuery(document).ready(function($) {
 	 	
 			
 		/* Default Masonry Load Code */
-		var $container = $('#gallery-masonry').masonry();
+		var $container = $('.gallery-masonry').masonry();
 		// layout Masonry again after all images have loaded
 		$container.imagesLoaded( function() {
 			$(".gallery-item-pro").addClass('opacity-pro');

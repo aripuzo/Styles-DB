@@ -38,7 +38,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display
 	
 	/* LOGO & ADDITIONAL STYLES */
 	body #logo, body #logo img {width:170px;}
-	#gallery-masonry-loading, .gallery-item-pro article { padding:4px; }
+	.gallery-masonry-loading, .gallery-item-pro article { padding:4px; }
 	.show-hide-pro  { display:none; }
 	body .fotorama__arr--next { right: 20px; }
 	body .fotorama__arr--prev { left: 20px; }
@@ -1062,8 +1062,8 @@ a.gallery-container-pro:hover .gallery-index-text {
 
 
 /* Masonry Grid */
-body.blog #gallery-masonry {margin-bottom:0px; }
-#gallery-masonry {
+body.blog .gallery-masonry {margin-bottom:0px; }
+.gallery-masonry {
 	margin-bottom:50px;
 }
 
@@ -1144,7 +1144,7 @@ body .gallery-item-pro {  opacity:0; }
 	box-shadow: 0px 0px 3px rgba(0,0,0, 0.05);
 }
 
-#gallery-masonry-loading { position:relative; }
+.gallery-masonry-loading { position:relative; }
 #infscr-loading {
     text-align: center;
     z-index: 100;
@@ -3371,7 +3371,6 @@ ul.ls-sc-tabs:after {
 }
 #search-box {
 	position: relative;
-	width: 100%;
 	margin: 0;
 	padding-top: 12px;
     padding-bottom: 12px;

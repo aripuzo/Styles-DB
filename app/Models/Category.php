@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
-{
+class Category extends Model {
 	use SoftDeletes;
 
-    public function itemCategories()
-    {
-        return $this->hasMany('App\Models\ItemCategory');
-    }
+	public function getSEOTitle() {
+		return $this->name . ' styles | Styles for ' . $this->name;
+	}
 
-    public function items()
-    {
-        return $this->hasManyThrough('App\Models\Items', 'App\Models\ItemCategory');
-    }
+	public function getSEODescription() {
+		return $this->getSEOTitle();
+	}
+
+	public function getSEOKeywords() {
+		$keywords = [$this->name];
+		return $keywords;
+	}
 }

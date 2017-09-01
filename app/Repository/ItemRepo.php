@@ -24,184 +24,191 @@ class ItemRepo implements ItemRepository {
 		$this->statRepo = new StatRepo;
 	}
 
+	/**
+	 * Method to add style item through various methods from the controller
+	 * @param array $itemData contains fields for item in embeded arrays
+	 */
 	function addItem($itemData) {
 		// example code .. define update here and put your codes
-		$item = new Item;
-		if (isset($itemData['name'])) {
-			$item->name = $itemData['name'];
-		}
-
-		if (isset($itemData['designer'])) {
-			$s = $itemData['designer'];
-			$designer = $this->itemPropertyRepo->getDesignerByName($s);
-			if (!isset($designer)) {
-				$designerData = ['name' => $s, 'slug' => $this->slugify($s)];
-				$designer = $this->itemPropertyRepo->addDesigner($designerData);
-			}
-			$item->designer_id = $designer->id;
-		}
-		if (isset($itemData['user_id'])) {
-			$user = User::find($itemData['user_id']);
-			if (isset($user)) {
-				$item->user_id = $user->id;
+		$img = $this->itemPropertyRepo->getImageByUrl($itemData['images'][0]);
+		if (!isset($img)) {
+			$item = new Item;
+			if (isset($itemData['name'])) {
+				$item->name = $itemData['name'];
 			}
 
-		}
-		$item->save();
-
-		$images = $itemData['images'];
-		if (isset($itemData['image_ids'])) {
-			$image_ids = $itemData['image_ids'];
-		}
-
-		$i = 0;
-		foreach ($images as $s) {
-			if (isset($image_ids) && isset($image_ids[$i])) {
-				$this->itemPropertyRepo->addImage($item->id, $s, $image_ids[$i]);
-			} else {
-				$this->itemPropertyRepo->addImage($item->id, $s);
-			}
-
-			$i++;
-		}
-
-		if (isset($itemData['categories'])) {
-			$categories = $itemData['categories'];
-			foreach ($categories as $s) {
-				$category = $this->itemPropertyRepo->getCategory($s);
-				if (isset($category)) {
-					$this->itemPropertyRepo->addItemCategory($item->id, $s);
+			if (isset($itemData['designer'])) {
+				$s = $itemData['designer'];
+				$designer = $this->itemPropertyRepo->getDesignerByName($s);
+				if (!isset($designer)) {
+					$designerData = ['name' => $s, 'slug' => $this->slugify($s)];
+					$designer = $this->itemPropertyRepo->addDesigner($designerData);
 				}
+				$item->designer_id = $designer->id;
 			}
-		}
-
-		if (isset($itemData['add_categories'])) {
-			$add_categories = explode(',', $itemData['add_categories']);
-			foreach ($add_categories as $s) {
-				$category = $this->itemPropertyRepo->getCategoryByName($s);
-				if (!isset($category)) {
-					$categoryData = ['name' => $s, 'slug' => $this->slugify($s)];
-					$category = $this->itemPropertyRepo->addcategory($categoryData);
+			if (isset($itemData['user_id'])) {
+				$user = User::find($itemData['user_id']);
+				if (isset($user)) {
+					$item->user_id = $user->id;
 				}
-				$this->itemPropertyRepo->addItemCategory($item->id, $category->id);
-			}
-		}
 
-		if (isset($itemData['styles'])) {
-			$styles = $itemData['styles'];
-			foreach ($styles as $s) {
-				$style = $this->itemPropertyRepo->getStyle($s);
-				if (isset($style)) {
-					$this->itemPropertyRepo->addItemStyle($item->id, $s);
+			}
+			$item->save();
+
+			$images = $itemData['images'];
+			if (isset($itemData['image_ids'])) {
+				$image_ids = $itemData['image_ids'];
+			}
+
+			$i = 0;
+			foreach ($images as $s) {
+				if (isset($image_ids) && isset($image_ids[$i])) {
+					$this->itemPropertyRepo->addImage($item->id, $s, $image_ids[$i]);
+				} else {
+					$this->itemPropertyRepo->addImage($item->id, $s);
 				}
-			}
-		}
 
-		if (isset($itemData['parent'])) {
-			$parent = $this->itemPropertyRepo->getStyleByName($itemData['parent']);
-			if (!isset($parent)) {
-				$styleData = ['name' => $itemData['parent'], 'slug' => $this->slugify($itemData['parent'])];
-				$parent = $this->itemPropertyRepo->addStyle($styleData);
+				$i++;
 			}
-		}
 
-		if (isset($itemData['add_styles'])) {
-			$add_styles = explode(',', $itemData['add_styles']);
-			foreach ($add_styles as $s) {
-				$style = $this->itemPropertyRepo->getStyleByName($s);
-				if (!isset($style)) {
-					$styleData = ['name' => $s, 'slug' => $this->slugify($s)];
-					if (isset($parent)) {
-						$styleData['parent_id'] = $parent->id;
+			if (isset($itemData['categories'])) {
+				$categories = $itemData['categories'];
+				foreach ($categories as $s) {
+					$category = $this->itemPropertyRepo->getCategory($s);
+					if (isset($category)) {
+						$this->itemPropertyRepo->addItemCategory($item->id, $s);
 					}
-
-					$style = $this->itemPropertyRepo->addStyle($styleData);
-				}
-				$this->itemPropertyRepo->addItemStyle($item->id, $style->id);
-			}
-		}
-
-		if (isset($itemData['fabrics'])) {
-			$fabrics = $itemData['fabrics'];
-			foreach ($fabrics as $s) {
-				$fabric = $this->itemPropertyRepo->getFabric($s);
-				if (isset($fabric)) {
-					$this->itemPropertyRepo->addItemFabric($item->id, $s);
 				}
 			}
-		}
 
-		if (isset($itemData['add_fabrics'])) {
-			$add_fabrics = explode(',', $itemData['add_fabrics']);
-			foreach ($add_fabrics as $s) {
-				$fabric = $this->itemPropertyRepo->getFabricByName($s);
-				if (!isset($fabric)) {
-					$fabricData = ['name' => $s, 'slug' => $this->slugify($s)];
-					$fabric = $this->itemPropertyRepo->addFabric($fabricData);
-				}
-				$this->itemPropertyRepo->addItemFabric($item->id, $fabric->id);
-			}
-		}
-
-		if (isset($itemData['tags'])) {
-			$tags = $itemData['tags'];
-			foreach ($tags as $s) {
-				$tag = $this->itemPropertyRepo->getTag($s);
-				if (isset($tag)) {
-					$this->itemPropertyRepo->addItemTag($item->id, $s);
+			if (isset($itemData['add_categories'])) {
+				$add_categories = explode(',', $itemData['add_categories']);
+				foreach ($add_categories as $s) {
+					$category = $this->itemPropertyRepo->getCategoryByName($s);
+					if (!isset($category)) {
+						$categoryData = ['name' => $s, 'slug' => $this->slugify($s)];
+						$category = $this->itemPropertyRepo->addcategory($categoryData);
+					}
+					$this->itemPropertyRepo->addItemCategory($item->id, $category->id);
 				}
 			}
-		}
-		if (isset($itemData['add_tags'])) {
-			$add_tags = explode(',', $itemData['add_tags']);
-			foreach ($add_tags as $s) {
-				$tag = $this->itemPropertyRepo->getTagByName($s);
-				if (!isset($tag)) {
-					$tagData = ['name' => $s, 'slug' => $this->slugify($s)];
-					$tag = $this->itemPropertyRepo->addTag($tagData);
-				}
-				$this->itemPropertyRepo->addItemTag($item->id, $tag->id);
-			}
-		}
 
-		if (isset($itemData['colors'])) {
-			$colors = $itemData['colors'];
-			foreach ($colors as $s) {
-				$color = $this->itemPropertyRepo->getColor($s);
-				if (isset($color)) {
-					$this->itemPropertyRepo->addItemColor($item->id, $s);
+			if (isset($itemData['styles'])) {
+				$styles = $itemData['styles'];
+				foreach ($styles as $s) {
+					$style = $this->itemPropertyRepo->getStyle($s);
+					if (isset($style)) {
+						$this->itemPropertyRepo->addItemStyle($item->id, $s);
+					}
 				}
 			}
-		}
 
-		if (isset($itemData['add_colors'])) {
-			$add_colors = explode(',', $itemData['add_colors']);
-			foreach ($add_colors as $s) {
-				$color = $this->itemPropertyRepo->getColorByName($s);
-				if (!isset($color)) {
-					$colorData = ['name' => $s, 'slug' => $this->slugify($s)];
-					$color = $this->itemPropertyRepo->addColor($colorData);
+			if (isset($itemData['parent'])) {
+				$parent = $this->itemPropertyRepo->getStyleByName($itemData['parent']);
+				if (!isset($parent)) {
+					$styleData = ['name' => $itemData['parent'], 'slug' => $this->slugify($itemData['parent'])];
+					$parent = $this->itemPropertyRepo->addStyle($styleData);
 				}
-				$this->itemPropertyRepo->addItemColor($item->id, $color->id);
+			}
+
+			if (isset($itemData['add_styles'])) {
+				$add_styles = explode(',', $itemData['add_styles']);
+				foreach ($add_styles as $s) {
+					$style = $this->itemPropertyRepo->getStyleByName($s);
+					if (!isset($style)) {
+						$styleData = ['name' => $s, 'slug' => $this->slugify($s)];
+						if (isset($parent)) {
+							$styleData['parent_id'] = $parent->id;
+						}
+
+						$style = $this->itemPropertyRepo->addStyle($styleData);
+					}
+					$this->itemPropertyRepo->addItemStyle($item->id, $style->id);
+				}
+			}
+
+			if (isset($itemData['fabrics'])) {
+				$fabrics = $itemData['fabrics'];
+				foreach ($fabrics as $s) {
+					$fabric = $this->itemPropertyRepo->getFabric($s);
+					if (isset($fabric)) {
+						$this->itemPropertyRepo->addItemFabric($item->id, $s);
+					}
+				}
+			}
+
+			if (isset($itemData['add_fabrics'])) {
+				$add_fabrics = explode(',', $itemData['add_fabrics']);
+				foreach ($add_fabrics as $s) {
+					$fabric = $this->itemPropertyRepo->getFabricByName($s);
+					if (!isset($fabric)) {
+						$fabricData = ['name' => $s, 'slug' => $this->slugify($s)];
+						$fabric = $this->itemPropertyRepo->addFabric($fabricData);
+					}
+					$this->itemPropertyRepo->addItemFabric($item->id, $fabric->id);
+				}
+			}
+
+			if (isset($itemData['tags'])) {
+				$tags = $itemData['tags'];
+				foreach ($tags as $s) {
+					$tag = $this->itemPropertyRepo->getTag($s);
+					if (isset($tag)) {
+						$this->itemPropertyRepo->addItemTag($item->id, $s);
+					}
+				}
+			}
+			if (isset($itemData['add_tags'])) {
+				$add_tags = explode(',', $itemData['add_tags']);
+				foreach ($add_tags as $s) {
+					$tag = $this->itemPropertyRepo->getTagByName($s);
+					if (!isset($tag)) {
+						$tagData = ['name' => $s, 'slug' => $this->slugify($s)];
+						$tag = $this->itemPropertyRepo->addTag($tagData);
+					}
+					$this->itemPropertyRepo->addItemTag($item->id, $tag->id);
+				}
+			}
+
+			if (isset($itemData['colors'])) {
+				$colors = $itemData['colors'];
+				foreach ($colors as $s) {
+					$color = $this->itemPropertyRepo->getColor($s);
+					if (isset($color)) {
+						$this->itemPropertyRepo->addItemColor($item->id, $s);
+					}
+				}
+			}
+
+			if (isset($itemData['add_colors'])) {
+				$add_colors = explode(',', $itemData['add_colors']);
+				foreach ($add_colors as $s) {
+					$color = $this->itemPropertyRepo->getColorByName($s);
+					if (!isset($color)) {
+						$colorData = ['name' => $s, 'slug' => $this->slugify($s)];
+						$color = $this->itemPropertyRepo->addColor($colorData);
+					}
+					$this->itemPropertyRepo->addItemColor($item->id, $color->id);
+				}
 			}
 		}
 	}
 
+	/**
+	 * Method used to change string to url safe slug
+	 * @param  String $s text
+	 * @return String    slugified string
+	 */
 	private function slugify($s) {
 		return urlencode(str_replace(" ", "_", strtolower($s)));
 	}
 
 	function updateItem($itemId, $itemData) {
-		// example code .. define update here and put your codes
 		$item = Item::find($itemId);
-		$user->name = $userData['name'];
-		$user->email = $userData['email'];
-		$user->phone = $userData['phone'];
-		$user->save();
+		$item->save();
 	}
 
 	function deleteItem($itemId) {
-		// example code .. define update here and put your codes
 		$item = Item::find($itemId);
 		$item->delete();
 	}
@@ -343,6 +350,11 @@ class ItemRepo implements ItemRepository {
 			$item->whereHas('styles', function ($query) use ($filters) {
 				$query->where('slug', $filters['style']);
 			});
+			$item->orWhereHas('styles', function ($query) use ($filters) {
+				$query->whereHas('style', function ($query) use ($filters) {
+					$query->where('slug', $filters['style']);
+				});
+			});
 		}
 
 		if (isset($filters['category'])) {
@@ -374,12 +386,15 @@ class ItemRepo implements ItemRepository {
 
 	}
 
-	function searchItems($term, $order, $limit = 15) {
+	function searchItems($term, $category, $order, $limit = 15) {
 		$item = Item::query();
+		if (isset($category) && $category > 0) {
+			$item->whereHas('categories', function ($query) use ($category) {
+				$query->where('categories.id', $category);
+			});
+		}
+
 		$item->where('name', 'like', '%' . $term . '%')
-			->orWhereHas('categories', function ($query) use ($term) {
-				$query->where('name', 'like', '%' . $term . '%');
-			})
 			->orWhereHas('fabrics', function ($query) use ($term) {
 				$query->where('name', 'like', '%' . $term . '%');
 			})
@@ -387,10 +402,10 @@ class ItemRepo implements ItemRepository {
 				$query->where('name', 'like', '%' . $term . '%');
 			})
 			->orWhereHas('tags', function ($query) use ($term) {
-				$query->where('name', 'like', '%' . $term . '%');
+				$query->where('name', $term);
 			})
 			->orWhereHas('colors', function ($query) use ($term) {
-				$query->where('name', 'like', '%' . $term . '%');
+				$query->where('name', $term);
 			})
 			->orWhereHas('designer', function ($query) use ($term) {
 				$query->where('name', 'like', '%' . $term . '%');
@@ -403,28 +418,22 @@ class ItemRepo implements ItemRepository {
 					//check related words
 					//denim jean,blouse top,men male,women female
 					if (!$this->exclude($s)) {
-						$item->orWhereHas('categories', function ($query) use ($s) {
-							$query->where('name', 'like', '%' . $s . '%');
+						$item->orWhereHas('fabrics', function ($query) use ($s) {
+							$query->where('name', $s);
 						})
-							->orWhereHas('fabrics', function ($query) use ($s) {
-								$query->where('name', 'like', '%' . $s . '%');
-							})
 							->orWhereHas('styles', function ($query) use ($s) {
-								$query->where('name', 'like', '%' . $s . '%');
+								$query->where('name', $s);
 							})
 							->orWhereHas('tags', function ($query) use ($s) {
-								$query->where('name', 'like', '%' . $s . '%');
+								$query->where('name', $s);
 							})
 							->orWhereHas('colors', function ($query) use ($s) {
-								$query->where('name', 'like', '%' . $s . '%');
+								$query->where('name', $s);
 							});
 					}
 				}
 			}
 
-		}
-		if (isset($order['orderBy'])) {
-			$item->orderBy($order['orderBy'], $order['orderDir']);
 		}
 
 		//$statRepo->itemSeached($term, $results, $user_id = null)

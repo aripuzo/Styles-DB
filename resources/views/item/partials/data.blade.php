@@ -1,3 +1,5 @@
+@if(isset($items) && $items->count() > 0)
+<div class="gallery-masonry" style="position: relative; height: 966.25px;">
 @php
 $i = 0;
 @endphp
@@ -16,9 +18,7 @@ $i = 0;
                 </div>
                 <div class="gallery-index-text">
                     <ul>
-                        @php
-                        $item->getCategoriesLabel();
-                        @endphp
+                        {{ $item->getCategoriesLabel() }}
                     </ul>
                     <div class="gallery-title-index">
                         {{ $item->getName()}}
@@ -38,15 +38,25 @@ $i = 0;
                         <span title="Comment"><span class="fb-comments-count" data-href="{{ route('item', $item->id) }}"></span>{{ $item->getCommentsLabel() }} <i class="fa fa-comment"></i></span>
                         <!-- <span id="{{ route('make_item', $item->id) }}" title="Make" onclick="makeItem(this);"> Make</span> -->
                     </div>
+                    @isset($item->designer)
+                    <ul>
+                        By {{ $item->designer->name }}
+                    </ul>
+                    @endisset
                 </div>
             </a>
             <div class="bottom">
+                <div class="gallery-title-text" style="margin-top: 15px;">
+                    {{ $item->getCategoriesLabel() }}
+                </div>
                 <div class="gallery-title-index">
                     {{ $item->getName()}}
                 </div>
+                @isset($item->designer)
                 <div class="gallery-title-text">
-                    {{ $item->getDesigner()}}
+                    By {{ $item->designer->name }}
                 </div>
+                @endisset
                 <div class="button-section">
                     <span id="{{ $item->id }}" title="Like" onclick="likeItem(this);">{{ $item->getLikesLabel() }} <i class="fa fa-heart{{ isset($liked) ? '' : '-o' }}"></i> </span>
                     <span id="{{ $item->id }}" title="bookmark" onclick="bookmarkItem(this);">{{ $item->getBookmarksLabel() }} <i class="fa fa-bookmark{{ isset($booked) ? '' : '-o' }}"></i></span>
@@ -62,3 +72,6 @@ $i = 0;
         $i = 0;
     @endphp
 @endforeach
+</div><!-- close #gallery-masonry -->
+<div class="clearfix"></div>
+@endif

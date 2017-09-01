@@ -46,4 +46,9 @@ return [
 	*/
 	'loadMore' => env('LOAD_MORE', true),
 
+	'limit' => 15,
+	'defaultSort' => 'latest',
+	'defaultOrder' => 'created_at',
+	'popularOrder' => 'ratings', //'favorites';
+
 ];

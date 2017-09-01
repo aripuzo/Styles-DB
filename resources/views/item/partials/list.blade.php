@@ -96,11 +96,10 @@
         event.preventDefault();
         window.location.href = el.id;
     }
-    var page = 1;
-    var load = true;
+    @if(isset($items) && $items->count() >= config('settings.limit'))
     $(window).scroll(function() {
-        if($(window).scrollTop() + $(window).height() >= $(document).height() && !$('.ajax-load').is(":visible")) {
-            page++;
+        if($(window).scrollTop() + $(window).height() >= $(document).height()-100 && $('.ajax-load').is(":hidden")) {
+            page = parseInt($('#page').text(), 10) + 1;
             loadMoreData(page);
         }
     });
@@ -117,6 +116,7 @@
             },
             error: function (data) {
                 alert("Server error, please try again");
+                $('.ajax-load').hide();
             },
             success: function (data) {
                 //alert(data);
@@ -126,11 +126,22 @@
                     load = false;
                     return;
                 }
+                $('#page').html(page);
                 $('.ajax-load').hide();
-                $("#gallery-masonry").append(data.html);
+                $("#gallery-masonry-loading").append(data.html);
+                var $container = $('.gallery-masonry').masonry();
+                // layout Masonry again after all images have loaded
+                $container.imagesLoaded( function() {
+                    $(".gallery-item-pro").addClass('opacity-pro');
+                    $container.masonry({
+                        itemSelector: '.gallery-item-pro',
+                        columnWidth: function() { return this.size.innerWidth / 3; }
+                    });
+                });
             }
         });
     }
+    @endif
 </script>
 @stop
 @section('styles')
@@ -197,20 +208,27 @@
         padding: 10px 0px;
         width: 100%;
     }
+    .center-block {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    img {
+        vertical-align: middle;
+        border: 0;
+    }
 
 </style>
 @endsection
 <div class="clearfix"></div>
 <div id="gallery-masonry-loading">
-    <div id="gallery-masonry" style="position: relative; height: 966.25px;">
-        @include('item.partials.data')
-        <div class="clearfix" style="position: absolute; left: 714px; top: 733px;"></div>
-    </div><!-- close #gallery-masonry -->
+    @include('item.partials.data')
+    <div style="display:none" id="page">1</div>
 </div><!-- close #gallery-masonry -->
 <div class="clearfix"></div>
 @if(config('settings.loadMore'))
 <div class="ajax-load text-center" style="display:none">
-    <p><img src="{{ asset('images/loader.gif') }}">Loading More post</p>
+    <img class="center-block"  src="{{ asset('images/loader.gif') }}" alt="Loading...">
 </div>
 @else
 @include('pagination.default', ['paginator' => $items])

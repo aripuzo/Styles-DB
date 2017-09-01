@@ -4,7 +4,6 @@
 <div id="gallery-index-pro">
     <ul id="menu-sub-nav">
         @php
-            $categories = App\Models\Category::get();
             $i = 2;
         @endphp
         <li class="cat-item cat-item-1 {{isset($selected) && $selected == 0 ? 'current-cat' : ''}}">
@@ -28,9 +27,6 @@
             <button onclick="dropFunction('myDIV')" class="filter-btn">Style</button>
             <div class="w3-dropdown-content w3-bar-block w3-card-2 w3-light-grey" id="myDIV">
                 <input class="w3-input w3-padding" type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction('myInput', 'myDIV')">
-                @php
-                    $styles = App\Models\Style::get();
-                @endphp
                 @foreach($styles as $style)
                     <a class="w3-bar-item w3-button" href="{{ route('style', $style->slug) }}" style="margin: 0">{{ $style->name }}</a>
                 @endforeach
@@ -40,9 +36,6 @@
             <button onclick="dropFunction('myFabric')" class="filter-btn">Fabric</button>
             <div class="w3-dropdown-content w3-bar-block w3-card-2 w3-light-grey" id="myFabric">
                 <input class="w3-input w3-padding" type="text" placeholder="Search.." id="fabricInput" onkeyup="filterFunction('fabricInput', 'myFabric')">
-                @php
-                    $fabrics = App\Models\Fabric::get();
-                @endphp
                 @foreach($fabrics as $fabric)
                     <a class="w3-bar-item w3-button" href="{{ route('fabric', $fabric->slug) }}" style="margin: 0">{{ $fabric->name }}</a>
                 @endforeach

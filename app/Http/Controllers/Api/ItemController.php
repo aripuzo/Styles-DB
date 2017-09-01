@@ -1,21 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Repository\Contracts\ItemPropertyRepository;
 use App\Repository\Contracts\ItemRepository;
 use App\Repository\Contracts\StatRepository;
 use App\Repository\Contracts\UserRepository;
-use Cloudder;
-use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
-use SEO;
-
-//!TAMuno__123
-//6Sy'eejZH5r4P}{E
+use App\Http\Controllers\Controller
 
 class ItemController extends Controller {
 	//
@@ -40,37 +35,59 @@ class ItemController extends Controller {
 	}
 
 	public function index(Request $request) {
-		if (Auth::check()) {
-			if (!$request->has('sort')) {
-				$request->merge(['sort' => 'recommended']);
-			}
-
-			$title = 'Home';
+		$filters = array();
+		$order = array();
+		if ($request->has('limit')) {
+			$limit = $request->input('limit');
 		} else {
-			$title = 'Latest Styles: Aso ebi, Ankara, Lace, Senator, Agbada';
+			$limit = $this->limit;
 		}
-
-		$items = $this->getItems($request, null, null, null, null);
-		if (\Request::ajax()) {
-			$view = view('item.partials.data', compact('items'))->render();
-			return response()->json(['result' => true, 'html' => $view]);
-		}
+		$order['orderDir'] = 'desc';
 		if ($request->has('sort')) {
-			$order = $request->input('sort');
+			if ($request->input('sort') == 'recommended') {
+				$order['orderBy'] = 'created_at';
+				return $this->itemRepo->getRecommendedItems(auth()->id(), $order, $limit);
+			} elseif ($request->input('sort') == 'popular') {
+				$order['orderBy'] = $this->popularOrder;
+			}
 		} else {
-			$order = $this->defaultSort;
+			$order['orderBy'] = $this->defaultOrder;
+		}
+		if ($request->has('category')) {
+			$filters['category'] = $request->input('category');
 		}
 
-		SEO::setTitle($title);
-		$viewData = [
-			'items' => $items,
-			'order' => $order,
-			'categories' => $this->itemPropertyRepo->getCategories(),
-		];
-		if (Auth::check()) {
-			return view('user.home', $viewData);
+		if ($request->has('style')) {
+			$filters['style'] = $request->input('style');
+		}
+
+		if ($request->has('fabric')) {
+			$filters['fabric'] = $request->input('fabric');
+		}
+
+		if ($request->has('color')) {
+			$filters['color'] = $request->input('color');
+		}
+		$items = $this->itemRepo->getItems($filters, $order, $limit);
+		return $items;
+	}
+
+	public function getItem($id) {
+		$item = $this->itemRepo->getItem($id);
+		if (isset($item)) {
+			$similar = $this->itemRepo->getSimilarItems($id);
+			SEO::setTitle($item->getSEOTitle());
+			SEO::setDescription($item->getSEODescription());
+			SEO::metatags()->addKeyword($item->getSEOKeywords());
+			$viewData = [
+				'item' => $item,
+				'related' => $similar,
+			];
+			$this->statRepo->itemViewed($id, auth()->id());
+			return view('item.single', $viewData);
 		} else {
-			return view('welcome', $viewData);
+			Log::error('Item not found for item: ' . $id);
+			abort(404, 'The resource you are looking for could not be found');
 		}
 	}
 
@@ -158,27 +175,6 @@ class ItemController extends Controller {
 			}
 
 		}
-		// return back()
-		//     ->with('success','You have successfully upload images.')
-		//     ->with('image',$c['url']);
-		// array:15 [▼
-		//   "public_id" => "sample"
-		//   "version" => 1499596361
-		//   "width" => 864
-		//   "height" => 576
-		//   "format" => "jpg"
-		//   "resource_type" => "image"
-		//   "created_at" => "2017-07-09T10:32:41Z"
-		//   "tags" => []
-		//   "bytes" => 120253
-		//   "type" => "upload"
-		//   "etag" => "14500e08ec2701bfd36a8e9a5585261e"
-		//   "url" => "http://res.cloudinary.com/demo/image/upload/v1499589454/sample.jpg"
-		//   "secure_url" => "http://res.cloudinary.com/demo/image/upload/v1499589454/sample.jpg"
-		//   "original_filename" => "sample"
-		// ]
-		// Cloudder::destroyImage($publicId, array $options)
-		// Cloudder::delete($publicId, array $options)
 	}
 
 	private function saveImage($name, $id, $request) {
