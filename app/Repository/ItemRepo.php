@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Repository\Contracts\ItemRepository;
 use App\Repository\ItemPropertyRepo;
 use App\Repository\StatRepo;
+use App\Service\Inflect;
 use App\Service\Recommendation;
 use Illuminate\Support\Facades\Cache;
 
@@ -344,8 +345,64 @@ class ItemRepo implements ItemRepository {
 		$item = Item::where('id', 0)->paginate($limit);
 	}
 
+	function getItemsBot($string, $limit, $page = 1) {
+		$keywords = preg_split("/[\s,]+/", $string);
+		$categories = $styles = $fabrics = $colors = $tags = array();
+		foreach ($keywords as $keyword) {
+			if ($s = $this->itemPropertyRepo->getCategoryByNameorSlug($keyword)) {
+				$categories[] = $s->slug;
+			} elseif ($s = $this->itemPropertyRepo->getCategoryByNameorSlug(Inflect::pluralize($keyword))) {
+				$categories[] = $s->slug;
+			}
+			if ($s = $this->itemPropertyRepo->getStyleByNameorSlug($keyword)) {
+				$styles[] = $s->slug;
+			} elseif ($s = $this->itemPropertyRepo->getStyleByNameorSlug(Inflect::singularize($keyword))) {
+				$styles[] = $s->slug;
+			}
+			if ($s = $this->itemPropertyRepo->getFabricByNameorSlug($keyword)) {
+				$fabrics[] = $s->slug;
+			} elseif ($s = $this->itemPropertyRepo->getFabricByNameorSlug(Inflect::singularize($keyword))) {
+				$fabrics[] = $s->slug;
+			}
+			if ($s = $this->itemPropertyRepo->getColorByNameorSlug($keyword)) {
+				$colors[] = $s->slug;
+			}
+		}
+		$item = Item::query()->with('images')->with('styles')->with('categories')->with('fabrics')->with('colors');
+		if (isset($categories) && count($categories) > 0) {
+			foreach ($categories as $category) {
+				$item->whereHas('categories', function ($query) use ($category) {
+					$query->where('slug', $category);
+				});
+			}
+		}
+		if (isset($styles) && count($styles) > 0) {
+			foreach ($styles as $style) {
+				$item->whereHas('styles', function ($query) use ($style) {
+					$query->where('slug', $style);
+				});
+			}
+		}
+		if (isset($fabrics) && count($fabrics) > 0) {
+			foreach ($fabrics as $fabric) {
+				$item->whereHas('fabrics', function ($query) use ($fabric) {
+					$query->where('slug', $fabric);
+				});
+			}
+		}
+		if (isset($colors) && count($colors) > 0) {
+			foreach ($colors as $color) {
+				$item->whereHas('colors', function ($query) use ($color) {
+					$query->where('slug', $color);
+				});
+			}
+		}
+		$item->orderBy('created_at', 'desc');
+		return $item->paginate($limit, ['*'], 'page', $page);
+	}
+
 	function getItems($filters, $order, $limit = 15) {
-		$item = Item::query();
+		$item = Item::query()->with('images')->with('styles')->with('categories')->with('colors')->with('bookmarks')->with('fabrics')->with('favorites');
 		if (isset($filters['style'])) {
 			$item->whereHas('styles', function ($query) use ($filters) {
 				$query->where('slug', $filters['style']);

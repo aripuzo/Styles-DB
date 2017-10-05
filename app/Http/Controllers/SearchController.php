@@ -41,6 +41,8 @@ class SearchController extends Controller {
 		}
 		if ($request->has('cat')) {
 			$category = $request->input('cat');
+		} else {
+			$category = 0;
 		}
 
 		$items = $this->itemRepo->searchItems(strtolower($request->input('q')), $category, $order, $limit);
@@ -52,6 +54,7 @@ class SearchController extends Controller {
 		$viewData = [
 			'items' => $items,
 			'term' => $request->input('q'),
+			'cat' => $category,
 		];
 		if (!$request->has('page') || $request->input('page') == '1') {
 			$this->statRepo->itemSearched($request->input('q'), $items->total(), auth()->id());

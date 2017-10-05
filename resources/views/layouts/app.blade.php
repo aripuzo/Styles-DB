@@ -188,9 +188,17 @@
             <form class="search_bar larger" action='{{ url("/search")}}' id='search-form' method='get' target='_top'>
                 <div class="search_dropdown" style="width: 19px;">
                     <select name="cat">
-                        <option selected value="0">All</option>
+                        <option
+                        @if(isset($cat) && $cat == 0)
+                        selected
+                        @endif
+                         value="0">All</option>
                         @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option
+                        @if(isset($cat) && $cat == $category->id)
+                        selected
+                        @endif
+                         value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>

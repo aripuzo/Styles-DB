@@ -2,57 +2,49 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Repository\Contracts\ItemPropertyRepository;
+use App\Http\Controllers\Api\ItemController;
+use App\Http\Controllers\Controller;
 use App\Repository\Contracts\ItemRepository;
 use App\Repository\Contracts\StatRepository;
 use App\Repository\Contracts\UserRepository;
+use App\Serializers\MySerializer;
+use App\Transformers\ItemTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller
+use League\Fractal\Manager;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class ItemController extends Controller {
 	//
-	private $userRepo;
 	private $itemRepo;
-	private $itemPropertyRepo;
 	private $statRepo;
+	private $userRepo;
 	private $limit;
 	private $defaultSort;
 	private $defaultOrder;
 	private $popularOrder = 'ratings'; //'favorites';
+	private $fractal;
+	private $itemTransformer;
 
-	public function __construct(UserRepository $userRepo, ItemRepository $itemRepo, ItemPropertyRepository $itemPropertyRepo, StatRepository $statRepo) {
-		$this->userRepo = $userRepo;
+	public function __construct(ItemRepository $itemRepo, UserRepository $userRepo, StatRepository $statRepo, Manager $fractal, ItemTransformer $itemTransformer) {
 		$this->itemRepo = $itemRepo;
-		$this->itemPropertyRepo = $itemPropertyRepo;
 		$this->statRepo = $statRepo;
+		$this->userRepo = $userRepo;
+		$this->fractal = $fractal;
+		$this->fractal->setSerializer(new MySerializer());
+		$this->itemTransformer = $itemTransformer;
+
 		$this->limit = config('settings.limit');
 		$this->defaultSort = config('settings.defaultSort');
 		$this->defaultOrder = config('settings.defaultOrder');
 		$this->popularOrder = config('settings.popularOrder');
 	}
 
-	public function index(Request $request) {
-		$filters = array();
-		$order = array();
-		if ($request->has('limit')) {
-			$limit = $request->input('limit');
-		} else {
-			$limit = $this->limit;
-		}
-		$order['orderDir'] = 'desc';
-		if ($request->has('sort')) {
-			if ($request->input('sort') == 'recommended') {
-				$order['orderBy'] = 'created_at';
-				return $this->itemRepo->getRecommendedItems(auth()->id(), $order, $limit);
-			} elseif ($request->input('sort') == 'popular') {
-				$order['orderBy'] = $this->popularOrder;
-			}
-		} else {
-			$order['orderBy'] = $this->defaultOrder;
-		}
+	private function getItems(Request $request, $filters, $order) {
 		if ($request->has('category')) {
 			$filters['category'] = $request->input('category');
 		}
@@ -68,112 +60,202 @@ class ItemController extends Controller {
 		if ($request->has('color')) {
 			$filters['color'] = $request->input('color');
 		}
-		$items = $this->itemRepo->getItems($filters, $order, $limit);
-		return $items;
+		$itemsPaginator = $this->itemRepo->getItems($filters, $order, $request->has('limit') ? $request->input('limit') : $this->limit);
+		$items = new Collection($itemsPaginator->items(), $this->itemTransformer, 'data'); // Create a resource collection transformer
+		$items->setPaginator(new IlluminatePaginatorAdapter($itemsPaginator));
+
+		$this->fractal->parseIncludes($request->get('include', ''));
+
+		$items = $this->fractal->createData($items); // Transform data
+		return $items->toArray();
 	}
 
-	public function getItem($id) {
-		$item = $this->itemRepo->getItem($id);
-		if (isset($item)) {
-			$similar = $this->itemRepo->getSimilarItems($id);
-			SEO::setTitle($item->getSEOTitle());
-			SEO::setDescription($item->getSEODescription());
-			SEO::metatags()->addKeyword($item->getSEOKeywords());
-			$viewData = [
-				'item' => $item,
-				'related' => $similar,
-			];
-			$this->statRepo->itemViewed($id, auth()->id());
-			return view('item.single', $viewData);
-		} else {
-			Log::error('Item not found for item: ' . $id);
-			abort(404, 'The resource you are looking for could not be found');
-		}
-	}
+	public function index(Request $request) {
+		$filters = array();
+		$order = array();
 
-	public function createItem(Request $request) {
-		$this->validate($request, [
-			'categories' => 'required',
-		]);
-		$item = $this->itemRepo->addItem($request->all());
-		$viewData = [
-			'item' => $item,
-			'title' => 'New',
-		];
-		return view('item.new', $viewData);
-	}
-
-	public function createItemExcel(Request $request) {
-		$this->validate($request, [
-			'file' => 'required',
-		]);
-		//try {
-		set_time_limit(300);
-		Excel::load(Input::file('file'), function ($reader) {
-			//http://res.cloudinary.com/oversabi/image/upload/v1501209513/IMG-20170613-WA0000_vvwgrs.jpg
-			foreach ($reader->toArray() as $row) {
-				if (isset($row['images'])) {
-					$images = array();
-					$image_ids = array();
-					$imgs = explode(',', $row['images']);
-					foreach ($imgs as $img) {
-						$images[] = 'http://res.cloudinary.com/oversabi/image/upload/v1501209513/' . $img . '.jpg';
-						$image_ids[] = $img;
-					}
-					$data = array(
-						'add_categories' => $row['categories'],
-						'add_styles' => $row['styles'],
-						'add_fabrics' => $row['fabrics'],
-						'add_colors' => $row['colors'],
-						'add_tags' => $row['tags'],
-						'images' => $images,
-						'image_ids' => $image_ids,
-						'parent' => $row['parent'],
-						'designer' => $row['designer'],
-					);
-					$this->itemRepo->addItem($data);
-				}
-				//var_dump($data);
+		$order['orderDir'] = 'desc';
+		if ($request->has('sort')) {
+			if ($request->input('sort') == 'recommended') {
+				$order['orderBy'] = 'created_at';
+				return $this->itemRepo->getRecommendedItems(auth()->id(), $order, $limit);
+			} elseif ($request->input('sort') == 'popular') {
+				$order['orderBy'] = $this->popularOrder;
 			}
-
-		});
-		return back()->with('message', 'You have successfully uploaded styles.');
-		//\Session::flash('success', 'Users uploaded successfully.');
-		// } catch (\Exception $e) {
-		//     var_dump($e->getMessage());
-		// }
+		} else {
+			$order['orderBy'] = $this->defaultOrder;
+		}
+		return $this->getItems($request, $filters, $order);
 	}
 
-	public function createItemUser(Request $request) {
-		$this->validate($request, [
+	public function latest(Request $request) {
+		$filters = array();
+		$order = array();
+
+		$order['orderBy'] = 'created_at';
+		$order['orderDir'] = 'desc';
+		return $this->getItems($request, $filters, $order);
+	}
+
+	public function popular(Request $request) {
+		$filters = array();
+		$order = array();
+
+		$order['orderBy'] = 'favorites';
+		$order['orderDir'] = 'desc';
+		return $this->getItems($request, $filters, $order);
+	}
+
+	public function topRated(Request $request) {
+		$filters = array();
+		$order = array();
+
+		$order['orderBy'] = 'ratings';
+		$order['orderDir'] = 'desc';
+		return $this->getItems($request, $filters, $order);
+	}
+
+	public function topDownloads(Request $request) {
+		$filters = array();
+		$order = array();
+
+		$order['orderBy'] = 'ratings';
+		$order['orderDir'] = 'desc';
+		return $this->getItems($request, $filters, $order);
+	}
+
+	public function recommended(Request $request) {
+		$filters = array();
+		$order = array();
+
+		$order['orderBy'] = 'created_at';
+		$order['orderDir'] = 'desc';
+
+		$itemsPaginator = $this->itemRepo->getRecommendedItems(Auth::guard('api')->user()->id, $request->has('limit') ? $request->input('limit') : $this->limit);
+		$items = new Collection($itemsPaginator->items(), $this->itemTransformer, 'data'); // Create a resource collection transformer
+		$items->setPaginator(new IlluminatePaginatorAdapter($itemsPaginator));
+
+		$this->fractal->parseIncludes($request->get('include', ''));
+
+		$items = $this->fractal->createData($items); // Transform data
+		return $items->toArray();
+	}
+
+	public function similar(Request $request, $id) {
+		$itemsPaginator = $this->itemRepo->getSimilarItems($id, $request->has('limit') ? $request->input('limit') : 5);
+		$items = new Collection($itemsPaginator->items(), $this->itemTransformer, 'data'); // Create a resource collection transformer
+		$items->setPaginator(new IlluminatePaginatorAdapter($itemsPaginator));
+
+		$this->fractal->parseIncludes($request->get('include', ''));
+
+		$items = $this->fractal->createData($items); // Transform data
+		return $items->toArray();
+	}
+
+	public function bookmarks(Request $request, $id) {
+		$user = $this->userRepo->getUser($id);
+		if (!$user) {
+			return Response::json([
+				'error' => [
+					'message' => 'Not found!',
+					'status_code' => 404,
+				],
+			], 404);
+		}
+		if ($user->bookmarks->count() <= 0) {
+			return array();
+		}
+		$itemsPaginator = $user->bookmarks;
+		$items = new Collection($itemsPaginator->items(), $this->itemTransformer, 'data');
+		$items->setPaginator(new IlluminatePaginatorAdapter($itemsPaginator));
+
+		$this->fractal->parseIncludes($request->get('include', ''));
+
+		$items = $this->fractal->createData($items); // Transform data
+		return $items->toArray();
+	}
+
+	public function myItems(Request $request, $id) {
+		if (!$user) {
+			return Response::json([
+				'error' => [
+					'message' => 'Not found!',
+					'status_code' => 404,
+				],
+			], 404);
+		}
+		if ($user->items->count() <= 0) {
+			return array();
+		}
+		$itemsPaginator = $user->items;
+		$items = new Collection($itemsPaginator->items(), $this->itemTransformer, 'data'); // Create a resource collection transformer
+		$items->setPaginator(new IlluminatePaginatorAdapter($itemsPaginator));
+
+		$this->fractal->parseIncludes($request->get('include', ''));
+
+		$items = $this->fractal->createData($items); // Transform data
+		return $items->toArray();
+	}
+
+	public function show($id) {
+		$item = $this->itemRepo->getItem($id);
+		if (!$item) {
+			return response()->json([
+				'error' => [
+					'message' => 'Not found!',
+					'status_code' => 404,
+				],
+			], 404);
+		}
+		$this->statRepo->itemViewed($id, auth()->id());
+		$item = new Item($item, $this->itemTransformer);
+		$item = $this->fractal->createData($item); // Transform data
+		return $item->toArray();
+	}
+
+	public function create(Request $request) {
+		$data = array(
+			'add_categories' => $row['categories'],
+			'add_styles' => $row['styles'],
+			'add_fabrics' => $row['fabrics'],
+			'add_colors' => $row['colors'],
+			'add_tags' => $row['tags'],
+			'parent' => $row['parent'],
+			'designer' => $row['designer'],
+		);
+		$validator = Validator::make($request->all(), [
 			'categories' => 'required',
 			'styles' => 'required',
-			'images' => 'required',
-			'username' => 'string|max:255|unique:users',
-			'email' => 'string|email|max:255|unique:users',
+			'image' => 'required',
+			'fabrics' => 'required',
 		]);
-		if ($request->has('email')) {
-			$user = $this->userRepo->insert($request->all());
-			Auth::login($user);
-		} elseif (Auth::check()) {
-			$user = $this->userRepo->getUser(auth()->id());
-		} else {
-			return back();
+		if ($validator->fails()) {
+			return Response::json([
+				'error' => [
+					'message' => $validator->messages(),
+					'status_code' => 422,
+				],
+			], 422);
 		}
 
-		$request->merge(['user_id' => $user->id]);
+		$images = array();
+		$files = Request::file('image');
+		foreach ($files as $file) {
+			$images[] = $this->uploadFile($file);
+		}
+
+		$user = Auth::guard('api')->user();
+
+		$request->merge(['user_id' => $user->id, 'images' => $images]);
+
 		$item = $this->itemRepo->addItem($request->all());
-		return back()->with('message', 'You have successfully upload style.');
 	}
 
-	private function uploadFile(Request $request) {
-		if ($request->hasFile('image_file')) {
-			Cloudder::upload($request->file('image_file'));
-			$c = Cloudder::getResult();
-			if ($c) {
-				return $c['url'];
-			}
-
+	private function uploadFile($file) {
+		Cloudder::upload($file);
+		$c = Cloudder::getResult();
+		if ($c) {
+			return $c['url'];
 		}
 	}
 
@@ -182,6 +264,25 @@ class ItemController extends Controller {
 		$imageName = md5(microtime()) . '_' . $id . '.' . $image->getClientOriginalExtension();
 		$image->move(public_path('ustyles/pic/images'), $imageName);
 		return $imageName;
+		// $rules = [
+		//           'name' => 'required'
+		//       ];
+		//       $photos = count($this->input('photos'));
+		//       foreach(range(0, $photos) as $index) {
+		//           $rules['photos.' . $index] = 'image|mimes:jpeg,bmp,png|max:2000';
+		//       }
+
+		//       return $rules;
+	}
+
+	public function delete($id) {
+		$itemRepo->deleteItem($id);
+		return 204;
+	}
+
+	public function update(Request $request, $id) {
+		$itemRepo->deleteItem($id);
+		return 204;
 	}
 
 	public function favItem(Request $request) {
@@ -223,211 +324,5 @@ class ItemController extends Controller {
 			return response()->json(['response' => false, 'message' => 'Error occured']);
 		}
 
-	}
-
-	public function makeCommentItem(Request $request) {
-		$this->validate($request, [
-			'id' => 'required|numeric|exists:items',
-			'text' => 'required',
-		]);
-		$value = $this->itemRepo->commentOnItem(auth()->id(), $request->input('id'), $request->input('text'), $request->input('comment_id'));
-		return redirect()->action(
-			'ItemController@getItem', ['id' => $request->input('id')]
-		);
-	}
-
-	private function isValid($str) {
-		return !preg_match('/[^A-Za-z0-9._#\\-$]/', $str);
-	}
-
-	public function makeItem($id) {
-		$item = $this->itemRepo->getItem($id);
-		if (isset($item)) {
-			$similar = $this->itemRepo->getSimilarItems($id);
-			$viewData = [
-				'item' => $item,
-				'title' => $item->getSEOTitle(),
-				'description' => $item->getSEODescription(),
-				'related' => $similar,
-			];
-			return view('item.make', $viewData);
-		}
-	}
-
-	public function getItem($id) {
-		$item = $this->itemRepo->getItem($id);
-		if (isset($item)) {
-			$similar = $this->itemRepo->getSimilarItems($id);
-			SEO::setTitle($item->getSEOTitle());
-			SEO::setDescription($item->getSEODescription());
-			SEO::metatags()->addKeyword($item->getSEOKeywords());
-			$viewData = [
-				'item' => $item,
-				'related' => $similar,
-			];
-			$this->statRepo->itemViewed($id, auth()->id());
-			return view('item.single', $viewData);
-		} else {
-			Log::error('Item not found for item: ' . $id);
-			abort(404, 'The resource you are looking for could not be found');
-		}
-	}
-
-	private function returnItems(Request $request, $items, $title, $order, $selected) {
-		if (\Request::ajax()) {
-			$view = view('item.partials.data', compact('items'))->render();
-			return response()->json(['result' => true, 'html' => $view]);
-		} else {
-			SEO::setTitle($title);
-			$viewData = [
-				'items' => $items,
-				'selected' => $selected,
-				'order' => $order,
-				'categories' => $this->itemPropertyRepo->getCategories(),
-				'styles' => $this->itemPropertyRepo->getStyles($selected),
-				'fabrics' => $this->itemPropertyRepo->getFabrics($selected),
-			];
-			return view('item.portfolio', $viewData);
-		}
-	}
-
-	public function getItemsByCategory(Request $request, $category = null) {
-		$items = $this->getItems($request, $category, null, null, null);
-		if (isset($category)) {
-			$category = $this->itemPropertyRepo->getCategoryBySlug($category);
-			$title = $category->getSEOTitle();
-			$selected = $category->id;
-		} else {
-			Log::error('Category not found for slug: ' . $category);
-			$title = 'Catalogue';
-			$selected = 0;
-		}
-		if ($request->has('sort')) {
-			$order = $request->input('sort');
-		} else {
-			$order = $this->defaultSort;
-		}
-		if (isset($category) && (!$request->has('page') || $request->input('page') == '1')) {
-			$this->statRepo->categoryViewed($category->id, auth()->id());
-		}
-		return $this->returnItems($request, $items, $title, $order, $selected);
-	}
-
-	public function getItemsByStyle(Request $request, $style = null) {
-		$items = $this->getItems($request, null, $style, null, null);
-		if (isset($style)) {
-			$style = $this->itemPropertyRepo->getStyleBySlug($style);
-			$title = $style->getSEOTitle();
-		} else {
-			$title = 'View all styles';
-		}
-		$selected = 0;
-		if ($request->has('sort')) {
-			$order = $request->input('sort');
-		} else {
-			$order = $this->defaultSort;
-		}
-
-		if (isset($style) && (!$request->has('page') || $request->input('page') == '1')) {
-			$this->statRepo->styleViewed($style->id, auth()->id());
-		}
-
-		return $this->returnItems($request, $items, $title, $order, $selected);
-	}
-
-	public function getItemsByFabric(Request $request, $fabric = null) {
-		$items = $this->getItems($request, null, null, $fabric, null);
-		if (isset($fabric)) {
-			$fabric = $this->itemPropertyRepo->getFabricBySlug($fabric);
-			$title = $fabric->getSEOTitle();
-		} else {
-			$title = 'View styles by fabric';
-		}
-		$selected = 0;
-		if ($request->has('sort')) {
-			$order = $request->input('sort');
-		} else {
-			$order = $this->defaultSort;
-		}
-
-		if (isset($style) && (!$request->has('page') || $request->input('page') == '1')) {
-			$this->statRepo->styleViewed($style->id, auth()->id());
-		}
-
-		return $this->returnItems($request, $items, $title, $order, $selected);
-	}
-
-	private function getItems(Request $request, $category = null, $style = null, $fabric = null, $color = null) {
-		$filters = array();
-		$order = array();
-		if ($request->has('limit')) {
-			$limit = $request->input('limit');
-		} else {
-			$limit = $this->limit;
-		}
-
-		$order['orderDir'] = 'desc';
-		if ($request->has('sort')) {
-			if ($request->input('sort') == 'recommended') {
-				$order['orderBy'] = 'created_at';
-				return $this->itemRepo->getRecommendedItems(auth()->id(), $order, $limit);
-			} elseif ($request->input('sort') == 'popular') {
-				//$order_by = $request->input('sort');
-				$order['orderBy'] = $this->popularOrder;
-			}
-		} else {
-			$order['orderBy'] = $this->defaultOrder;
-		}
-
-		if (isset($category)) {
-			$filters['category'] = $category;
-		}
-
-		if (isset($style)) {
-			$filters['style'] = $style;
-		}
-
-		if (isset($fabric)) {
-			$filters['fabric'] = $fabric;
-		}
-
-		if (isset($color)) {
-			$filters['color'] = $color;
-		}
-
-		return $this->itemRepo->getItems($filters, $order, $limit);
-	}
-
-	public function searchItems(Request $request) {
-		$order = array();
-		if ($request->has('limit')) {
-			$limit = $request->input('limit');
-		} else {
-			$limit = $this->limit;
-		}
-
-		if ($request->has('order_by')) {
-			$order['orderBy'] = $request->input('order_by');
-		}
-
-		if ($request->has('order_by')) {
-			$order['orderDir'] = $request->input('order_dir');
-		}
-
-		$items = $this->itemRepo->searchItems(strtolower($request->input('q')), $order, $limit);
-		if (\Request::ajax()) {
-			$view = view('item.partials.data', compact('items'))->render();
-			return response()->json(['result' => true, 'html' => $view]);
-		}
-		SEO::setTitle('Search results for \'' . $request->input('q') . '\'');
-		$viewData = [
-			'items' => $items,
-			'term' => $request->input('q'),
-		];
-		if (!$request->has('page') || $request->input('page') == '1') {
-			$this->statRepo->itemSearched($request->input('q'), $items->total(), auth()->id());
-		}
-
-		return view('item.search', $viewData);
 	}
 }

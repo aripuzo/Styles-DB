@@ -36,15 +36,16 @@ class StatRepo implements StatRepository {
 	}
 
 	function itemSearched($term, $results, $user_id = null) {
-		$last = DB::table('search_terms')
-			->where([['term', $term], ['term', $user_id]])
-			->first();
-		if (!isset($last)) {
-			DB::table('search_terms')->insert(
-				['term' => $term, 'results' => $results, 'user_id' => $user_id]
-			);
+		if (isset($term)) {
+			$last = DB::table('search_terms')
+				->where([['term', $term], ['term', $user_id]])
+				->first();
+			if (!isset($last)) {
+				DB::table('search_terms')->insert(
+					['term' => $term, 'results' => $results, 'user_id' => $user_id]
+				);
+			}
 		}
-
 	}
 
 	function searchSuggestion($term) {

@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        
+
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -43,7 +43,7 @@
                         <span>Category</span>
                         <select id="ms" multiple="multiple" name="categories[]">
                             @php
-                                $categories = App\Category::get();
+                                $categories = App\Models\Category::get();
                             @endphp
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -57,7 +57,7 @@
                         <span>Style</span>
                         <select multiple="multiple" name="styles[]">
                             @php
-                                $styles = App\Style::get();
+                                $styles = App\Models\Style::get();
                             @endphp
                             @foreach($styles as $style)
                                 <option value="{{ $style->id }}">{{ $style->name }}</option>
@@ -78,7 +78,7 @@
                         <span>Fabric</span>
                         <select multiple="multiple" name="fabrics[]">
                             @php
-                                $fabrics = App\Fabric::get();
+                                $fabrics = App\Models\Fabric::get();
                             @endphp
                             @foreach($fabrics as $fabric)
                                 <option value="{{ $fabric->id }}">{{ $fabric->name }}</option>
@@ -99,7 +99,7 @@
                         <span>Color</span>
                         <select multiple="multiple" name="colors[]">
                             @php
-                                $colors = App\Color::get();
+                                $colors = App\Models\Color::get();
                             @endphp
                             @foreach($colors as $color)
                                 <option value="{{ $color->id }}">{{ $color->name }}</option>
@@ -120,7 +120,7 @@
                         <span>Tags</span>
                         <select multiple="multiple" name="tags[]">
                             @php
-                                $tags = App\Tag::get();
+                                $tags = App\Models\Tag::get();
                             @endphp
                             @foreach($tags as $tag)
                                 <option value="{{ $tag->id }}">{{ $tag->name }}</option>
@@ -157,9 +157,9 @@
     <script type="text/javascript" src="{{ asset('js/jquery.themepunch.tools.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.themepunch.revolution.min.js') }}"></script>
 
-    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  
-        (Load Extensions only on Local File Systems ! 
-         The following part can be removed on Server for On Demand Loading) --> 
+    <!-- SLIDER REVOLUTION 5.0 EXTENSIONS
+        (Load Extensions only on Local File Systems !
+         The following part can be removed on Server for On Demand Loading) -->
     <script type="text/javascript" src="{{ asset('js/revolution.extension.actions.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/revolution.extension.carousel.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/revolution.extension.kenburn.min.js') }}"></script>

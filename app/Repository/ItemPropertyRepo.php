@@ -46,6 +46,17 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 		return Style::where('name', $name)->first();
 	}
 
+	function getStyleByNameorSlug($s) {
+		if (null !== ($style = $this->getStyleByName($s))) {
+			return $style;
+		} elseif (null !== ($style = $this->getStyleBySlug($s))) {
+			return $style;
+		} else {
+			return null;
+		}
+
+	}
+
 	function addColor($colorData) {
 		$color = new Color;
 		$color->name = $colorData['name'];
@@ -64,8 +75,23 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 		return Color::find($colorId);
 	}
 
+	function getColorBySlug($slug) {
+		return Color::where('slug', $slug)->first();
+	}
+
 	function getColorByName($name) {
 		return Color::where('name', $name)->first();
+	}
+
+	function getColorByNameorSlug($s) {
+		if (null !== ($color = $this->getColorByName($s))) {
+			return $color;
+		} elseif (null !== ($color = $this->getColorBySlug($s))) {
+			return $color;
+		} else {
+			return null;
+		}
+
 	}
 
 	function addTag($tagData) {
@@ -108,8 +134,23 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 		return Fabric::find($fabricId);
 	}
 
+	function getFabricBySlug($slug) {
+		return Fabric::where('slug', $slug)->first();
+	}
+
 	function getFabricByName($name) {
 		return Fabric::where('name', $name)->first();
+	}
+
+	function getFabricByNameorSlug($s) {
+		if (null !== ($fabric = $this->getFabricByName($s))) {
+			return $fabric;
+		} elseif (null !== ($fabric = $this->getFabricBySlug($s))) {
+			return $fabric;
+		} else {
+			return null;
+		}
+
 	}
 
 	function getCategory($categoryId) {
@@ -136,6 +177,17 @@ class ItemPropertyRepo implements ItemPropertyRepository {
 
 	function getCategoryByName($name) {
 		return Category::where('name', $name)->first();
+	}
+
+	function getCategoryByNameorSlug($s) {
+		if (null !== ($category = $this->getCategoryByName($s))) {
+			return $category;
+		} elseif (null !== ($category = $this->getCategoryBySlug($s))) {
+			return $category;
+		} else {
+			return null;
+		}
+
 	}
 
 	function getImageByUrl($url) {

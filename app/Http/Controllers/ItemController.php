@@ -70,7 +70,7 @@ class ItemController extends Controller {
 		if (Auth::check()) {
 			return view('user.home', $viewData);
 		} else {
-			return view('welcome', $viewData);
+			return view('index', $viewData);
 		}
 	}
 

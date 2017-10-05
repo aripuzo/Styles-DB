@@ -102,7 +102,7 @@ class Item extends Model {
 			$i++;
 
 		}
-		return $name;
+		return trim($name);
 	}
 
 	public function getSEOTitle() {
@@ -114,7 +114,31 @@ class Item extends Model {
 	}
 
 	public function getURL() {
-		return urlencode($this->getName());
+		return url('/') . '/item/' . $this->id;
+	}
+
+	public function getUserId() {
+		if ($this->user) {
+			return $this->user->id;
+		}
+
+		return 0;
+	}
+
+	public function getDesignerId() {
+		if ($this->designer) {
+			return $this->designer->id;
+		}
+
+		return 0;
+	}
+
+	public function getAveRating() {
+		if ($this->ratings && $this->ratings->count() > 0) {
+			return $this->ratings->avg('rating');
+		}
+
+		return 0;
 	}
 
 	public function getSEODescription() {
@@ -197,7 +221,7 @@ class Item extends Model {
 		if (isset($this->user)) {
 			return $this->user->getName();
 		} else {
-			return 'House';
+			return 'Shakara';
 		}
 
 	}

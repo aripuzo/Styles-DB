@@ -10,8 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
  */
-
-Route::get('/', 'ItemController@index')->name('welcome');
+Route::get('/', ['as' => 'welcome', 'uses' => 'ItemController@index']);
+Route::match(['get', 'post'], '/botman', 'BotManController@handle');
+Route::get('/bot_test', 'BotManController@botTest');
+//Route::get('/botman/tinker', 'BotManController@tinker');
 
 Auth::routes();
 
