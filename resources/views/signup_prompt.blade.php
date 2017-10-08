@@ -3,9 +3,9 @@
 	    position: relative;
 	    color: #FFF;
 	    background-color: #117bf3;
-	    background-image: url(../../img/hero/pattern.svg?v=4b5c30ad0473),linear-gradient(to right, #126CFA 0, #108AEC 100%);
+	    background-image: url({{ asset('images/pattern.svg') }}),linear-gradient(to right, #26afd1 0, #108AEC 100%);
 	    background-position: right center,center center;
-	    background-repeat: no-repeat,no-repeat;
+	    background-repeat: repeat-y;
 	    font-size: 17px;
 	    line-height: 1.53333333;
 	    overflow: hidden;
@@ -46,8 +46,6 @@
 	.g-col6 {
 	    -webkit-flex: none;
 	    flex: none;
-	    flex-basis: 50%;
-	    max-width: 50%;
 	}
 	[class^="g-col"] {
 	    display: inline-flex;
@@ -117,18 +115,33 @@
 	svg:not(:root), symbol, image, marker, pattern, foreignObject {
 	    overflow: hidden;
 	}
+	a.fb-msg-btn{
+		display: inline-block;
+		font-family: inherit;
+		font-size: 14px;
+		font-weight: bold;
+		color: #fff;
+		text-align: center;
+		padding: 12px 16px;
+		margin: 0;
+		background-color: #0084ff;
+		border: 0;
+		border-radius: 5px;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		cursor: pointer;
+		outline: none;
+	}
+	a:hover.fb-msg-btn {
+		background-color: #0268c7;
+	}
 </style>
 <div class="s-hero hero-container">
     <div class="-container g-row jc-sp-between ai-center">
         <div class="g-col6">
-            <h1 class="-title">Learn, Share, Build</h1>
-            <p class="-paragraph">Each month, over 50 million developers come to Stack Overflow to learn, share their knowledge, and build their careers.</p>
-            <p class="-paragraph">Join the world’s largest developer community.</p>
-            <p class="-paragraph g-col3"><a href="/users/signup?ssrc=hero&amp;returnurl=%2fusers%2fstory%2fcurrent&amp;amp;utm_source=stackoverflow.com&amp;amp;utm_medium=dev-story&amp;amp;utm_campaign=signup-redirect" class="btn-outlined -white _medium _block">Sign Up</a></p>
+            <h1 class="-title">21st Century Tailoring</h1>
+            <p class="-paragraph">You can now easily pick a style for your next outfit through your facebook messenger app with the help of our bot.</p>
+            <p class="-paragraph g-col3"><a href="https://m.me/shakaradotng" class="fb-msg-btn" target="_blank">Message us on Facebook</a></p>
         </div>
-
-        <a id="close" href="#" class="js-dismiss -dismiss" title="dismiss">
-        	<svg role="icon" class="svg-icon iconClear" width="18" height="18" viewBox="0 0 18 18"><path d="M15 4.41L13.59 3 9 7.59 4.41 3 3 4.41 7.59 9 3 13.59 4.41 15 9 10.41 13.59 15 15 13.59 10.41 9z"></path></svg>
-        </a>
     </div>
 </div>

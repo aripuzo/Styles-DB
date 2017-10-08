@@ -79,20 +79,39 @@ return [
 			'composer_input_disabled' => 'true',
 			'call_to_actions' => [
 				[
-					'title' => 'My Account',
+					'title' => 'Category',
 					'type' => 'nested',
 					'call_to_actions' => [
 						[
-							'title' => 'Pay Bill',
-							'type' => 'postback',
-							'payload' => 'PAYBILL_PAYLOAD',
+							'type' => 'web_url',
+							'title' => 'Men Styles',
+							'url' => 'https://shakara.ng/catalogue/men',
+							'webview_height_ratio' => 'full',
+						],
+						[
+							'type' => 'web_url',
+							'title' => 'Women Styles',
+							'url' => 'https://shakara.ng/catalogue/women',
+							'webview_height_ratio' => 'full',
+						],
+						[
+							'type' => 'web_url',
+							'title' => 'Kid Styles',
+							'url' => 'https://shakara.ng/catalogue/kids',
+							'webview_height_ratio' => 'full',
 						],
 					],
 				],
 				[
 					'type' => 'web_url',
-					'title' => 'Latest News',
-					'url' => 'http://botman.io',
+					'title' => 'Latest Styles',
+					'url' => 'https://shakara.ng?sort=latest',
+					'webview_height_ratio' => 'full',
+				],
+				[
+					'type' => 'web_url',
+					'title' => 'Popular Styles',
+					'url' => 'https://shakara.ng?sort=popular',
 					'webview_height_ratio' => 'full',
 				],
 			],

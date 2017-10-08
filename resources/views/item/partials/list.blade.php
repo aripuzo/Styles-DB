@@ -115,7 +115,7 @@
                 jQuery('.ajax-load').show();
             },
             error: function (data) {
-                alert("Server error, please try again");
+                //alert("Server error, please try again");
                 $('.ajax-load').hide();
             },
             success: function (data) {

@@ -114,6 +114,8 @@ class BotManController extends Controller {
 				$bot->reply($template);
 				if ($items->count() >= $this->limit) {
 					$bot->startConversation(new StyleConversation($style, $this->itemRepo, 2, $this->limit));
+				} else {
+					$bot->reply('That\'s all the style we got for your query. You can try a new search using \'show me...\'');
 				}
 			}
 		});
