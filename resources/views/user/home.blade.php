@@ -5,6 +5,7 @@
 
 @section('content')
 <div id="gallery-index-pro">
+    @include('search')
     <ul id="menu-sub-nav">
         <li class="cat-item cat-item-1 {{(isset($order) && $order == 'recommended') || !isset($order) ? 'current-cat' : ''}}">
             <a href="{{request()->fullUrlWithQuery(['sort'=>'recommended'])}}">Recommended</a>

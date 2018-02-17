@@ -33,7 +33,7 @@ class BotManController extends Controller {
 	}
 
 	public function botTest(Request $request) {
-		$items = $this->itemRepo->getItemsBot($request->input('q'), $this->limit, 1);
+		$items = $this->itemRepo->getItemsBot($request->input('q'), $this->limit, $request->input('page'));
 		foreach ($items as $item) {
 			echo $item->getName() . ', ';
 		}
@@ -61,10 +61,7 @@ class BotManController extends Controller {
 
 		$botman->hears('GET_STARTED', function (BotMan $bot) {
 			$user = $bot->getUser();
-			// if (!$this->userRepo->getUserByEmail($user->getEmail())) {
-
-			// }
-			$bot->reply('Hi ' . $user->getFirstName() . '! I am Shakara. I can help you with your style selection! Ask me question like "Show me ankara dresses for women"');
+			$bot->reply('Hi ' . $user->getFirstName() . '! I am Shakara. I can help you with your style selection! Ask me question like "Show ankara dresses for women"');
 		});
 		$botman->hears('Personalize', function (BotMan $bot) {
 			$bot->reply(GenericTemplate::create()
@@ -73,7 +70,7 @@ class BotManController extends Controller {
 							->subtitle('All about BotMan')
 							->addButton(
 								ElementButton::create('Login')
-									->url('https://www.example.com/authorize')
+									->url('https://www.shakara.com/login')
 									->type('account_link')
 							),
 					])
@@ -95,7 +92,7 @@ class BotManController extends Controller {
 		// 		});
 		$botman->hears('Help', function (BotMan $bot) {
 			$bot->reply('Some tips:
-* Type \'Show me\' and keywords to find style: e.g. \'Show me ankara dresses for women\'');
+* Type \'Show me\' and keywords to find style: e.g. \'Show ankara dresses for women\'');
 		});
 
 		$botman->hears('Show {style}', function ($bot, $style) {
@@ -113,7 +110,7 @@ class BotManController extends Controller {
 				$template = $this->createStyleTemplate($items);
 				$bot->reply($template);
 				if ($items->count() >= $this->limit) {
-					$bot->startConversation(new StyleConversation($style, $this->itemRepo, 2, $this->limit));
+					$bot->startConversation(new StyleConversation($style, $this->limit));
 				} else {
 					$bot->reply('That\'s all the style we got for your query. You can try a new search using \'show me...\'');
 				}
@@ -121,6 +118,11 @@ class BotManController extends Controller {
 		});
 
 		$botman->hears('Thank you', function (BotMan $bot) {
+			$bot->reply('Don\'t mention.');
+			$bot->reply('On a second thought, please tell your friends');
+		});
+
+		$botman->hears('Thanks', function (BotMan $bot) {
 			$bot->reply('Don\'t mention.');
 			$bot->reply('On a second thought, please tell your friends');
 		});
@@ -140,14 +142,9 @@ class BotManController extends Controller {
 					->subtitle($item->getUserName())
 					->image($item->getImage())
 					->addButton(ElementButton::create('View Style')->url($item->getURL()))
-					->addButton(ElementButton::create('Download Image')->url($item->getImage())));
+					->addButton(ElementButton::create('Download Image')->url($item->getImage()))
+					->addButton(ElementButton::create('Share')->type('element_share')));
 		}
-		// if ($items->count() >= $this->limit) {
-		// 	$template->addElement(Element::create('Show more')
-		// 			->image('https://camo.githubusercontent.com/07596d6ada94296e90131d01394b10eefa1ce16a/68747470733a2f2f626f746d616e2e696f2f696d672f626f746d616e2e706e67')
-		// 			->addButton(ElementButton::create('Show more')->payload('showmore')->type('postback')));
-
-		// }
 		return $template;
 	}
 
@@ -164,9 +161,5 @@ class BotManController extends Controller {
 	 */
 	public function startConversation(BotMan $bot) {
 		$bot->startConversation(new ExampleConversation());
-	}
-
-	private function getItems($string, $page = 1) {
-		return $this->itemRepo->getItemsBot($categories, $styles, $fabrics, $colors, $this->limit, $page);
 	}
 }

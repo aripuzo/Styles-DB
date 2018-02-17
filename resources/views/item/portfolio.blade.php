@@ -2,6 +2,7 @@
 
 @section('content')
 <div id="gallery-index-pro">
+    @include('search')
     <ul id="menu-sub-nav">
         @php
             $i = 2;

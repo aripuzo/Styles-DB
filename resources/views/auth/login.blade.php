@@ -28,10 +28,10 @@
 
 <style type="text/css">
 	body {
-	  	background: 
-		    /* top, transparent red, faked with gradient */ 
+	  	background:
+		    /* top, transparent red, faked with gradient */
 		    linear-gradient(
-		      rgba(0, 0, 0, 0.45), 
+		      rgba(0, 0, 0, 0.45),
 		      rgba(0, 0, 0, 0.45)
 	    ),
 	    /* bottom, image */
@@ -99,9 +99,9 @@
             <div class="loginBtn loginBtn--twitter">
                 <a href="redirect/twitter">Login with Twitter</a>
             </div>
-            <a href="{{ route('password.request') }}" style="margin-top: 25px; color: #242124; font-size: 12px;">
+            {{-- <a href="{{ route('password.request') }}" style="margin-top: 25px; color: #242124; font-size: 12px;">
                 Forgot Your Password?
-            </a>
+            </a> --}}
         </div>
     </div>
     <script src="{{ asset('js/jquery-1.11.3.min.js') }}"></script>

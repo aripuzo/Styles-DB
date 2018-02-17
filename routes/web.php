@@ -30,6 +30,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('/submit', function () {
 		return view('item.submit');
 	});
+	Route::post('/submit', 'ItemController@createItemUser');
 	Route::get('/activate/{token}', ['as' => 'authenticated.activate', 'uses' => 'Auth\ActivateController@activate']);
 	Route::get('/activation', ['as' => 'authenticated.activation-resend', 'uses' => 'Auth\ActivateController@resend']);
 	Route::get('/exceeded', ['as' => 'exceeded', 'uses' => 'Auth\ActivateController@exceeded']);

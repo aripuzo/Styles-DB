@@ -7,6 +7,7 @@
 <div id="gallery-index-pro">
     <div class="clearfix"></div>
 <div id="gallery-masonry-loading">
+    @include('search')
     <div id="gallery-masonry" style="position: relative; height: 966.25px;">
         @php
         $i = 0;

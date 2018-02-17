@@ -14,6 +14,7 @@ use App\Repository\ItemPropertyRepo;
 use App\Repository\StatRepo;
 use App\Service\Inflect;
 use App\Service\Recommendation;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
 
 class ItemRepo implements ItemRepository {
@@ -345,26 +346,26 @@ class ItemRepo implements ItemRepository {
 		$item = Item::where('id', 0)->paginate($limit);
 	}
 
-	function getItemsBot($string, $limit, $page = 1) {
+	function getItemsBot($string, $limit, $page) {
 		$keywords = preg_split("/[\s,]+/", $string);
 		$categories = $styles = $fabrics = $colors = $tags = array();
 		foreach ($keywords as $keyword) {
-			if ($s = $this->itemPropertyRepo->getCategoryByNameorSlug($keyword)) {
+			if ($s = ItemPropertyRepo::getCategoryByNameorSlug($keyword)) {
 				$categories[] = $s->slug;
-			} elseif ($s = $this->itemPropertyRepo->getCategoryByNameorSlug(Inflect::pluralize($keyword))) {
+			} elseif ($s = ItemPropertyRepo::getCategoryByNameorSlug(Inflect::pluralize($keyword))) {
 				$categories[] = $s->slug;
 			}
-			if ($s = $this->itemPropertyRepo->getStyleByNameorSlug($keyword)) {
+			if ($s = ItemPropertyRepo::getStyleByNameorSlug($keyword)) {
 				$styles[] = $s->slug;
-			} elseif ($s = $this->itemPropertyRepo->getStyleByNameorSlug(Inflect::singularize($keyword))) {
+			} elseif ($s = ItemPropertyRepo::getStyleByNameorSlug(Inflect::singularize($keyword))) {
 				$styles[] = $s->slug;
 			}
-			if ($s = $this->itemPropertyRepo->getFabricByNameorSlug($keyword)) {
+			if ($s = ItemPropertyRepo::getFabricByNameorSlug($keyword)) {
 				$fabrics[] = $s->slug;
-			} elseif ($s = $this->itemPropertyRepo->getFabricByNameorSlug(Inflect::singularize($keyword))) {
+			} elseif ($s = ItemPropertyRepo::getFabricByNameorSlug(Inflect::singularize($keyword))) {
 				$fabrics[] = $s->slug;
 			}
-			if ($s = $this->itemPropertyRepo->getColorByNameorSlug($keyword)) {
+			if ($s = ItemPropertyRepo::getColorByNameorSlug($keyword)) {
 				$colors[] = $s->slug;
 			}
 		}
@@ -397,8 +398,12 @@ class ItemRepo implements ItemRepository {
 				});
 			}
 		}
+		Paginator::currentPageResolver(function () use ($page) {
+			return $page;
+		});
 		$item->orderBy('created_at', 'desc');
-		return $item->paginate($limit, ['*'], 'page', $page);
+		return $item->paginate($limit);
+		//return $item->paginate($limit, ['*'], 'page', $page);
 	}
 
 	function getItems($filters, $order, $limit = 15) {
@@ -444,54 +449,104 @@ class ItemRepo implements ItemRepository {
 	}
 
 	function searchItems($term, $category, $order, $limit = 15) {
-		$item = Item::query();
+		$keywords = preg_split("/[\s,]+/", $term);
+		$categories = $styles = $fabrics = $colors = $tags = array();
+		foreach ($keywords as $keyword) {
+			if ($s = ItemPropertyRepo::getCategoryByNameorSlug($keyword)) {
+				$categories[] = $s->slug;
+			} elseif ($s = ItemPropertyRepo::getCategoryByNameorSlug(Inflect::pluralize($keyword))) {
+				$categories[] = $s->slug;
+			}
+			if ($s = ItemPropertyRepo::getStyleByNameorSlug($keyword)) {
+				$styles[] = $s->slug;
+			} elseif ($s = ItemPropertyRepo::getStyleByNameorSlug(Inflect::singularize($keyword))) {
+				$styles[] = $s->slug;
+			}
+			if ($s = ItemPropertyRepo::getFabricByNameorSlug($keyword)) {
+				$fabrics[] = $s->slug;
+			} elseif ($s = ItemPropertyRepo::getFabricByNameorSlug(Inflect::singularize($keyword))) {
+				$fabrics[] = $s->slug;
+			}
+			if ($s = ItemPropertyRepo::getColorByNameorSlug($keyword)) {
+				$colors[] = $s->slug;
+			}
+		}
+		$item = Item::query()->with('images')->with('styles')->with('categories')->with('fabrics')->with('colors');
 		if (isset($category) && $category > 0) {
 			$item->whereHas('categories', function ($query) use ($category) {
 				$query->where('categories.id', $category);
 			});
-		}
-
-		$item->where('name', 'like', '%' . $term . '%')
-			->orWhereHas('fabrics', function ($query) use ($term) {
-				$query->where('name', 'like', '%' . $term . '%');
-			})
-			->orWhereHas('styles', function ($query) use ($term) {
-				$query->where('name', 'like', '%' . $term . '%');
-			})
-			->orWhereHas('tags', function ($query) use ($term) {
-				$query->where('name', $term);
-			})
-			->orWhereHas('colors', function ($query) use ($term) {
-				$query->where('name', $term);
-			})
-			->orWhereHas('designer', function ($query) use ($term) {
-				$query->where('name', 'like', '%' . $term . '%');
-			})
-			->orWhere('description', 'like', '%' . $term . '%');
-		if (strpos($term, ' ') !== false) {
-			$terms = explode(' ', $term);
-			if (count($terms) > 1) {
-				foreach ($terms as $s) {
-					//check related words
-					//denim jean,blouse top,men male,women female
-					if (!$this->exclude($s)) {
-						$item->orWhereHas('fabrics', function ($query) use ($s) {
-							$query->where('name', $s);
-						})
-							->orWhereHas('styles', function ($query) use ($s) {
-								$query->where('name', $s);
-							})
-							->orWhereHas('tags', function ($query) use ($s) {
-								$query->where('name', $s);
-							})
-							->orWhereHas('colors', function ($query) use ($s) {
-								$query->where('name', $s);
-							});
-					}
-				}
+			$categories = null;
+		} elseif (isset($categories) && count($categories) > 0) {
+			foreach ($categories as $category) {
+				$item->whereHas('categories', function ($query) use ($category) {
+					$query->where('slug', $category);
+				});
 			}
-
 		}
+		// $item->where('name', 'like', '%' . $term . '%')
+		// 	->orWhereHas('fabrics', function ($query) use ($term) {
+		// 		$query->where('name', 'like', '%' . $term . '%');
+		// 	})
+		// 	->orWhereHas('styles', function ($query) use ($term) {
+		// 		$query->where('name', 'like', '%' . $term . '%');
+		// 	})
+		// 	->orWhereHas('tags', function ($query) use ($term) {
+		// 		$query->where('name', $term);
+		// 	})
+		// 	->orWhereHas('colors', function ($query) use ($term) {
+		// 		$query->where('name', $term);
+		// 	})
+		// 	->orWhereHas('designer', function ($query) use ($term) {
+		// 		$query->where('name', 'like', '%' . $term . '%');
+		// 	})
+		// 	->orWhere('description', 'like', '%' . $term . '%');
+		if (isset($styles) && count($styles) > 0) {
+			foreach ($styles as $style) {
+				$item->whereHas('styles', function ($query) use ($style) {
+					$query->where('slug', $style);
+				});
+			}
+		}
+		if (isset($fabrics) && count($fabrics) > 0) {
+			foreach ($fabrics as $fabric) {
+				$item->whereHas('fabrics', function ($query) use ($fabric) {
+					$query->where('slug', $fabric);
+				});
+			}
+		}
+		if (isset($colors) && count($colors) > 0) {
+			foreach ($colors as $color) {
+				$item->whereHas('colors', function ($query) use ($color) {
+					$query->where('slug', $color);
+				});
+			}
+		}
+
+		// if (strpos($term, ' ') !== false) {
+		// 	$terms = explode(' ', $term);
+		// 	if (count($terms) > 1) {
+		// 		foreach ($terms as $s) {
+		// 			//check related words
+		// 			//denim jean,blouse top,men male,women female
+		// 			if (!$this->exclude($s)) {
+		// 				$item->orWhereHas('fabrics', function ($query) use ($s) {
+		// 					$query->where('name', $s);
+		// 				})
+		// 					->orWhereHas('styles', function ($query) use ($s) {
+		// 						$query->where('name', $s);
+		// 					})
+		// 					->orWhereHas('tags', function ($query) use ($s) {
+		// 						$query->where('name', $s);
+		// 					})
+		// 					->orWhereHas('colors', function ($query) use ($s) {
+		// 						$query->where('name', $s);
+		// 					});
+		// 			}
+		// 		}
+		// 	}
+
+		// }
 
 		//$statRepo->itemSeached($term, $results, $user_id = null)
 		return $item->paginate($limit);

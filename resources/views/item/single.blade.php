@@ -23,6 +23,37 @@
                 },
             });
         });
+        function downloadItem(el) {
+            event.preventDefault();
+            var id = el.id;
+            jQuery.ajax({
+                method: "GET",
+                url: "{{ url('item/download') }}",
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    "id": id
+                },
+                error: function (data) {
+                    alert("Server error, please try again");
+                },
+                success: function (data) {
+                    //alert(data);
+                    if (data.response == true) {
+                        var a = document.createElement("a");
+                        a.href = data.url;
+                        a.download = data.filename; // Set the file name.
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+                        delete a;
+                    }
+                    else
+                        alert(data.message);
+                }
+            });
+        }
         function addReply(el, name) {
             //event.preventDefault();
             @if (Auth::check())
@@ -67,14 +98,14 @@
     }
     header, hgroup, menu, nav, section { display: block; }
     ol, ul { list-style: none; }
-    #cont { 
-      display: block; 
-      width: 100%; 
-      background: #fff; 
-      padding: 14px 20px; 
-      -webkit-border-radius: 4px; 
-      -moz-border-radius: 4px; 
-      border-radius: 4px; 
+    #cont {
+      display: block;
+      width: 100%;
+      background: #fff;
+      padding: 14px 0px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
       -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
       -moz-box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
       box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
@@ -85,10 +116,10 @@
     #comments .cmmnt, ul .cmmnt, ul ul .cmmnt { display: block; position: relative; padding-left: 65px; border-top: 1px solid #ddd; }
 
     #comments .cmmnt .avatar  { position: absolute; top: 8px; left: 0; }
-    #comments .cmmnt .avatar img { 
-      -webkit-border-radius: 3px; 
-      -moz-border-radius: 3px; 
-      border-radius: 3px; 
+    #comments .cmmnt .avatar img {
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
       -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
       -moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
       box-shadow: 1px 1px 2px rgba(0,0,0,0.44);
@@ -204,7 +235,7 @@
     }
 </style>
 <div id="about-me-feature-main">
-    <div class="ls-sc-grid_12">
+    <div class="ls-sc-grid_12" style="width: 100.0%;">
         <div class="ls-sc-grid_6 about-me-element">
             <div id="page-title">
                 <h1>{{ $item->getName() }}</h1>
@@ -235,25 +266,28 @@
             <div class="prog">
                 <ul class="blog-single-social-sharing">
                     <li class="social-sharing-title">Share:</li>
-    
+
                     <li><a href="http://www.facebook.com/sharer.php?u={{ $item->getURL() }}&amp;t={{ $item->getURLName() }}" title="Share on Facebook" class="facebook-share" target="_blank"><i class="fa fa-facebook"></i></a></li>
-    
+
                     <li><a href="https://twitter.com/share?text={{ $item->getURLName() }}&amp;url={{ $item->getURL() }}" title="Twitter" class="twitter-share" target="_blank"><i class="fa fa-twitter"></i></a></li>
-        
+
                     <li><a href="javascript:void((function()%7Bvar%20e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','//assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)%7D)());" title="Share on Pinterest" class="pinterest-share"><i class="fa fa-pinterest"></i></a></li>
 
                     <li><a href="whatsapp://send" data-text="{ $item->getURLName() }}" data-href="" title="Share on Whatsapp" class="whatsapp-share" target="_blank"><i class="fa fa-whatsapp"></i></a></li>
-        
+
                     <li><a href="mailto:?subject={{ $item->getURLName() }}&amp;body={{ $item->getURL() }}" title="Share on E-mail" class="mail-share"><i class="fa fa-envelope"></i></a></li>
                 </ul>
                 <div class="clearfix-pro"></div>
+            </div>
+            <div id="{{ $item->id }}" onclick="downloadItem(this);" style="margin-top: 20px;">
+                <a class="ls-sc-button default"><span class="ls-sc-button-inner">Download Style<i class="ls-sc-button-icon-right fa fa-download"></i></span></a>
             </div>
             <!-- <a href="#" class="ls-sc-button default" target="_self" title="" rel=""><span class="ls-sc-button-inner">Make Item<i class="ls-sc-button-icon-right fa fa-envelope"></i></span></a> -->
         </div><!-- close .about-me-content -->
         <div class="ls-sc-grid_6 about-me-element"><img src="{{ $item->getImage() }}" style="max-width: 100%; height: auto;">
         </div>
     </div><!-- close .about-me-content -->
-    <div id="cont" class="ls-sc-grid_12">
+    <div id="cont" class="ls-sc-grid_12" style="width: 100%;">
         <!-- @php
         $currentlink = $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
         echo "<fb:comments href='$currentlink' num_posts='10' width='570'></fb:comments>";

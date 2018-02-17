@@ -2,6 +2,8 @@
 
 namespace App\Conversations;
 
+use App\Http\Controllers\BotmanController;
+use App\Repository\ItemRepo;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
@@ -12,17 +14,10 @@ class StyleConversation extends Conversation {
 	/**
 	 * First question
 	 */
-	protected $page;
+	protected $page = 2;
 	protected $style;
 	private $itemRepo;
-	private $limit;
-
-	public function __construct($style, $itemRepo, $page, $limit) {
-		$this->itemRepo = $itemRepo;
-		$this->style = $style;
-		$this->page = $page;
-		$this->limit = $limit;
-	}
+	private $limit = 10;
 
 	public function askMore() {
 		$question = Question::create("Type 'more' for more styles or use the options below to refine search")
@@ -38,8 +33,7 @@ class StyleConversation extends Conversation {
 		return $this->ask($question, function (Answer $answer) {
 			if ($answer->isInteractiveMessageReply()) {
 				if ($answer->getValue() === 'more') {
-					$this->say('Okay...');
-					$items = $this->itemRepo->getItemsBot($this->style, $this->limit, $this->page);
+					$items = ItemRepo::getItemsBot($this->style, $this->limit, $this->page);
 					if (!isset($items) || $items->count() == 0) {
 						$this->say('Sorry, I couldn\'t get more styles for your request. I think that\'s all');
 					} else {
@@ -47,7 +41,7 @@ class StyleConversation extends Conversation {
 						$this->say($template);
 						if ($items->count() >= $this->limit) {
 							$this->page++;
-							$this->askMore();
+							$this->repeat();
 						}
 					}
 				} elseif ($answer->getValue() === 'new') {
@@ -68,6 +62,7 @@ class StyleConversation extends Conversation {
 	 * Start the conversation
 	 */
 	public function run() {
+		$this->style = $this->bot->userStorage()->get('style');
 		$this->askMore();
 	}
 }

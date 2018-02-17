@@ -81,6 +81,13 @@
 }
 </style>
 <div id="about-me-feature-main">
+    <form class="progression-contact" id="CommentForm" method="post" action="{{url('/submit')}}" novalidate="novalidate">
+    {{ csrf_field() }}
+    @isset($message)
+    <div class="dz-message">
+        {{ $message }}
+    </div>
+    @endisset
     <div class="ls-sc-grid_12">
         <div class="ls-sc-grid_6 about-me-element">
             <div id="cropContainerEyecandy">
@@ -100,8 +107,6 @@
         <div class="ls-sc-grid_6 about-me-element">
             <div id="content-container-pro">
                 <div class="wpcf7">
-                    <form class="progression-contact" id="CommentForm" method="post" action="{{url('/submit')}}" novalidate="novalidate">
-                        {{ csrf_field() }}
                         <fieldset>
                             <div class="frmSearch">
                                 <input id="designer-box" name="designer" type="text" class="textInput" placeholder="Name of Designer/Tailor (optional)">
@@ -144,6 +149,18 @@
                                 </p>
                             </div>
                             <div>
+                                <p>
+                                <select name="colors[]" multiple id="color">
+                                @php
+                                $colors = App\Models\Color::get();
+                                @endphp
+                                @foreach($colors as $color)
+                                    <option value="{{ $color->id }}">{{ $color->name }}</option>
+                                @endforeach
+                                </select>
+                                </p>
+                            </div>
+                            <div>
                                 <ul id="myTags">
                                 </ul>
                                 Press 'enter' or 'comma' key after each tag
@@ -158,12 +175,12 @@
                                 <p><button type="submit" class="progression-contact-submit wpcf7-submit"><span>Update</span></button></p>
                             </div>
                         </fieldset>
-                    </form> 
                 </div>
                 <div class="clearfix"></div>
-            </div>          
+            </div>
         </div>
     </div>
+    </form>
 </div><!-- close #about-me-feature-main -->
 <!-- Dropzone Preview Template -->
     <div id="preview-template" style="display: none;">

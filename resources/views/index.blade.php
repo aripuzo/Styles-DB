@@ -2,7 +2,8 @@
 
 @section('content')
 <div id="gallery-index-pro">
-    @include('signup_prompt')
+    @include('search')
+    {{-- @include('signup_prompt') --}}
     <ul id="menu-sub-nav">
     	@php
             $i = 2;

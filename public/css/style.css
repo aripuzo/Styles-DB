@@ -3592,7 +3592,6 @@ ul.ls-sc-tabs:after {
     margin: 0px 24px 6px 0px;
 }
 #search-div{
-	margin-left: 20%; 
 	background-color: #ffffff;
 }
 @media only screen and (max-width: 767px){

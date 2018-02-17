@@ -131,7 +131,8 @@ class ItemController extends Controller {
 		$this->validate($request, [
 			'categories' => 'required',
 			'styles' => 'required',
-			'images' => 'required',
+			'fabrics' => 'required',
+			'file' => 'required',
 			'username' => 'string|max:255|unique:users',
 			'email' => 'string|email|max:255|unique:users',
 		]);
@@ -145,7 +146,7 @@ class ItemController extends Controller {
 		}
 
 		$request->merge(['user_id' => $user->id]);
-		$item = $this->itemRepo->addItem($request->all());
+		//$item = $this->itemRepo->addItem($request->all());
 		return back()->with('message', 'You have successfully upload style.');
 	}
 

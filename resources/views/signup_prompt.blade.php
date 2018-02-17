@@ -139,9 +139,9 @@
 <div class="s-hero hero-container">
     <div class="-container g-row jc-sp-between ai-center">
         <div class="g-col6">
-            <h1 class="-title">21st Century Tailoring</h1>
+            <h1 class="-title">Use Shakara on Facebook</h1>
             <p class="-paragraph">You can now easily pick a style for your next outfit through your facebook messenger app with the help of our bot.</p>
-            <p class="-paragraph g-col3"><a href="https://m.me/shakaradotng" class="fb-msg-btn" target="_blank">Message us on Facebook</a></p>
+            <p class="-paragraph g-col3"><a href="https://m.me/shakaradotng" class="fb-msg-btn" target="_blank">Chat with bot</a></p>
         </div>
     </div>
 </div>

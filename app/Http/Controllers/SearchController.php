@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repository\Contracts\ItemPropertyRepository;
 use App\Repository\Contracts\ItemRepository;
 use App\Repository\Contracts\StatRepository;
 use Illuminate\Http\Request;
@@ -15,11 +16,13 @@ use SEO;
 class SearchController extends Controller {
 	//
 	private $itemRepo;
+	private $itemPropertyRepo;
 	private $statRepo;
 	private $limit;
 
-	public function __construct(ItemRepository $itemRepo, StatRepository $statRepo) {
+	public function __construct(ItemRepository $itemRepo, StatRepository $statRepo, ItemPropertyRepository $itemPropertyRepo) {
 		$this->itemRepo = $itemRepo;
+		$this->itemPropertyRepo = $itemPropertyRepo;
 		$this->statRepo = $statRepo;
 		$this->limit = config('settings.limit');
 	}
@@ -55,6 +58,7 @@ class SearchController extends Controller {
 			'items' => $items,
 			'term' => $request->input('q'),
 			'cat' => $category,
+			'categories' => $this->itemPropertyRepo->getCategories(),
 		];
 		if (!$request->has('page') || $request->input('page') == '1') {
 			$this->statRepo->itemSearched($request->input('q'), $items->total(), auth()->id());

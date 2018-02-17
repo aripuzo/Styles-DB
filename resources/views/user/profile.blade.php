@@ -27,10 +27,11 @@
 }
 </style>
 <div id="about-me-feature-main">
+    @include('search')
     <div class="ls-sc-grid_12">
         <div class="ls-sc-grid_6 about-me-element">
             <div id="page-title"><h1>Profile</h1></div><!-- close #page-title -->
-                        
+
             <div id="content-container-pro">
                 <div class="wpcf7">
                     <form class="progression-contact" id="CommentForm" method="post" action="{{url('/account')}}" novalidate="novalidate">
@@ -72,10 +73,10 @@
                                 <p><input name="password-confirm" type="password" placeholder="Confirm password"></p>
                             </div>
                         </fieldset>
-                    </form> 
+                    </form>
                 </div>
                 <div class="clearfix"></div>
-            </div>          
+            </div>
         </div>
         <div class="ls-sc-grid_6 about-me-element">
             <div id="cropContainerEyecandy"></div>
